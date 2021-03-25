@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.model.figures;
+package com.codenjoy.dojo.chess.service;
 
 /*-
  * #%L
@@ -23,23 +23,39 @@ package com.codenjoy.dojo.chess.model.figures;
  */
 
 
-import com.codenjoy.dojo.chess.model.Elements;
-import com.codenjoy.dojo.chess.model.Player;
-import com.codenjoy.dojo.services.Point;
-import com.codenjoy.dojo.services.State;
+import com.codenjoy.dojo.services.PlayerScores;
 
-public class Korol extends Figure implements State<Elements, Player> {
+import static com.codenjoy.dojo.chess.service.GameSettings.Keys.WIN_SCORE;
 
-    public Korol(Point xy, boolean isWhite) {
-        super(xy, isWhite);
+public class Scores implements PlayerScores {
+
+    private volatile int score;
+    private GameSettings settings;
+
+    public Scores(int startScore, GameSettings settings) {
+        this.score = startScore;
+        this.settings = settings;
     }
 
     @Override
-    public Elements state(Player player, Object... alsoAtPoint) {
-        if (isWhite()) {
-            return Elements.WHITE_KOROL;
-        } else {
-            return Elements.BLACK_KOROL;
+    public int clear() {
+        return score = 0;
+    }
+
+    @Override
+    public Integer getScore() {
+        return score;
+    }
+
+    @Override
+    public void event(Object event) {
+        if (event.equals(Events.WIN)) {
+            score += settings.integer(WIN_SCORE);
         }
+    }
+
+    @Override
+    public void update(Object score) {
+        this.score = Integer.valueOf(score.toString());
     }
 }

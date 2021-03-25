@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.services;
+package com.codenjoy.dojo.chess.service;
 
 /*-
  * #%L
@@ -24,7 +24,6 @@ package com.codenjoy.dojo.chess.services;
 
 
 import com.codenjoy.dojo.chess.model.*;
-import com.codenjoy.dojo.chess.model.figures.Level;
 import com.codenjoy.dojo.client.ClientBoard;
 import com.codenjoy.dojo.client.Solver;
 import com.codenjoy.dojo.services.*;

@@ -23,7 +23,7 @@ package com.codenjoy.dojo.chess.model;
  */
 
 
-import com.codenjoy.dojo.chess.services.GameSettings;
+import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.printer.PrinterFactory;
@@ -88,29 +88,27 @@ public class GameTest {
                 game.reader(), player1).print());
     }
 
-    // есть карта со всеми играми
     @Test
     public void shouldFieldAtStart() {
-        givenFl("tksfaskt" +
+        givenFl("rkbqwbkr" +
                 "pppppppp" +
                 "        " +
                 "        " +
                 "        " +
                 "        " +
                 "PPPPPPPP" +
-                "TKSFASKT");
+                "RKBQWBKR");
 
-        assertE("tksfaskt" +
+        assertE("rkbqwbkr" +
                 "pppppppp" +
                 "        " +
                 "        " +
                 "        " +
                 "        " +
                 "PPPPPPPP" +
-                "TKSFASKT");
+                "RKBQWBKR");
     }
 
-    // я ходить
     @Test
     @Ignore
     public void shouldWalk() {

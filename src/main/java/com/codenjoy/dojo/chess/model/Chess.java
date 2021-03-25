@@ -24,21 +24,20 @@ package com.codenjoy.dojo.chess.model;
 
 
 
-import com.codenjoy.dojo.chess.model.figures.Figure;
-import com.codenjoy.dojo.chess.model.figures.Level;
-import com.codenjoy.dojo.chess.services.GameSettings;
+import com.codenjoy.dojo.chess.model.level.Level;
+import com.codenjoy.dojo.chess.model.piece.Piece;
+import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.services.printer.BoardReader;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Point;
-import com.codenjoy.dojo.services.Tickable;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class Chess implements Field {
 
-    private List<Figure> white;
-    private List<Figure> black;
+    private List<Piece> white;
+    private List<Piece> black;
 
     private List<Player> players;
 
@@ -59,8 +58,8 @@ public class Chess implements Field {
     @Override
     public void tick() {
         for (Player player : players) {
-            for (Figure figure : player.getFigures()) {
-                figure.tick();
+            for (Piece piece : player.getFigures()) {
+                piece.tick();
             }
         }
     }
@@ -82,7 +81,7 @@ public class Chess implements Field {
         players.remove(player);
     }
 
-    public List<Figure> getWhite() {
+    public List<Piece> getWhite() {
         return white;
     }
 
@@ -107,7 +106,7 @@ public class Chess implements Field {
     }
 
     @Override
-    public List<Figure> getFigures(boolean isWhite) {
+    public List<Piece> getFigures(boolean isWhite) {
         if (isWhite) {
             return white;
         } else {

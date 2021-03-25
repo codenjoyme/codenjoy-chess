@@ -23,19 +23,18 @@ package com.codenjoy.dojo.chess.model;
  */
 
 
-import com.codenjoy.dojo.chess.model.figures.Figure;
-import com.codenjoy.dojo.chess.model.figures.Korol;
-import com.codenjoy.dojo.chess.services.Events;
-import com.codenjoy.dojo.chess.services.GameSettings;
+import com.codenjoy.dojo.chess.model.piece.Piece;
+import com.codenjoy.dojo.chess.model.piece.King;
+import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class Player extends GamePlayer<Korol, Field>{
+public class Player extends GamePlayer<King, Field>{
 
-    List<Figure> figures = new LinkedList<>();
+    List<Piece> pieces = new LinkedList<>();
 
     private boolean isWhite;
 
@@ -45,23 +44,23 @@ public class Player extends GamePlayer<Korol, Field>{
 
 
     public void initFigures(Field field) {
-        List<Figure> figures = field.getFigures(false);
-        isWhite = figures.get(0).hasPlayer();
+        List<Piece> pieces = field.getFigures(false);
+        isWhite = pieces.get(0).hasPlayer();
         if (isWhite) {
-            figures = field.getFigures(true);
+            pieces = field.getFigures(true);
         }
-        for (Figure figure : figures) {
-            figure.setPlayer(this);
-            figure.init(field);
+        for (Piece piece : pieces) {
+            piece.setPlayer(this);
+            piece.init(field);
         }
     }
 
-    public List<Figure> getFigures() {
-        return figures;
+    public List<Piece> getFigures() {
+        return pieces;
     }
 
     @Override
-    public Korol getHero() {
+    public King getHero() {
         return null; // TODO implement me
     }
 

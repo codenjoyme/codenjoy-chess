@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.model.figures;
+package com.codenjoy.dojo.chess.model.piece;
 
 /*-
  * #%L
@@ -28,13 +28,13 @@ import com.codenjoy.dojo.chess.model.Player;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.multiplayer.PlayerHero;
 
-public class Figure extends PlayerHero<Field> {
+public abstract class Piece extends PlayerHero<Field> {
 
     private boolean isWhite;
     private boolean alive;
     private Player player;
 
-    public Figure(Point xy, boolean isWhite) {
+    public Piece(Point xy, boolean isWhite) {
         super(xy);
         this.isWhite = isWhite;
         alive = true;

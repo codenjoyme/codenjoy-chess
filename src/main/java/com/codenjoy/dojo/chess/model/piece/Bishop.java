@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.services;
+package com.codenjoy.dojo.chess.model.piece;
 
 /*-
  * #%L
@@ -23,6 +23,23 @@ package com.codenjoy.dojo.chess.services;
  */
 
 
-public enum Events {
-    WIN;
+import com.codenjoy.dojo.chess.model.Elements;
+import com.codenjoy.dojo.chess.model.Player;
+import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.State;
+
+public class Bishop extends Piece implements State<Elements, Player> {
+
+    public Bishop(Point xy, boolean isWhite) {
+        super(xy, isWhite);
+    }
+
+    @Override
+    public Elements state(Player player, Object... alsoAtPoint) {
+        if (isWhite()) {
+            return Elements.WHITE_BISHOP;
+        } else {
+            return Elements.BLACK_BISHOP;
+        }
+    }
 }

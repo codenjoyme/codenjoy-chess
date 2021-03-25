@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.model;
+package com.codenjoy.dojo.chess.model.level;
 
 /*-
  * #%L
@@ -23,40 +23,13 @@ package com.codenjoy.dojo.chess.model;
  */
 
 
-import com.codenjoy.dojo.services.printer.CharElements;
+import com.codenjoy.dojo.chess.model.piece.Piece;
 
-public enum Elements implements CharElements {
+import java.util.List;
 
-    NONE(' '),
+public interface Level {
 
-    WHITE_KING('W'),
-    WHITE_QUEEN('Q'),
-    WHITE_ROOK('R'),
-    WHITE_BISHOP('B'),
-    WHITE_KNIGHT('K'),
-    WHITE_PAWN('P'),
+    int getSize();
 
-    BLACK_KING('w'),
-    BLACK_QUEEN('q'),
-    BLACK_ROOK('r'),
-    BLACK_BISHOP('b'),
-    BLACK_KNIGHT('k'),
-    BLACK_PAWN('p');
-
-    final char ch;
-
-    Elements(char ch) {
-        this.ch = ch;
-    }
-
-    @Override
-    public char ch() {
-        return ch;
-    }
-
-    @Override
-    public String toString() {
-        return String.valueOf(ch);
-    }
-
+    List<Piece> getFigures(boolean isWhite);
 }

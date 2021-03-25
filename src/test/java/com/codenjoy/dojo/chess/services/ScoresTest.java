@@ -23,14 +23,15 @@ package com.codenjoy.dojo.chess.services;
  */
 
 
+import com.codenjoy.dojo.chess.service.Events;
+import com.codenjoy.dojo.chess.service.GameSettings;
+import com.codenjoy.dojo.chess.service.Scores;
 import com.codenjoy.dojo.services.PlayerScores;
-import com.codenjoy.dojo.services.settings.Settings;
-import com.codenjoy.dojo.services.settings.SettingsImpl;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static com.codenjoy.dojo.chess.services.GameSettings.Keys.WIN_SCORE;
+import static com.codenjoy.dojo.chess.service.GameSettings.Keys.WIN_SCORE;
 import static org.junit.Assert.assertEquals;
 
 /**

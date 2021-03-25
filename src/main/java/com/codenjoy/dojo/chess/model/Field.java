@@ -23,12 +23,12 @@ package com.codenjoy.dojo.chess.model;
  */
 
 
-import com.codenjoy.dojo.chess.model.figures.Figure;
+import com.codenjoy.dojo.chess.model.piece.Piece;
 import com.codenjoy.dojo.services.multiplayer.GameField;
 
 import java.util.List;
 
 public interface Field extends GameField<Player> {
 
-    List<Figure> getFigures(boolean white);
+    List<Piece> getFigures(boolean white);
 }

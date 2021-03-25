@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.model.figures;
+package com.codenjoy.dojo.chess.model.piece;
 
 /*-
  * #%L
@@ -28,18 +28,18 @@ import com.codenjoy.dojo.chess.model.Player;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.State;
 
-public class Slon extends Figure implements State<Elements, Player> {
+public class Knight extends Piece implements State<Elements, Player> {
 
-    public Slon(Point xy, boolean isWhite) {
+    public Knight(Point xy, boolean isWhite) {
         super(xy, isWhite);
     }
 
     @Override
     public Elements state(Player player, Object... alsoAtPoint) {
         if (isWhite()) {
-            return Elements.WHITE_SLON;
+            return Elements.WHITE_KNIGHT;
         } else {
-            return Elements.BLACK_SLON;
+            return Elements.BLACK_KNIGHT;
         }
     }
 }

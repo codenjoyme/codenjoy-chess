@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.model.figures;
+package com.codenjoy.dojo.chess.model.piece;
 
 /*-
  * #%L
@@ -28,18 +28,18 @@ import com.codenjoy.dojo.chess.model.Player;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.State;
 
-public class Peshka extends Figure implements State<Elements, Player> {
+public class Rook extends Piece implements State<Elements, Player> {
 
-    public Peshka(Point xy, boolean isWhite) {
+    public Rook(Point xy, boolean isWhite) {
         super(xy, isWhite);
     }
 
     @Override
     public Elements state(Player player, Object... alsoAtPoint) {
         if (isWhite()) {
-            return Elements.WHITE_PESHKA;
+            return Elements.WHITE_ROOK;
         } else {
-            return Elements.BLACK_PESHKA;
+            return Elements.BLACK_ROOK;
         }
     }
 }

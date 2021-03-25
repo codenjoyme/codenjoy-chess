@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.services;
+package com.codenjoy.dojo.chess.service;
 
 /*-
  * #%L
@@ -24,11 +24,11 @@ package com.codenjoy.dojo.chess.services;
 
 
 import com.codenjoy.dojo.chess.model.LevelImpl;
-import com.codenjoy.dojo.chess.model.figures.Level;
+import com.codenjoy.dojo.chess.model.level.Level;
 import com.codenjoy.dojo.services.settings.SettingsImpl;
 import com.codenjoy.dojo.services.settings.SettingsReader;
 
-import static com.codenjoy.dojo.chess.services.GameSettings.Keys.*;
+import static com.codenjoy.dojo.chess.service.GameSettings.Keys.*;
 
 public final class GameSettings extends SettingsImpl implements SettingsReader<GameSettings> {
 

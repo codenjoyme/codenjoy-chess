@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.model.figures;
+package com.codenjoy.dojo.chess.model.piece;
 
 /*-
  * #%L
@@ -28,18 +28,18 @@ import com.codenjoy.dojo.chess.model.Player;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.State;
 
-public class Ferz extends Figure implements State<Elements, Player> {
+public class Queen extends Piece implements State<Elements, Player> {
 
-    public Ferz(Point xy, boolean isWhite) {
+    public Queen(Point xy, boolean isWhite) {
         super(xy, isWhite);
     }
 
     @Override
     public Elements state(Player player, Object... alsoAtPoint) {
         if (isWhite()) {
-            return Elements.WHITE_FERZ;
+            return Elements.WHITE_QUEEN;
         } else {
-            return Elements.BLACK_FERZ;
+            return Elements.BLACK_QUEEN;
         }
     }
 }
