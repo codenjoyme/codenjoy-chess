@@ -23,40 +23,8 @@ package com.codenjoy.dojo.chess.model;
  */
 
 
-import com.codenjoy.dojo.services.printer.CharElements;
+import com.codenjoy.dojo.services.multiplayer.GameField;
 
-public enum Elements implements CharElements {
-
-    NONE(' '),
-
-    WHITE_KING('W'),
-    WHITE_QUEEN('Q'),
-    WHITE_ROOK('R'),
-    WHITE_BISHOP('B'),
-    WHITE_KNIGHT('K'),
-    WHITE_PAWN('P'),
-
-    BLACK_KING('w'),
-    BLACK_QUEEN('q'),
-    BLACK_ROOK('r'),
-    BLACK_BISHOP('b'),
-    BLACK_KNIGHT('k'),
-    BLACK_PAWN('p');
-
-    final char ch;
-
-    Elements(char ch) {
-        this.ch = ch;
-    }
-
-    @Override
-    public char ch() {
-        return ch;
-    }
-
-    @Override
-    public String toString() {
-        return String.valueOf(ch);
-    }
+public interface Board extends GameField<Player> {
 
 }

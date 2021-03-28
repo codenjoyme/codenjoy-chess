@@ -24,48 +24,36 @@ package com.codenjoy.dojo.chess.model;
 
 
 import com.codenjoy.dojo.chess.model.piece.Piece;
-import com.codenjoy.dojo.chess.model.piece.King;
 import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.services.EventListener;
+import com.codenjoy.dojo.services.Tickable;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 
-import java.util.LinkedList;
 import java.util.List;
 
-public class Player extends GamePlayer<King, Field>{
+public class Player extends GamePlayer<GameSet, Board> implements Tickable {
 
-    List<Piece> pieces = new LinkedList<>();
-
-    private boolean isWhite;
+    private GameSet gameSet;
 
     public Player(EventListener listener, GameSettings settings) {
         super(listener, settings);
     }
 
-
-    public void initFigures(Field field) {
-        List<Piece> pieces = field.getFigures(false);
-        isWhite = pieces.get(0).hasPlayer();
-        if (isWhite) {
-            pieces = field.getFigures(true);
-        }
-        for (Piece piece : pieces) {
-            piece.setPlayer(this);
-            piece.init(field);
-        }
+    public void initPieces(Color color, List<Piece> pieces) {
+        gameSet = new GameSet(color, pieces);
     }
 
-    public List<Piece> getFigures() {
-        return pieces;
+    public GameSet getGameSet() {
+        return gameSet;
     }
 
     @Override
-    public King getHero() {
-        return null; // TODO implement me
+    public GameSet getHero() {
+        return gameSet; // TODO implement me
     }
 
     @Override
-    public void newHero(Field field) {
+    public void newHero(Board board) {
         // TODO implement me
     }
 
@@ -73,4 +61,8 @@ public class Player extends GamePlayer<King, Field>{
         return true; // TODO implement me
     }
 
+    @Override
+    public void tick() {
+        this.gameSet.tick();
+    }
 }

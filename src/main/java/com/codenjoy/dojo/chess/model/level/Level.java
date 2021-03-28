@@ -23,6 +23,8 @@ package com.codenjoy.dojo.chess.model.level;
  */
 
 
+import com.codenjoy.dojo.chess.model.Color;
+import com.codenjoy.dojo.chess.model.Square;
 import com.codenjoy.dojo.chess.model.piece.Piece;
 
 import java.util.List;
@@ -31,5 +33,8 @@ public interface Level {
 
     int getSize();
 
-    List<Piece> getFigures(boolean isWhite);
+    List<Piece> pieces(Color color);
+    List<Square> squares();
+
+    List<Color> presentedColors();
 }

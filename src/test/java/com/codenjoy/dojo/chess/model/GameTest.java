@@ -88,23 +88,30 @@ public class GameTest {
                 game.reader(), player1).print());
     }
 
-    @Test
-    public void shouldFieldAtStart() {
+    private void standardBoard() {
         givenFl("rkbqwbkr" +
                 "pppppppp" +
-                "        " +
-                "        " +
-                "        " +
-                "        " +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
                 "PPPPPPPP" +
                 "RKBQWBKR");
+    }
 
+    @Test
+    public void shouldProperlyDrawField() {
+
+        // when given
+        standardBoard();
+
+        // then
         assertE("rkbqwbkr" +
                 "pppppppp" +
-                "        " +
-                "        " +
-                "        " +
-                "        " +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
                 "PPPPPPPP" +
                 "RKBQWBKR");
     }
@@ -112,25 +119,20 @@ public class GameTest {
     @Test
     @Ignore
     public void shouldWalk() {
-        givenFl("tksfaskt" +
-                "pppppppp" +
-                "        " +
-                "        " +
-                "        " +
-                "        " +
-                "PPPPPPPP" +
-                "TKSFASKT");
 
-        player1.getHero().act();
-        game.tick();
+        // given
+        standardBoard();
 
+        // when
+        player1.getHero();
+        // then
         assertE("tksfaskt" +
                 "pppppppp" +
-                "        " +
-                "        " +
-                "        " +
-                "        " +
-                "PPPPPPPP" +
+                "........" +
+                "........" +
+                "....P..." +
+                "........" +
+                "PPPP.PPP" +
                 "TKSFASKT");
     }
 

@@ -64,7 +64,7 @@ public class GameRunner extends AbstractGameType<GameSettings> {
 
     @Override
     public CharElements[] getPlots() {
-        return Elements.values();
+        return Element.values();
     }
 
     @Override

@@ -23,23 +23,11 @@ package com.codenjoy.dojo.chess.model.piece;
  */
 
 
-import com.codenjoy.dojo.chess.model.Elements;
-import com.codenjoy.dojo.chess.model.Player;
+import com.codenjoy.dojo.chess.model.Element;
 import com.codenjoy.dojo.services.Point;
-import com.codenjoy.dojo.services.State;
 
-public class Queen extends Piece implements State<Elements, Player> {
-
-    public Queen(Point xy, boolean isWhite) {
-        super(xy, isWhite);
-    }
-
-    @Override
-    public Elements state(Player player, Object... alsoAtPoint) {
-        if (isWhite()) {
-            return Elements.WHITE_QUEEN;
-        } else {
-            return Elements.BLACK_QUEEN;
-        }
+public class Queen extends Piece {
+    public Queen(Element element, Point position) {
+        super(element, position);
     }
 }
