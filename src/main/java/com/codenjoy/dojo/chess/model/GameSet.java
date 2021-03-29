@@ -10,7 +10,10 @@ public class GameSet extends PlayerHero<Board> {
     private final Color color;
     private final List<Piece> pieces;
 
-    public GameSet(Color color, List<Piece> pieces) {
+    private Move command;
+
+    public GameSet(Board field, Color color, List<Piece> pieces) {
+        this.field = field;
         this.color = color;
         this.pieces = pieces;
     }
@@ -45,11 +48,14 @@ public class GameSet extends PlayerHero<Board> {
 
     @Override
     public void act(int... p) {
-
+        if (p.length != 4) {
+            throw new IllegalArgumentException();
+        }
+        command = Move.from(p[0], p[1]).to(p[2], p[3]);
     }
 
     @Override
     public void tick() {
-
+        field.getAt(command.getFrom()).orElse(null).move(command.getTo());
     }
 }

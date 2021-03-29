@@ -10,12 +10,12 @@ package com.codenjoy.dojo.chess.model;
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -30,7 +30,6 @@ import com.codenjoy.dojo.services.printer.PrinterFactory;
 import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
 import com.codenjoy.dojo.utils.TestUtils;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.stubbing.OngoingStubbing;
 
@@ -62,7 +61,7 @@ public class GameTest {
         settings = new GameSettings();
     }
 
-    private void dice(int...ints) {
+    private void dice(int... ints) {
         OngoingStubbing<Integer> when = when(dice.next(anyInt()));
         for (int i : ints) {
             when = when.thenReturn(i);
@@ -71,9 +70,10 @@ public class GameTest {
 
     private void givenFl(String board) {
         LevelImpl level = new LevelImpl(board);
-
         game = new Chess(level, dice, settings);
+    }
 
+    private void twoPlayers() {
         listener1 = mock(EventListener.class);
         player1 = new Player(listener1, settings);
         game.newGame(player1);
@@ -88,7 +88,7 @@ public class GameTest {
                 game.reader(), player1).print());
     }
 
-    private void standardBoard() {
+    private void standardBoardAnd2Players() {
         givenFl("rkbqwbkr" +
                 "pppppppp" +
                 "........" +
@@ -97,13 +97,14 @@ public class GameTest {
                 "........" +
                 "PPPPPPPP" +
                 "RKBQWBKR");
+        twoPlayers();
     }
 
     @Test
     public void shouldProperlyDrawField() {
 
         // when given
-        standardBoard();
+        standardBoardAnd2Players();
 
         // then
         assertE("rkbqwbkr" +
@@ -117,23 +118,24 @@ public class GameTest {
     }
 
     @Test
-    @Ignore
-    public void shouldWalk() {
+    public void pawnShouldBeAbleToWalkTwoCellsForward_ifItIsNeverTouchedBefore() {
 
         // given
-        standardBoard();
+        standardBoardAnd2Players();
 
         // when
-        player1.getHero();
+        player1.getHero().act(Move.from(4, 1).to(4 ,3).command());
+        game.tick();
+
         // then
-        assertE("tksfaskt" +
+        assertE("rkbqwbkr" +
                 "pppppppp" +
                 "........" +
                 "........" +
                 "....P..." +
                 "........" +
                 "PPPP.PPP" +
-                "TKSFASKT");
+                "RKBQWBKR");
     }
 
 }

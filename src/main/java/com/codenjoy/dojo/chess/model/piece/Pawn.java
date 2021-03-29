@@ -24,10 +24,18 @@ package com.codenjoy.dojo.chess.model.piece;
 
 
 import com.codenjoy.dojo.chess.model.Element;
+import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.services.Point;
+
+import java.util.List;
 
 public class Pawn extends Piece {
     public Pawn(Element element, Point position) {
         super(element, position);
+    }
+
+    @Override
+    public List<Point> getMoves() {
+        return null;
     }
 }

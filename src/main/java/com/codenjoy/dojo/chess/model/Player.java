@@ -23,13 +23,10 @@ package com.codenjoy.dojo.chess.model;
  */
 
 
-import com.codenjoy.dojo.chess.model.piece.Piece;
 import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.Tickable;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
-
-import java.util.List;
 
 public class Player extends GamePlayer<GameSet, Board> implements Tickable {
 
@@ -37,10 +34,6 @@ public class Player extends GamePlayer<GameSet, Board> implements Tickable {
 
     public Player(EventListener listener, GameSettings settings) {
         super(listener, settings);
-    }
-
-    public void initPieces(Color color, List<Piece> pieces) {
-        gameSet = new GameSet(color, pieces);
     }
 
     public GameSet getGameSet() {
@@ -54,7 +47,7 @@ public class Player extends GamePlayer<GameSet, Board> implements Tickable {
 
     @Override
     public void newHero(Board board) {
-        // TODO implement me
+        gameSet = board.getAvailableGameSet();
     }
 
     public boolean isAlive() {

@@ -24,10 +24,22 @@ package com.codenjoy.dojo.chess.model.piece;
 
 
 import com.codenjoy.dojo.chess.model.Element;
+import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
+
+import java.util.List;
 
 public class Bishop extends Piece {
     public Bishop(Element element, Point position) {
         super(element, position);
+    }
+
+    @Override
+    public List<Point> getMoves() {
+        return null;
+    }
+
+    private Point diagonal(Point position, Direction one, Direction two) {
+        return one.change(two.change(position));
     }
 }

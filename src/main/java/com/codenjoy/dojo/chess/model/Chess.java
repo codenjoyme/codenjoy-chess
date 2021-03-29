@@ -31,10 +31,7 @@ import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.printer.BoardReader;
 import com.google.common.collect.Lists;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Chess implements Board {
@@ -44,6 +41,8 @@ public class Chess implements Board {
     private final Level level;
     private final List<Color> presentedColors;
     private final List<Player> players = new LinkedList<>();
+
+    private int currentPlayerId;
 
     private final Dice dice;
 
@@ -57,11 +56,52 @@ public class Chess implements Board {
 
     @Override
     public void tick() {
-        players.forEach(Player::tick);
+        players.get(currentPlayerId).tick();
+        currentPlayerId = (currentPlayerId + 1) % players.size();
     }
 
     public int size() {
         return size;
+    }
+
+    public List<Piece> getPieces() {
+        return players.stream()
+                .map(Player::getGameSet)
+                .map(GameSet::getPieces)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Piece> getAt(Point position) {
+        return getPieces().stream()
+                .filter(p -> p.getPosition().equals(position))
+                .findAny();
+    }
+
+    @Override
+    public List<Move> getPossibleMoves(Piece piece) {
+        List<Piece> pieces = getPieces();
+        return null;
+    }
+
+    @Override
+    public GameSet getAvailableGameSet() {
+        List<Color> clrs = players.stream()
+                .map(Player::getGameSet)
+                .filter(Objects::nonNull)
+                .map(GameSet::getColor)
+                .collect(Collectors.toList());
+
+        Color color = presentedColors.stream()
+                .filter(c -> !clrs.contains(c))
+                .findFirst()
+                .orElse(null);
+        if (color == null) {
+            // log
+            return null;
+        }
+        return new GameSet(this, color, level.pieces(color));
     }
 
     @Override
@@ -73,22 +113,9 @@ public class Chess implements Board {
             // players limit reached
             return;
         }
-        List<Color> clrs = players.stream()
-                .map(Player::getGameSet)
-                .map(GameSet::getColor)
-                .collect(Collectors.toList());
-        Color color = presentedColors.stream()
-                .filter(c -> !clrs.contains(c))
-                .findFirst()
-                .orElse(null);
-
-        if (color == null) {
-            // log
-            return;
-        }
 
         players.add(player);
-        player.initPieces(color, level.pieces(color));
+        player.newHero(this);
     }
 
     @Override
@@ -115,6 +142,7 @@ public class Chess implements Board {
 
                 List<ReaderEl> pieces = players.stream()
                         .map(Player::getGameSet)
+                        .filter(Objects::nonNull)
                         .map(GameSet::getPieces)
                         .flatMap(Collection::stream)
                         .map(Piece::toReaderEl)

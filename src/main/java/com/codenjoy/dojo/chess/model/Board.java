@@ -23,8 +23,18 @@ package com.codenjoy.dojo.chess.model;
  */
 
 
+import com.codenjoy.dojo.chess.model.piece.Piece;
+import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.multiplayer.GameField;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface Board extends GameField<Player> {
 
+    Optional<Piece> getAt(Point position);
+
+    List<Move> getPossibleMoves(Piece piece);
+
+    GameSet getAvailableGameSet();
 }

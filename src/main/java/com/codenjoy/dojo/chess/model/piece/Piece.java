@@ -25,10 +25,12 @@ package com.codenjoy.dojo.chess.model.piece;
 
 import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Element;
+import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.chess.model.ReaderEl;
 import com.codenjoy.dojo.services.Point;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static com.codenjoy.dojo.chess.model.Color.BLACK;
 import static com.codenjoy.dojo.chess.model.Color.WHITE;
@@ -51,6 +53,14 @@ public abstract class Piece {
         } else {
             throw new IllegalArgumentException("Color of element " + element + " is not supported");
         }
+    }
+
+    public void move(Point destination) {
+//        if (!getMoves().contains(destination)) {
+            // ?
+//            return;
+//        }
+        position = destination;
     }
 
     public ReaderEl toReaderEl() {
@@ -103,4 +113,6 @@ public abstract class Piece {
                 throw new IllegalArgumentException("Element " + element + " is not a chess piece");
         }
     }
+
+    public abstract List<Point> getMoves();
 }
