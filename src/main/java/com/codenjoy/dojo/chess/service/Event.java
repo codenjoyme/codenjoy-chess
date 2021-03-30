@@ -23,6 +23,6 @@ package com.codenjoy.dojo.chess.service;
  */
 
 
-public enum Events {
-    WIN;
+public enum Event {
+    WIN, WRONG_MOVE;
 }

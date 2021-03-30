@@ -24,35 +24,23 @@ package com.codenjoy.dojo.chess.model.piece;
 
 
 import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.model.Element;
-import com.codenjoy.dojo.chess.model.Move;
-import com.codenjoy.dojo.chess.model.ReaderEl;
+import com.codenjoy.dojo.chess.model.Field;
 import com.codenjoy.dojo.services.Point;
 
-import java.util.Arrays;
 import java.util.List;
-
-import static com.codenjoy.dojo.chess.model.Color.BLACK;
-import static com.codenjoy.dojo.chess.model.Color.WHITE;
 
 public abstract class Piece {
 
     protected final Color color;
-    protected final Element element;
+    protected final PieceType type;
     protected Point position;
     protected boolean alive;
 
-    public Piece(Element element, Point position) {
+    public Piece(PieceType type, Color color, Point position) {
+        this.type = type;
+        this.color = color;
         this.position = position;
-        this.element = element;
         this.alive = true;
-        if (Arrays.asList(Element.whitePieces()).contains(element)) {
-            this.color = WHITE;
-        } else if (Arrays.asList(Element.blackPieces()).contains(element)) {
-            this.color = BLACK;
-        } else {
-            throw new IllegalArgumentException("Color of element " + element + " is not supported");
-        }
     }
 
     public void move(Point destination) {
@@ -61,10 +49,6 @@ public abstract class Piece {
 //            return;
 //        }
         position = destination;
-    }
-
-    public ReaderEl toReaderEl() {
-        return new ReaderEl(position, element);
     }
 
     public Color getColor() {
@@ -79,40 +63,9 @@ public abstract class Piece {
         return alive;
     }
 
-    public Element getElement() {
-        return element;
+    public PieceType getType() {
+        return type;
     }
 
-    public static Piece create(Point position, Element element) {
-        switch (element) {
-            case WHITE_BISHOP:
-            case BLACK_BISHOP:
-                return new Bishop(element, position);
-
-            case WHITE_KING:
-            case BLACK_KING:
-                return new King(element, position);
-
-            case WHITE_KNIGHT:
-            case BLACK_KNIGHT:
-                return new Knight(element, position);
-
-            case WHITE_PAWN:
-            case BLACK_PAWN:
-                return new Pawn(element, position);
-
-            case WHITE_QUEEN:
-            case BLACK_QUEEN:
-                return new Queen(element, position);
-
-            case WHITE_ROOK:
-            case BLACK_ROOK:
-                return new Rook(element, position);
-
-            default:
-                throw new IllegalArgumentException("Element " + element + " is not a chess piece");
-        }
-    }
-
-    public abstract List<Point> getMoves();
+    public abstract List<Point> getAvailableMoves(Field field);
 }

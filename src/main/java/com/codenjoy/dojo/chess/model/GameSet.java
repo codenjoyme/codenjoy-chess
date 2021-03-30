@@ -1,29 +1,42 @@
 package com.codenjoy.dojo.chess.model;
 
 import com.codenjoy.dojo.chess.model.piece.Piece;
+import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.multiplayer.PlayerHero;
 
 import java.util.List;
+import java.util.Optional;
 
-public class GameSet extends PlayerHero<Board> {
+public class GameSet extends PlayerHero<Field> {
 
-    private final Color color;
     private final List<Piece> pieces;
 
     private Move command;
 
-    public GameSet(Board field, Color color, List<Piece> pieces) {
-        this.field = field;
-        this.color = color;
+    public GameSet(List<Piece> pieces) {
+        if (pieces.isEmpty()) {
+            throw new IllegalArgumentException("Game set should contain at least one piece");
+        }
         this.pieces = pieces;
     }
 
     public Color getColor() {
-        return color;
+        return pieces.get(0).getColor();
     }
 
     public List<Piece> getPieces() {
         return pieces;
+    }
+
+    public Optional<Piece> getPieceAt(int x, int y) {
+        return getPieceAt(new PointImpl(x, y));
+    }
+
+    public Optional<Piece> getPieceAt(Point position) {
+        return pieces.stream()
+                .filter(p -> p.getPosition().equals(position))
+                .findFirst();
     }
 
     @Override
@@ -52,10 +65,18 @@ public class GameSet extends PlayerHero<Board> {
             throw new IllegalArgumentException();
         }
         command = Move.from(p[0], p[1]).to(p[2], p[3]);
+
     }
 
     @Override
     public void tick() {
-        field.getAt(command.getFrom()).orElse(null).move(command.getTo());
+        if (command == null) {
+            return;
+        }
+        Piece piece = field.getAt(command.getFrom())
+                .orElse(null);
+        piece.getAvailableMoves(field);
+        piece.move(command.getTo());
+        command = null;
     }
 }

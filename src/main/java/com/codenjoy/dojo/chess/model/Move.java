@@ -1,12 +1,14 @@
 package com.codenjoy.dojo.chess.model;
 
+import com.codenjoy.dojo.chess.model.piece.PieceType;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 
 public class Move {
-
     private final Point from;
     private final Point to;
+
+    private PieceType promotion;
 
     private Move(Point from, Point to) {
         this.from = from;
@@ -22,7 +24,9 @@ public class Move {
     }
 
     public int[] command() {
-        return new int[]{from.getX(), from.getY(), to.getX(), to.getY()};
+        return promotion == null
+                ? new int[]{from.getX(), from.getY(), to.getX(), to.getY()}
+                : new int[]{from.getX(), from.getY(), to.getX(), to.getY(), promotion.getId()};
     }
 
     public Point getFrom() {
@@ -31,6 +35,19 @@ public class Move {
 
     public Point getTo() {
         return to;
+    }
+
+    public Move promotion(PieceType piece) {
+        promotion = piece;
+        return this;
+    }
+
+    public Move promotion(int pieceId) {
+        return promotion(PieceType.byId(pieceId));
+    }
+
+    public boolean withPromotion() {
+        return promotion != null;
     }
 
     public static class Builder {

@@ -49,7 +49,7 @@ public class Scores implements PlayerScores {
 
     @Override
     public void event(Object event) {
-        if (event.equals(Events.WIN)) {
+        if (event.equals(Event.WIN)) {
             score += settings.integer(WIN_SCORE);
         }
     }

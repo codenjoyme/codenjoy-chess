@@ -24,7 +24,6 @@ package com.codenjoy.dojo.chess.model;
 
 
 import com.codenjoy.dojo.services.printer.CharElements;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Arrays;
 
@@ -62,7 +61,6 @@ public enum Element implements CharElements {
         return String.valueOf(ch);
     }
 
-
     public Color color() {
         if (Arrays.asList(whitePieces()).contains(this)) {
             return Color.WHITE;
@@ -80,21 +78,6 @@ public enum Element implements CharElements {
             }
         }
         return null;
-    }
-
-    public static Element[] getPieces() {
-        return ArrayUtils.addAll(whitePieces(), blackPieces());
-    }
-
-    public static Element[] piecesOfColor(Color color) {
-        switch (color) {
-            case WHITE:
-                return whitePieces();
-            case BLACK:
-                return blackPieces();
-            default:
-                throw new IllegalArgumentException("Color " + color + " is not supported");
-        }
     }
 
     public static Element[] whitePieces() {

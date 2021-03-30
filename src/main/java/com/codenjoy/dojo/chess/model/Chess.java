@@ -34,17 +34,19 @@ import com.google.common.collect.Lists;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Chess implements Board {
+public class Chess implements Field {
+
+    private final Dice dice;
 
     private final GameSettings settings;
-    private final int size;
     private final Level level;
+    private final int size;
+
     private final List<Color> presentedColors;
     private final List<Player> players = new LinkedList<>();
 
     private int currentPlayerId;
 
-    private final Dice dice;
 
     public Chess(Level level, Dice dice, GameSettings settings) {
         this.dice = dice;
@@ -86,7 +88,7 @@ public class Chess implements Board {
     }
 
     @Override
-    public GameSet getAvailableGameSet() {
+    public List<Piece> getAvailablePieces() {
         List<Color> clrs = players.stream()
                 .map(Player::getGameSet)
                 .filter(Objects::nonNull)
@@ -101,7 +103,7 @@ public class Chess implements Board {
             // log
             return null;
         }
-        return new GameSet(this, color, level.pieces(color));
+        return level.pieces(color);
     }
 
     @Override
@@ -145,7 +147,7 @@ public class Chess implements Board {
                         .filter(Objects::nonNull)
                         .map(GameSet::getPieces)
                         .flatMap(Collection::stream)
-                        .map(Piece::toReaderEl)
+                        .map(ReaderEl::create)
                         .collect(Collectors.toList());
 
                 result.addAll(pieces);

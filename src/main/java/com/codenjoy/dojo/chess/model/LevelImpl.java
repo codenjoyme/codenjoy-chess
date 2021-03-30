@@ -59,9 +59,9 @@ public class LevelImpl implements Level {
     public List<Piece> pieces(Color color) {
         switch (color) {
             case WHITE:
-                return LevelUtils.getObjects(xy, map, Piece::create, Element.whitePieces());
+                return LevelUtils.getObjects(xy, map, PiecesFactory::create, Element.whitePieces());
             case BLACK:
-                return LevelUtils.getObjects(xy, map, Piece::create, Element.blackPieces());
+                return LevelUtils.getObjects(xy, map, PiecesFactory::create, Element.blackPieces());
             default:
                 throw new IllegalArgumentException("Color " + color + " is not supported");
         }
@@ -80,7 +80,7 @@ public class LevelImpl implements Level {
 
     @Override
     public List<Square> squares() {
-        return LevelUtils.getObjects(xy, map, Function.identity(), ArrayUtils.add(Element.getPieces(), SQUARE))
+        return LevelUtils.getObjects(xy, map, Function.identity(), Element.values())
                 .stream()
                 .map(p -> new Square(SQUARE, p))
                 .collect(Collectors.toList());

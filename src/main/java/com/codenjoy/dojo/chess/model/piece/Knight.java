@@ -23,19 +23,21 @@ package com.codenjoy.dojo.chess.model.piece;
  */
 
 
+import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Element;
+import com.codenjoy.dojo.chess.model.Field;
 import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.services.Point;
 
 import java.util.List;
 
 public class Knight extends Piece {
-    public Knight(Element element, Point position) {
-        super(element, position);
+    public Knight(PieceType type, Color color, Point position) {
+        super(type, color, position);
     }
 
     @Override
-    public List<Point> getMoves() {
+    public List<Point> getAvailableMoves(Field field) {
         return null;
     }
 }

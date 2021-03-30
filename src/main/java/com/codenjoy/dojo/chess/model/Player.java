@@ -28,7 +28,7 @@ import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.Tickable;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 
-public class Player extends GamePlayer<GameSet, Board> implements Tickable {
+public class Player extends GamePlayer<GameSet, Field> implements Tickable {
 
     private GameSet gameSet;
 
@@ -46,8 +46,9 @@ public class Player extends GamePlayer<GameSet, Board> implements Tickable {
     }
 
     @Override
-    public void newHero(Board board) {
-        gameSet = board.getAvailableGameSet();
+    public void newHero(Field field) {
+        gameSet = new GameSet(field.getAvailablePieces());
+        gameSet.init(field);
     }
 
     public boolean isAlive() {
