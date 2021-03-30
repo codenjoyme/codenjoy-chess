@@ -23,7 +23,7 @@ package com.codenjoy.dojo.chess.services;
  */
 
 
-import com.codenjoy.dojo.chess.service.Events;
+import com.codenjoy.dojo.chess.service.Event;
 import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.chess.service.Scores;
 import com.codenjoy.dojo.services.PlayerScores;
@@ -34,18 +34,13 @@ import org.junit.Test;
 import static com.codenjoy.dojo.chess.service.GameSettings.Keys.WIN_SCORE;
 import static org.junit.Assert.assertEquals;
 
-/**
- * User: sanja
- * Date: 05.06.13
- * Time: 20:35
- */
 public class ScoresTest {
 
     private PlayerScores scores;
     private GameSettings settings;
 
     public void win() {
-        scores.event(Events.WIN);
+        scores.event(Event.WIN);
     }
 
     @Before

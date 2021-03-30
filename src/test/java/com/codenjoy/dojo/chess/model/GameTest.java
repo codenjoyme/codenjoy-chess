@@ -23,88 +23,16 @@ package com.codenjoy.dojo.chess.model;
  */
 
 
-import com.codenjoy.dojo.chess.service.GameSettings;
-import com.codenjoy.dojo.services.Dice;
-import com.codenjoy.dojo.services.EventListener;
-import com.codenjoy.dojo.services.printer.PrinterFactory;
-import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
-import com.codenjoy.dojo.utils.TestUtils;
-import org.junit.Before;
+import com.codenjoy.dojo.chess.service.Event;
 import org.junit.Test;
-import org.mockito.stubbing.OngoingStubbing;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-/**
- * User: sanja
- * Date: 17.12.13
- * Time: 4:47
- */
-public class GameTest {
-
-    private Chess game;
-    private Dice dice;
-    private EventListener listener1;
-    private EventListener listener2;
-    private Player player1;
-    private Player player2;
-    private PrinterFactory printerFactory;
-    private GameSettings settings;
-
-    @Before
-    public void setup() {
-        dice = mock(Dice.class);
-        printerFactory = new PrinterFactoryImpl();
-        settings = new GameSettings();
-    }
-
-    private void dice(int... ints) {
-        OngoingStubbing<Integer> when = when(dice.next(anyInt()));
-        for (int i : ints) {
-            when = when.thenReturn(i);
-        }
-    }
-
-    private void givenFl(String board) {
-        LevelImpl level = new LevelImpl(board);
-        game = new Chess(level, dice, settings);
-    }
-
-    private void twoPlayers() {
-        listener1 = mock(EventListener.class);
-        player1 = new Player(listener1, settings);
-        game.newGame(player1);
-
-        listener2 = mock(EventListener.class);
-        player2 = new Player(listener2, settings);
-        game.newGame(player2);
-    }
-
-    private void assertE(String expected) {
-        assertEquals(TestUtils.injectN(expected), printerFactory.getPrinter(
-                game.reader(), player1).print());
-    }
-
-    private void standardBoardAnd2Players() {
-        givenFl("rkbqwbkr" +
-                "pppppppp" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "PPPPPPPP" +
-                "RKBQWBKR");
-        twoPlayers();
-    }
+public class GameTest extends AbstractGameTest {
 
     @Test
-    public void shouldProperlyDrawField() {
+    public void ShouldProperlyDrawBoard() {
 
         // when given
-        standardBoardAnd2Players();
+        classicBoardAnd2Players();
 
         // then
         assertE("rkbqwbkr" +
@@ -118,24 +46,16 @@ public class GameTest {
     }
 
     @Test
-    public void pawnShouldBeAbleToWalkTwoCellsForward_ifItIsNeverTouchedBefore() {
+    public void ShouldFireWrongMoveEvent_WhenTryingToMakeWrongMove() {
 
         // given
-        standardBoardAnd2Players();
+        classicBoardAnd2Players();
 
         // when
-        player1.getHero().act(Move.from(4, 1).to(4 ,3).command());
+        player1.getHero().act(Move.from(4, 1).to(5 ,3).command());
         game.tick();
 
         // then
-        assertE("rkbqwbkr" +
-                "pppppppp" +
-                "........" +
-                "........" +
-                "....P..." +
-                "........" +
-                "PPPP.PPP" +
-                "RKBQWBKR");
+        fired(listener1, Event.WRONG_MOVE);
     }
-
 }
