@@ -36,7 +36,7 @@ public class CastlingTest extends AbstractGameTest {
         game.tick();
 
         // when try to make castling
-        player1.getHero().act(Move.from(4, 1).to(0, 0).command());
+        player1.getHero().act(Move.from(4, 0).to(0, 0).command());
         game.tick();
 
         // then
