@@ -91,4 +91,9 @@ public abstract class AbstractGameTest {
                 "RKBQWBKR");
         twoPlayers();
     }
+
+    protected void move(Player player, Move move) {
+        player.getHero().act(move.command());
+        game.tick();
+    }
 }
