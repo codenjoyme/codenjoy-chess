@@ -22,22 +22,13 @@ public class CastlingTest extends AbstractGameTest {
                 "........" +
                 "R...W..R");
         twoPlayers();
-
-        player1.getHero().act(Move.from(4, 0).to(4, 1).command());
-        game.tick();
-
-        player2.getHero().act(Move.from(1, 7).to(1, 6).command());
-        game.tick();
-
-        player1.getHero().act(Move.from(4, 1).to(4, 0).command());
-        game.tick(); // King returns to it's default place
-
-        player2.getHero().act(Move.from(1, 6).to(1, 7).command());
-        game.tick();
+        move(player1, Move.decode(4, 0).to(4, 1));
+        move(player2, Move.decode(1, 7).to(1, 6));
+        move(player1, Move.decode(4, 1).to(4, 0)); // King returns to it's default place
+        move(player2, Move.decode(1, 6).to(1, 7));
 
         // when try to make castling
-        player1.getHero().act(Move.from(4, 0).to(0, 0).command());
-        game.tick();
+        move(player1, Move.decode(4, 0).to(0, 0));
 
         // then
         fired(listener1, Event.WRONG_MOVE);
@@ -56,9 +47,7 @@ public class CastlingTest extends AbstractGameTest {
                 "........" +
                 "R...W..R");
         twoPlayers();
-
-        player1.getHero().act(Move.from(4, 0).to(0, 0).command());
-        game.tick();
+        move(player1, Move.decode(4, 0).to(0, 0));
 
         assertE(".w......" +
                 "........" +
@@ -69,42 +58,20 @@ public class CastlingTest extends AbstractGameTest {
                 "........" +
                 "..WR...R");
 
-        player2.getHero().act(Move.from(1, 7).to(1, 6).command());
-        game.tick();
-
-        player1.getHero().act(Move.from(2, 0).to(2, 1).command());
-        game.tick();
-
-        player2.getHero().act(Move.from(1, 6).to(1, 7).command());
-        game.tick();
-
-        player1.getHero().act(Move.from(2, 1).to(3, 1).command());
-        game.tick();
-
-        player2.getHero().act(Move.from(1, 7).to(1, 6).command());
-        game.tick();
-
-        player1.getHero().act(Move.from(3, 1).to(4, 1).command());
-        game.tick();
-
-        player2.getHero().act(Move.from(1, 6).to(1, 7).command());
-        game.tick();
-
-        player1.getHero().act(Move.from(4, 1).to(4, 0).command());
-        game.tick(); // King returns on it's default place
-
-        player2.getHero().act(Move.from(1, 7).to(1, 6).command());
-        game.tick();
-
-        player1.getHero().act(Move.from(3, 0).to(0, 0).command());
-        game.tick(); // Rook returns on it's default place
-
-        player2.getHero().act(Move.from(1, 6).to(1, 7).command());
-        game.tick();
+        move(player2, Move.decode(1, 7).to(1, 6));
+        move(player1, Move.decode(2, 0).to(2, 1));
+        move(player2, Move.decode(1, 6).to(1, 7));
+        move(player1, Move.decode(2, 1).to(3, 1));
+        move(player2, Move.decode(1, 7).to(1, 6));
+        move(player1, Move.decode(3, 1).to(4, 1));
+        move(player2, Move.decode(1, 6).to(1, 7));
+        move(player1, Move.decode(4, 1).to(4, 0)); // King returns on it's default place
+        move(player2, Move.decode(1, 7).to(1, 6));
+        move(player1, Move.decode(3, 0).to(0, 0)); // Rook returns on it's default place
+        move(player2, Move.decode(1, 6).to(1, 7));
 
         // when try to make one more castling
-        player1.getHero().act(Move.from(4, 0).to(0, 0).command());
-        game.tick();
+        move(player1, Move.decode(4, 0).to(0, 0));
 
         // then
         fired(listener1, Event.WRONG_MOVE);
@@ -123,22 +90,13 @@ public class CastlingTest extends AbstractGameTest {
                 "........" +
                 "R...W..R");
         twoPlayers();
-
-        player1.getHero().act(Move.from(0, 0).to(0, 1).command());
-        game.tick();
-
-        player2.getHero().act(Move.from(1, 7).to(1, 6).command());
-        game.tick();
-
-        player1.getHero().act(Move.from(0, 1).to(0, 0).command());
-        game.tick(); // Rook returns on it's default position
-
-        player2.getHero().act(Move.from(1, 6).to(1, 7).command());
-        game.tick();
+        move(player1, Move.decode(0, 0).to(0, 1));
+        move(player2, Move.decode(1, 7).to(1, 6));
+        move(player1, Move.decode(0, 1).to(0, 0)); // Rook returns on it's default position
+        move(player2, Move.decode(1, 6).to(1, 7));
 
         // when trying to make castling with rook that already moved
-        player1.getHero().act(Move.from(4, 0).to(0, 0).command());
-        game.tick();
+        move(player1, Move.decode(4, 0).to(0, 0));
 
         // then
         fired(listener1, Event.WRONG_MOVE);
@@ -159,8 +117,7 @@ public class CastlingTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        player1.getHero().act(Move.from(4, 0).to(0, 0).command());
-        game.tick();
+        move(player1, Move.decode(4, 0).to(0, 0));
 
         // then
         fired(listener1, Event.WRONG_MOVE);
@@ -181,8 +138,7 @@ public class CastlingTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        player1.getHero().act(Move.from(4, 0).to(0, 0).command());
-        game.tick();
+        move(player1, Move.decode(4, 0).to(0, 0));
 
         // then
         fired(listener1, Event.WRONG_MOVE);
@@ -203,8 +159,7 @@ public class CastlingTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        player1.getHero().act(Move.from(4, 0).to(0, 0).command());
-        game.tick();
+        move(player1, Move.decode(4, 0).to(0, 0));
 
         // then
         fired(listener1, Event.WRONG_MOVE);
@@ -225,8 +180,7 @@ public class CastlingTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        player1.getHero().act(Move.from(4, 0).to(0, 0).command());
-        game.tick();
+        move(player1, Move.decode(4, 0).to(0, 0));
 
         // then
         fired(listener1, Event.WRONG_MOVE);
@@ -247,8 +201,7 @@ public class CastlingTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        player1.getHero().act(Move.from(4, 0).to(7, 0).command());
-        game.tick();
+        move(player1, Move.decode(4, 0).to(7, 0));
 
         // then
         fired(listener1, Event.WRONG_MOVE);
@@ -269,8 +222,7 @@ public class CastlingTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        player1.getHero().act(Move.from(4, 0).to(0, 0).command());
-        game.tick();
+        move(player1, Move.decode(4, 0).to(0, 0));
 
         // then
         fired(listener1, Event.WRONG_MOVE);
@@ -291,8 +243,7 @@ public class CastlingTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        player1.getHero().act(Move.from(4, 0).to(7, 0).command());
-        game.tick();
+        move(player1, Move.decode(4, 0).to(7, 0));
 
         // then
         fired(listener1, Event.WRONG_MOVE);
@@ -313,8 +264,7 @@ public class CastlingTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        player1.getHero().act(Move.from(4, 0).to(0, 0).command());
-        game.tick();
+        move(player1, Move.decode(4, 0).to(0, 0));
 
         // then
         fired(listener1, Event.WRONG_MOVE);
@@ -340,8 +290,7 @@ public class CastlingTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        player1.getHero().act(Move.from(4, 0).to(7, 0).command());
-        game.tick();
+        move(player1, Move.decode(4, 0).to(7, 0));
 
         // then
         assertE(".w......" +
@@ -368,16 +317,11 @@ public class CastlingTest extends AbstractGameTest {
                 "........" +
                 "R...W..R");
         twoPlayers();
-
-        player1.getHero().act(Move.from(0, 0).to(0, 1).command());
-        game.tick();
-
-        player2.getHero().act(Move.from(1, 7).to(1, 6).command());
-        game.tick();
+        move(player1, Move.decode(0, 0).to(0, 1));
+        move(player2, Move.decode(1, 7).to(1, 6));
 
         // when trying to make castling with rook that already moved
-        player1.getHero().act(Move.from(4, 0).to(7, 0).command());
-        game.tick();
+        move(player1, Move.decode(4, 0).to(7, 0));
 
         // then
         assertE("........" +
@@ -407,8 +351,7 @@ public class CastlingTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        player1.getHero().act(Move.from(4, 0).to(0, 0).command());
-        game.tick();
+        move(player1, Move.decode(4, 0).to(0, 0));
 
         // then
         assertE(".w......" +

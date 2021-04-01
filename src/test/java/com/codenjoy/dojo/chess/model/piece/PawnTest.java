@@ -16,10 +16,10 @@ public class PawnTest extends AbstractGameTest {
         classicBoardAnd2Players();
 
         // when
-        move(player1, Move.from(4, 1).to(4, 2));
-        move(player2, Move.from(0, 6).to(0, 5));
-        move(player1, Move.from(4, 2).to(4, 3));
-        move(player2, Move.from(3, 6).to(3, 5));
+        move(player1, Move.decode(4, 1).to(4, 2));
+        move(player2, Move.decode(0, 6).to(0, 5));
+        move(player1, Move.decode(4, 2).to(4, 3));
+        move(player2, Move.decode(3, 6).to(3, 5));
 
         // then
         neverFired(listener1, Event.WRONG_MOVE);
@@ -33,7 +33,7 @@ public class PawnTest extends AbstractGameTest {
         classicBoardAnd2Players();
 
         // when
-        move(player1, Move.from(4, 1).to(4, 3));
+        move(player1, Move.decode(4, 1).to(4, 3));
 
         // then
         assertE("rkbqwbkr" +
@@ -64,7 +64,7 @@ public class PawnTest extends AbstractGameTest {
         Piece enemyPawn = player2.getHero().getPieceAt(4, 2).get();
 
         // when
-        move(player1, Move.from(5, 1).to(4, 2));
+        move(player1, Move.decode(5, 1).to(4, 2));
 
         // then
         assertE("rkbqwbkr" +
@@ -94,7 +94,7 @@ public class PawnTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.from(4, 1).to(4, 3));
+        move(player1, Move.decode(4, 1).to(4, 3));
 
         // then
         fired(listener1, Event.WRONG_MOVE);
@@ -115,7 +115,7 @@ public class PawnTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.from(4, 1).to(4, 3));
+        move(player1, Move.decode(4, 1).to(4, 3));
 
         // then
         fired(listener1, Event.WRONG_MOVE);
@@ -128,9 +128,9 @@ public class PawnTest extends AbstractGameTest {
         classicBoardAnd2Players();
 
         // when
-        move(player1, Move.from(4, 1).to(4, 2));
-        move(player2, Move.from(3, 6).to(3, 5));
-        move(player1, Move.from(4, 2).to(4, 4)); // trying move two cells forward not from start position
+        move(player1, Move.decode(4, 1).to(4, 2));
+        move(player2, Move.decode(3, 6).to(3, 5));
+        move(player1, Move.decode(4, 2).to(4, 4)); // trying move two cells forward not from start position
 
         // then
         fired(listener1, Event.WRONG_MOVE);

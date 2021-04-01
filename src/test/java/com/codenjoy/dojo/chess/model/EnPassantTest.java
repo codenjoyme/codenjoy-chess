@@ -19,10 +19,10 @@ public class EnPassantTest extends AbstractGameTest {
                 "PPPPPPPP" +
                 "RKBQWBKR");
         twoPlayers();
-        move(player1, Move.from(5, 1).to(5, 3));
+        move(player1, Move.decode(5, 1).to(5, 3));
 
         // when
-        move(player2, Move.from(4, 3).to(5, 2));
+        move(player2, Move.decode(4, 3).to(5, 2));
 
         // then
         assertE("rkbqwbkr" +
@@ -49,10 +49,10 @@ public class EnPassantTest extends AbstractGameTest {
                 "PPPPPPPP" +
                 "RKBQWBKR");
         twoPlayers();
-        move(player1, Move.from(5, 1).to(5, 3));
+        move(player1, Move.decode(5, 1).to(5, 3));
 
         // when
-        move(player2, Move.from(4, 3).to(5, 2));
+        move(player2, Move.decode(4, 3).to(5, 2));
 
         // then
         assertE("rkbqwbkr" +
@@ -79,9 +79,9 @@ public class EnPassantTest extends AbstractGameTest {
                 "PPPPPPPP" +
                 "RKBQWBKR");
         twoPlayers();
-        move(player1, Move.from(5, 1).to(5, 3));
-        move(player2, Move.from(0, 6).to(0, 5));
-        move(player1, Move.from(7, 1).to(7, 2));
+        move(player1, Move.decode(5, 1).to(5, 3));
+        move(player2, Move.decode(0, 6).to(0, 5));
+        move(player1, Move.decode(7, 1).to(7, 2));
 
         assertE("rkbqwbkr" +
                 ".ppp.ppp" +
@@ -93,7 +93,7 @@ public class EnPassantTest extends AbstractGameTest {
                 "RKBQWBKR");
 
         // when trying to make "en passant"
-        move(player1, Move.from(4, 3).to(5, 2));
+        move(player1, Move.decode(4, 3).to(5, 2));
 
         // then
         fired(listener1, Event.WRONG_MOVE);

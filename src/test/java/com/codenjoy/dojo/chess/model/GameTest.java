@@ -52,8 +52,7 @@ public class GameTest extends AbstractGameTest {
         classicBoardAnd2Players();
 
         // when
-        player1.getHero().act(Move.from(4, 1).to(5 ,3).command());
-        game.tick();
+        move(player1, Move.decode(4, 1).to(5, 3));
 
         // then
         fired(listener1, Event.WRONG_MOVE);

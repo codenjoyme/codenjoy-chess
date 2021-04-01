@@ -21,7 +21,7 @@ public class PromotionTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.from(7, 6).to(7, 7).promotion(PieceType.KING));
+        move(player1, Move.decode(7, 6).to(7, 7).promotion(PieceType.KING));
 
         // then
         assertE("w......." +
@@ -50,7 +50,7 @@ public class PromotionTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.from(7, 5).to(7, 6).promotion(PieceType.QUEEN));
+        move(player1, Move.decode(7, 5).to(7, 6).promotion(PieceType.QUEEN));
 
         // then
         assertE("w......." +
@@ -79,7 +79,7 @@ public class PromotionTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.from(7, 6).to(7, 5).promotion(PieceType.PAWN));
+        move(player1, Move.decode(7, 6).to(7, 5).promotion(PieceType.PAWN));
 
         // then
         assertE("w......." +
@@ -108,7 +108,7 @@ public class PromotionTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.from(7, 6).to(7, 7).promotion(PieceType.QUEEN));
+        move(player1, Move.decode(7, 6).to(7, 7).promotion(PieceType.QUEEN));
 
         // then
         assertE("w......Q" +
