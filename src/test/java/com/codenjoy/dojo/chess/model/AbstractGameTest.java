@@ -1,5 +1,6 @@
 package com.codenjoy.dojo.chess.model;
 
+import com.codenjoy.dojo.chess.model.level.Level;
 import com.codenjoy.dojo.chess.service.Event;
 import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.services.Dice;
@@ -16,15 +17,14 @@ import java.util.Arrays;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.mock;
 
 public abstract class AbstractGameTest {
     protected Chess game;
     protected Dice dice;
-    protected EventListener listener1;
-    protected EventListener listener2;
-    protected Player player1;
-    protected Player player2;
+    protected EventListener whiteListener;
+    protected EventListener blackListener;
+    protected Player whitePlayer;
+    protected Player blackPlayer;
     protected PrinterFactory printerFactory;
     protected GameSettings settings;
 
@@ -61,23 +61,23 @@ public abstract class AbstractGameTest {
     }
 
     protected void givenFl(String board) {
-        LevelImpl level = new LevelImpl(board);
+        Level level = new Level(board);
         game = new Chess(level, dice, settings);
     }
 
     protected void twoPlayers() {
-        listener1 = mock(EventListener.class);
-        player1 = new Player(listener1, settings);
-        game.newGame(player1);
+        whiteListener = mock(EventListener.class);
+        whitePlayer = new Player(whiteListener, settings);
+        game.newGame(whitePlayer);
 
-        listener2 = mock(EventListener.class);
-        player2 = new Player(listener2, settings);
-        game.newGame(player2);
+        blackListener = mock(EventListener.class);
+        blackPlayer = new Player(blackListener, settings);
+        game.newGame(blackPlayer);
     }
 
     protected void assertE(String expected) {
         assertEquals(TestUtils.injectN(expected), printerFactory.getPrinter(
-                game.reader(), player1).print());
+                game.reader(), whitePlayer).print());
     }
 
     protected void classicBoardAnd2Players() {

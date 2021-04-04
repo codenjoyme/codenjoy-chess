@@ -16,14 +16,14 @@ public class PawnTest extends AbstractGameTest {
         classicBoardAnd2Players();
 
         // when
-        move(player1, Move.decode(4, 1).to(4, 2));
-        move(player2, Move.decode(0, 6).to(0, 5));
-        move(player1, Move.decode(4, 2).to(4, 3));
-        move(player2, Move.decode(3, 6).to(3, 5));
+        move(whitePlayer, Move.decode(4, 1).to(4, 2));
+        move(blackPlayer, Move.decode(0, 6).to(0, 5));
+        move(whitePlayer, Move.decode(4, 2).to(4, 3));
+        move(blackPlayer, Move.decode(3, 6).to(3, 5));
 
         // then
-        neverFired(listener1, Event.WRONG_MOVE);
-        neverFired(listener2, Event.WRONG_MOVE);
+        neverFired(whiteListener, Event.WRONG_MOVE);
+        neverFired(blackListener, Event.WRONG_MOVE);
     }
 
     @Test
@@ -33,7 +33,7 @@ public class PawnTest extends AbstractGameTest {
         classicBoardAnd2Players();
 
         // when
-        move(player1, Move.decode(4, 1).to(4, 3));
+        move(whitePlayer, Move.decode(4, 1).to(4, 3));
 
         // then
         assertE("rkbqwbkr" +
@@ -45,7 +45,7 @@ public class PawnTest extends AbstractGameTest {
                 "PPPP.PPP" +
                 "RKBQWBKR");
 
-        neverFired(listener1, Event.WRONG_MOVE);
+        neverFired(whiteListener, Event.WRONG_MOVE);
     }
 
     @Test
@@ -61,10 +61,10 @@ public class PawnTest extends AbstractGameTest {
                 "PPPPPPPP" +
                 "RKBQWBKR");
         twoPlayers();
-        Piece enemyPawn = player2.getHero().getPieceAt(4, 2).get();
+        Piece enemyPawn = blackPlayer.getHero().getPieceAt(4, 2).get();
 
         // when
-        move(player1, Move.decode(5, 1).to(4, 2));
+        move(whitePlayer, Move.decode(5, 1).to(4, 2));
 
         // then
         assertE("rkbqwbkr" +
@@ -76,7 +76,7 @@ public class PawnTest extends AbstractGameTest {
                 "PPPPP.PP" +
                 "RKBQWBKR");
         assertFalse(enemyPawn.isAlive());
-        neverFired(listener1, Event.WRONG_MOVE);
+        neverFired(whiteListener, Event.WRONG_MOVE);
     }
 
     @Test
@@ -94,10 +94,10 @@ public class PawnTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.decode(4, 1).to(4, 3));
+        move(whitePlayer, Move.decode(4, 1).to(4, 3));
 
         // then
-        fired(listener1, Event.WRONG_MOVE);
+        fired(whiteListener, Event.WRONG_MOVE);
     }
 
     @Test
@@ -115,10 +115,10 @@ public class PawnTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.decode(4, 1).to(4, 3));
+        move(whitePlayer, Move.decode(4, 1).to(4, 3));
 
         // then
-        fired(listener1, Event.WRONG_MOVE);
+        fired(whiteListener, Event.WRONG_MOVE);
     }
 
     @Test
@@ -128,11 +128,25 @@ public class PawnTest extends AbstractGameTest {
         classicBoardAnd2Players();
 
         // when
-        move(player1, Move.decode(4, 1).to(4, 2));
-        move(player2, Move.decode(3, 6).to(3, 5));
-        move(player1, Move.decode(4, 2).to(4, 4)); // trying move two cells forward not from start position
+        move(whitePlayer, Move.decode(4, 1).to(4, 2));
+        move(blackPlayer, Move.decode(3, 6).to(3, 5));
+        move(whitePlayer, Move.decode(4, 2).to(4, 4)); // trying move two cells forward not from start position
 
         // then
-        fired(listener1, Event.WRONG_MOVE);
+        fired(whiteListener, Event.WRONG_MOVE);
+    }
+
+    @Test
+    public void ShouldBeAbleToGoDown_WhenPlaysBlack() {
+
+        // given
+        classicBoardAnd2Players();
+
+        // when
+        move(whitePlayer, Move.decode(4, 1).to(4, 2));
+        move(blackPlayer, Move.decode(3, 6).to(3, 5));
+
+        // then
+        neverFired(blackListener, Event.WRONG_MOVE);
     }
 }

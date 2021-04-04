@@ -21,7 +21,7 @@ public class PromotionTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.decode(7, 6).to(7, 7).promotion(PieceType.KING));
+        move(whitePlayer, Move.decode(7, 6).to(7, 7).promotion(PieceType.KING));
 
         // then
         assertE("w......." +
@@ -32,7 +32,7 @@ public class PromotionTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "RKBQWBKR");
-        fired(listener1, Event.WRONG_MOVE);
+        fired(whiteListener, Event.WRONG_MOVE);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class PromotionTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.decode(7, 5).to(7, 6).promotion(PieceType.QUEEN));
+        move(whitePlayer, Move.decode(7, 5).to(7, 6).promotion(PieceType.QUEEN));
 
         // then
         assertE("w......." +
@@ -61,7 +61,7 @@ public class PromotionTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "RKBQWBKR");
-        fired(listener1, Event.WRONG_MOVE);
+        fired(whiteListener, Event.WRONG_MOVE);
     }
 
     @Test
@@ -79,7 +79,7 @@ public class PromotionTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.decode(7, 6).to(7, 5).promotion(PieceType.PAWN));
+        move(whitePlayer, Move.decode(7, 6).to(7, 5).promotion(PieceType.PAWN));
 
         // then
         assertE("w......." +
@@ -90,7 +90,7 @@ public class PromotionTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "RKBQWBKR");
-        fired(listener1, Event.WRONG_MOVE);
+        fired(whiteListener, Event.WRONG_MOVE);
     }
 
     @Test
@@ -108,7 +108,7 @@ public class PromotionTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.decode(7, 6).to(7, 7).promotion(PieceType.QUEEN));
+        move(whitePlayer, Move.decode(7, 6).to(7, 7).promotion(PieceType.QUEEN));
 
         // then
         assertE("w......Q" +
@@ -119,6 +119,6 @@ public class PromotionTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "RKBQWBKR");
-        neverFired(listener1, Event.WRONG_MOVE);
+        neverFired(whiteListener, Event.WRONG_MOVE);
     }
 }

@@ -22,16 +22,16 @@ public class CastlingTest extends AbstractGameTest {
                 "........" +
                 "R...W..R");
         twoPlayers();
-        move(player1, Move.decode(4, 0).to(4, 1));
-        move(player2, Move.decode(1, 7).to(1, 6));
-        move(player1, Move.decode(4, 1).to(4, 0)); // King returns to it's default place
-        move(player2, Move.decode(1, 6).to(1, 7));
+        move(whitePlayer, Move.decode(4, 0).to(4, 1));
+        move(blackPlayer, Move.decode(1, 7).to(1, 6));
+        move(whitePlayer, Move.decode(4, 1).to(4, 0)); // King returns to it's default place
+        move(blackPlayer, Move.decode(1, 6).to(1, 7));
 
         // when try to make castling
-        move(player1, Move.decode(4, 0).to(0, 0));
+        move(whitePlayer, Move.decode(4, 0).to(0, 0));
 
         // then
-        fired(listener1, Event.WRONG_MOVE);
+        fired(whiteListener, Event.WRONG_MOVE);
     }
 
     @Test
@@ -47,7 +47,7 @@ public class CastlingTest extends AbstractGameTest {
                 "........" +
                 "R...W..R");
         twoPlayers();
-        move(player1, Move.decode(4, 0).to(0, 0));
+        move(whitePlayer, Move.decode(4, 0).to(0, 0));
 
         assertE(".w......" +
                 "........" +
@@ -58,23 +58,23 @@ public class CastlingTest extends AbstractGameTest {
                 "........" +
                 "..WR...R");
 
-        move(player2, Move.decode(1, 7).to(1, 6));
-        move(player1, Move.decode(2, 0).to(2, 1));
-        move(player2, Move.decode(1, 6).to(1, 7));
-        move(player1, Move.decode(2, 1).to(3, 1));
-        move(player2, Move.decode(1, 7).to(1, 6));
-        move(player1, Move.decode(3, 1).to(4, 1));
-        move(player2, Move.decode(1, 6).to(1, 7));
-        move(player1, Move.decode(4, 1).to(4, 0)); // King returns on it's default place
-        move(player2, Move.decode(1, 7).to(1, 6));
-        move(player1, Move.decode(3, 0).to(0, 0)); // Rook returns on it's default place
-        move(player2, Move.decode(1, 6).to(1, 7));
+        move(blackPlayer, Move.decode(1, 7).to(1, 6));
+        move(whitePlayer, Move.decode(2, 0).to(2, 1));
+        move(blackPlayer, Move.decode(1, 6).to(1, 7));
+        move(whitePlayer, Move.decode(2, 1).to(3, 1));
+        move(blackPlayer, Move.decode(1, 7).to(1, 6));
+        move(whitePlayer, Move.decode(3, 1).to(4, 1));
+        move(blackPlayer, Move.decode(1, 6).to(1, 7));
+        move(whitePlayer, Move.decode(4, 1).to(4, 0)); // King returns on it's default place
+        move(blackPlayer, Move.decode(1, 7).to(1, 6));
+        move(whitePlayer, Move.decode(3, 0).to(0, 0)); // Rook returns on it's default place
+        move(blackPlayer, Move.decode(1, 6).to(1, 7));
 
         // when try to make one more castling
-        move(player1, Move.decode(4, 0).to(0, 0));
+        move(whitePlayer, Move.decode(4, 0).to(0, 0));
 
         // then
-        fired(listener1, Event.WRONG_MOVE);
+        fired(whiteListener, Event.WRONG_MOVE);
     }
 
     @Test
@@ -90,16 +90,16 @@ public class CastlingTest extends AbstractGameTest {
                 "........" +
                 "R...W..R");
         twoPlayers();
-        move(player1, Move.decode(0, 0).to(0, 1));
-        move(player2, Move.decode(1, 7).to(1, 6));
-        move(player1, Move.decode(0, 1).to(0, 0)); // Rook returns on it's default position
-        move(player2, Move.decode(1, 6).to(1, 7));
+        move(whitePlayer, Move.decode(0, 0).to(0, 1));
+        move(blackPlayer, Move.decode(1, 7).to(1, 6));
+        move(whitePlayer, Move.decode(0, 1).to(0, 0)); // Rook returns on it's default position
+        move(blackPlayer, Move.decode(1, 6).to(1, 7));
 
         // when trying to make castling with rook that already moved
-        move(player1, Move.decode(4, 0).to(0, 0));
+        move(whitePlayer, Move.decode(4, 0).to(0, 0));
 
         // then
-        fired(listener1, Event.WRONG_MOVE);
+        fired(whiteListener, Event.WRONG_MOVE);
     }
 
     @Test
@@ -117,10 +117,10 @@ public class CastlingTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.decode(4, 0).to(0, 0));
+        move(whitePlayer, Move.decode(4, 0).to(0, 0));
 
         // then
-        fired(listener1, Event.WRONG_MOVE);
+        fired(whiteListener, Event.WRONG_MOVE);
     }
 
     @Test
@@ -138,10 +138,10 @@ public class CastlingTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.decode(4, 0).to(0, 0));
+        move(whitePlayer, Move.decode(4, 0).to(0, 0));
 
         // then
-        fired(listener1, Event.WRONG_MOVE);
+        fired(whiteListener, Event.WRONG_MOVE);
     }
 
     @Test
@@ -159,10 +159,10 @@ public class CastlingTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.decode(4, 0).to(0, 0));
+        move(whitePlayer, Move.decode(4, 0).to(0, 0));
 
         // then
-        fired(listener1, Event.WRONG_MOVE);
+        fired(whiteListener, Event.WRONG_MOVE);
     }
 
     @Test
@@ -180,10 +180,10 @@ public class CastlingTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.decode(4, 0).to(0, 0));
+        move(whitePlayer, Move.decode(4, 0).to(0, 0));
 
         // then
-        fired(listener1, Event.WRONG_MOVE);
+        fired(whiteListener, Event.WRONG_MOVE);
     }
 
     @Test
@@ -201,10 +201,10 @@ public class CastlingTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.decode(4, 0).to(7, 0));
+        move(whitePlayer, Move.decode(4, 0).to(7, 0));
 
         // then
-        fired(listener1, Event.WRONG_MOVE);
+        fired(whiteListener, Event.WRONG_MOVE);
     }
 
     @Test
@@ -222,10 +222,10 @@ public class CastlingTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.decode(4, 0).to(0, 0));
+        move(whitePlayer, Move.decode(4, 0).to(0, 0));
 
         // then
-        fired(listener1, Event.WRONG_MOVE);
+        fired(whiteListener, Event.WRONG_MOVE);
     }
 
     @Test
@@ -243,10 +243,10 @@ public class CastlingTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.decode(4, 0).to(7, 0));
+        move(whitePlayer, Move.decode(4, 0).to(7, 0));
 
         // then
-        fired(listener1, Event.WRONG_MOVE);
+        fired(whiteListener, Event.WRONG_MOVE);
     }
 
     @Test
@@ -264,10 +264,10 @@ public class CastlingTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.decode(4, 0).to(0, 0));
+        move(whitePlayer, Move.decode(4, 0).to(0, 0));
 
         // then
-        fired(listener1, Event.WRONG_MOVE);
+        fired(whiteListener, Event.WRONG_MOVE);
     }
 
 
@@ -290,7 +290,7 @@ public class CastlingTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.decode(4, 0).to(7, 0));
+        move(whitePlayer, Move.decode(4, 0).to(7, 0));
 
         // then
         assertE(".w......" +
@@ -301,7 +301,7 @@ public class CastlingTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "R.B..RW.");
-        neverFired(listener1, Event.WRONG_MOVE);
+        neverFired(whiteListener, Event.WRONG_MOVE);
     }
 
     @Test
@@ -317,11 +317,11 @@ public class CastlingTest extends AbstractGameTest {
                 "........" +
                 "R...W..R");
         twoPlayers();
-        move(player1, Move.decode(0, 0).to(0, 1));
-        move(player2, Move.decode(1, 7).to(1, 6));
+        move(whitePlayer, Move.decode(0, 0).to(0, 1));
+        move(blackPlayer, Move.decode(1, 7).to(1, 6));
 
         // when trying to make castling with rook that already moved
-        move(player1, Move.decode(4, 0).to(7, 0));
+        move(whitePlayer, Move.decode(4, 0).to(7, 0));
 
         // then
         assertE("........" +
@@ -333,7 +333,7 @@ public class CastlingTest extends AbstractGameTest {
                 "........" +
                 "R....RW.");
 
-        neverFired(listener1, Event.WRONG_MOVE);
+        neverFired(whiteListener, Event.WRONG_MOVE);
     }
 
     @Test
@@ -351,7 +351,7 @@ public class CastlingTest extends AbstractGameTest {
         twoPlayers();
 
         // when
-        move(player1, Move.decode(4, 0).to(0, 0));
+        move(whitePlayer, Move.decode(4, 0).to(0, 0));
 
         // then
         assertE(".w......" +
@@ -362,6 +362,6 @@ public class CastlingTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "..WR...R");
-        neverFired(listener1, Event.WRONG_MOVE);
+        neverFired(whiteListener, Event.WRONG_MOVE);
     }
 }

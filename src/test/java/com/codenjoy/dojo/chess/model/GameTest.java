@@ -52,9 +52,9 @@ public class GameTest extends AbstractGameTest {
         classicBoardAnd2Players();
 
         // when
-        move(player1, Move.decode(4, 1).to(5, 3));
+        move(whitePlayer, Move.decode(4, 1).to(5, 3));
 
         // then
-        fired(listener1, Event.WRONG_MOVE);
+        fired(whiteListener, Event.WRONG_MOVE);
     }
 }
