@@ -23,12 +23,13 @@ package com.codenjoy.dojo.chess.model;
  */
 
 
+import com.codenjoy.dojo.chess.service.Event;
 import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.Tickable;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 
-public class Player extends GamePlayer<GameSet, Field> implements Tickable {
+public class Player extends GamePlayer<GameSet, Board> implements Tickable {
 
     private GameSet gameSet;
 
@@ -46,9 +47,8 @@ public class Player extends GamePlayer<GameSet, Field> implements Tickable {
     }
 
     @Override
-    public void newHero(Field field) {
-        gameSet = new GameSet(field.getAvailablePieces());
-        gameSet.init(field);
+    public void newHero(Board board) {
+        gameSet = board.newGameSet();
     }
 
     public boolean isAlive() {
@@ -57,6 +57,9 @@ public class Player extends GamePlayer<GameSet, Field> implements Tickable {
 
     @Override
     public void tick() {
-        this.gameSet.tick();
+        gameSet.tick();
+        if (gameSet.isTriedWrongMove()) {
+            listener.event(Event.WRONG_MOVE);
+        }
     }
 }

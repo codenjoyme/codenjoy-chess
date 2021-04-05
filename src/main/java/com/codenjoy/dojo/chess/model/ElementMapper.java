@@ -29,7 +29,11 @@ public class ElementMapper {
     }};
 
     public static Element mapToElement(Piece piece) {
-        return elementsByColorAndType.get(new ColorAndType(piece.getColor(), piece.getType()));
+        return mapToElement(piece.getColor(), piece.getType());
+    }
+
+    public static Element mapToElement(Color color, PieceType pieceType) {
+        return elementsByColorAndType.get(new ColorAndType(color, pieceType));
     }
 
     private static class ColorAndType {

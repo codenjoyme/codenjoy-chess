@@ -23,7 +23,6 @@ package com.codenjoy.dojo.chess.service;
  */
 
 
-import com.codenjoy.dojo.chess.model.LevelImpl;
 import com.codenjoy.dojo.chess.model.level.Level;
 import com.codenjoy.dojo.services.settings.SettingsImpl;
 import com.codenjoy.dojo.services.settings.SettingsReader;
@@ -64,7 +63,7 @@ public final class GameSettings extends SettingsImpl implements SettingsReader<G
     }
 
     public Level level() {
-        return new LevelImpl(string(LEVEL_MAP));
+        return new Level(string(LEVEL_MAP));
     }
 
 }

@@ -25,6 +25,7 @@ package com.codenjoy.dojo.chess.model;
 
 import com.codenjoy.dojo.chess.model.level.Level;
 import com.codenjoy.dojo.chess.model.piece.Piece;
+import com.codenjoy.dojo.chess.model.piece.PieceType;
 import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Point;
@@ -34,23 +35,20 @@ import com.google.common.collect.Lists;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Chess implements Field {
+public class Chess implements Board {
 
     private final Dice dice;
 
     private final GameSettings settings;
     private final Level level;
-    private final int size;
 
     private final List<Color> presentedColors;
     private final List<Player> players = new LinkedList<>();
 
     private int currentPlayerId;
 
-
     public Chess(Level level, Dice dice, GameSettings settings) {
         this.dice = dice;
-        this.size = level.getSize();
         this.settings = settings;
         this.level = level;
         this.presentedColors = level.presentedColors();
@@ -63,7 +61,7 @@ public class Chess implements Field {
     }
 
     public int size() {
-        return size;
+        return level.getSize();
     }
 
     public List<Piece> getPieces() {
@@ -88,22 +86,27 @@ public class Chess implements Field {
     }
 
     @Override
-    public List<Piece> getAvailablePieces() {
-        List<Color> clrs = players.stream()
+    public GameSet newGameSet() {
+        Color color = players.stream()
                 .map(Player::getGameSet)
                 .filter(Objects::nonNull)
                 .map(GameSet::getColor)
-                .collect(Collectors.toList());
+                .max(Comparator.comparingInt(Color::getPriority))
+                .map(c -> Color.byPriority(c.getPriority() + 1))
+                .orElse(Color.withHighestPriority());
 
-        Color color = presentedColors.stream()
-                .filter(c -> !clrs.contains(c))
-                .findFirst()
-                .orElse(null);
-        if (color == null) {
+        if (!presentedColors.contains(color)) {
             // log
             return null;
         }
-        return level.pieces(color);
+        List<Piece> result = Lists.newArrayList();
+        for (PieceType type : PieceType.values()) {
+            List<Piece> pieces = level.pieces(color, type).stream()
+                    .map(position -> Piece.create(type, color, this, position))
+                    .collect(Collectors.toList());
+            result.addAll(pieces);
+        }
+        return new GameSet(result, this);
     }
 
     @Override
@@ -131,7 +134,7 @@ public class Chess implements Field {
 
             @Override
             public int size() {
-                return Chess.this.size;
+                return Chess.this.size();
             }
 
             @Override
@@ -147,6 +150,7 @@ public class Chess implements Field {
                         .filter(Objects::nonNull)
                         .map(GameSet::getPieces)
                         .flatMap(Collection::stream)
+                        .filter(Piece::isAlive)
                         .map(ReaderEl::create)
                         .collect(Collectors.toList());
 

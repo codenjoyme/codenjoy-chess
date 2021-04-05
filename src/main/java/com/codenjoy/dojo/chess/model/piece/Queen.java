@@ -24,21 +24,19 @@ package com.codenjoy.dojo.chess.model.piece;
 
 
 import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.model.Element;
-import com.codenjoy.dojo.chess.model.Field;
-import com.codenjoy.dojo.chess.model.Move;
+import com.codenjoy.dojo.chess.model.Board;
 import com.codenjoy.dojo.services.Point;
 
 import java.util.List;
 
 public class Queen extends Piece {
 
-    public Queen(PieceType type, Color color, Point position) {
-        super(type, color, position);
+    public Queen(Color color, Board board, Point position) {
+        super(PieceType.QUEEN, color, board, position);
     }
 
     @Override
-    public List<Point> getAvailableMoves(Field field) {
+    public List<Point> getAvailableMoves() {
         return null;
     }
 }

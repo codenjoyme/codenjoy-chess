@@ -24,7 +24,7 @@ package com.codenjoy.dojo.chess.model.piece;
 
 
 import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.model.Field;
+import com.codenjoy.dojo.chess.model.Board;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.google.common.collect.Lists;
@@ -36,28 +36,28 @@ import static com.codenjoy.dojo.services.Direction.*;
 
 public class Bishop extends Piece {
 
-    public Bishop(PieceType type, Color color, Point position) {
-        super(type, color, position);
+    public Bishop(Color color, Board board, Point position) {
+        super(PieceType.BISHOP, color, board, position);
     }
 
     @Override
-    public List<Point> getAvailableMoves(Field field) {
+    public List<Point> getAvailableMoves() {
         ArrayList<Point> moves = Lists.newArrayList();
-        moves.addAll(availableDiagonalMoves(field, LEFT, UP));
-        moves.addAll(availableDiagonalMoves(field, UP, RIGHT));
-        moves.addAll(availableDiagonalMoves(field, RIGHT, DOWN));
-        moves.addAll(availableDiagonalMoves(field, DOWN, LEFT));
+        moves.addAll(availableDiagonalMoves(board, LEFT, UP));
+        moves.addAll(availableDiagonalMoves(board, UP, RIGHT));
+        moves.addAll(availableDiagonalMoves(board, RIGHT, DOWN));
+        moves.addAll(availableDiagonalMoves(board, DOWN, LEFT));
         return moves;
     }
 
-    private List<Point> availableDiagonalMoves(Field field, Direction one, Direction two) {
+    private List<Point> availableDiagonalMoves(Board board, Direction one, Direction two) {
         List<Point> result = Lists.newArrayList();
         Point dest = diagonal(position, one, two);
-        while (field.getAt(dest).isEmpty()) {
+        while (board.getAt(dest).isEmpty()) {
             result.add(dest);
             dest = diagonal(dest, one, two);
         }
-        if (field.getAt(dest).get().getColor() != color) {
+        if (board.getAt(dest).get().getColor() != color) {
             result.add(dest);
         }
         return result;

@@ -1,24 +1,34 @@
 package com.codenjoy.dojo.chess.model;
 
 import com.codenjoy.dojo.chess.model.piece.Piece;
+import com.codenjoy.dojo.chess.model.piece.PieceType;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.multiplayer.PlayerHero;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-public class GameSet extends PlayerHero<Field> {
+public class GameSet extends PlayerHero<Board> {
 
     private final List<Piece> pieces;
-
     private Move command;
+    private boolean triedWrongMove;
 
-    public GameSet(List<Piece> pieces) {
+    public GameSet(List<Piece> pieces, Board board) {
         if (pieces.isEmpty()) {
             throw new IllegalArgumentException("Game set should contain at least one piece");
         }
+        List<Piece> kings = pieces.stream().filter(p -> p.getType() == PieceType.KING)
+                .collect(Collectors.toList());
+        if (kings.size() != 1) {
+            throw new IllegalArgumentException("Should be exactly 1 king piece in game set");
+        }
         this.pieces = pieces;
+        init(board);
     }
 
     public Color getColor() {
@@ -37,6 +47,11 @@ public class GameSet extends PlayerHero<Field> {
         return pieces.stream()
                 .filter(p -> p.getPosition().equals(position))
                 .findFirst();
+    }
+
+    public Map<Piece, List<Point>> getAvailableMoves() {
+        return pieces.stream()
+                .collect(Collectors.toMap(Function.identity(), Piece::getAvailableMoves));
     }
 
     @Override
@@ -60,23 +75,28 @@ public class GameSet extends PlayerHero<Field> {
     }
 
     @Override
-    public void act(int... p) {
-        if (p.length != 4) {
-            throw new IllegalArgumentException();
-        }
-        command = Move.from(p[0], p[1]).to(p[2], p[3]);
-
+    public void act(int... codes) {
+        command = Move.decode(codes);
     }
 
     @Override
     public void tick() {
+        triedWrongMove = false;
         if (command == null) {
             return;
         }
         Piece piece = field.getAt(command.getFrom())
                 .orElse(null);
-        piece.getAvailableMoves(field);
-        piece.move(command.getTo());
+        if (piece.getAvailableMoves().contains(command.getTo())) {
+            field.getAt(command.getTo()).ifPresent(p -> p.setAlive(false));
+            piece.move(command.getTo());
+        } else {
+            triedWrongMove = true;
+        }
         command = null;
+    }
+
+    public boolean isTriedWrongMove() {
+        return triedWrongMove;
     }
 }

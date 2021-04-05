@@ -24,17 +24,56 @@ package com.codenjoy.dojo.chess.model.level;
 
 
 import com.codenjoy.dojo.chess.model.Color;
+import com.codenjoy.dojo.chess.model.Element;
+import com.codenjoy.dojo.chess.model.ElementMapper;
 import com.codenjoy.dojo.chess.model.Square;
-import com.codenjoy.dojo.chess.model.piece.Piece;
+import com.codenjoy.dojo.chess.model.piece.PieceType;
+import com.codenjoy.dojo.services.LengthToXY;
+import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.utils.LevelUtils;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-public interface Level {
+import static com.codenjoy.dojo.chess.model.Element.SQUARE;
 
-    int getSize();
+public class Level {
 
-    List<Piece> pieces(Color color);
-    List<Square> squares();
+    private final LengthToXY xy;
+    private final String map;
 
-    List<Color> presentedColors();
+    public Level(String map) {
+        this.map = map;
+        xy = new LengthToXY(getSize());
+    }
+
+    public int getSize() {
+        return (int) Math.sqrt(map.length());
+    }
+
+    public List<Point> pieces(Color color, PieceType type) {
+        return LevelUtils.getObjects(xy, map, Function.identity(), ElementMapper.mapToElement(color, type));
+    }
+
+    public List<Color> presentedColors() {
+        Set<Color> presented = Sets.newHashSet();
+        for (int i = 0; i < map.length(); i++) {
+            Optional.ofNullable(Element.of(map.charAt(i)))
+                    .map(Element::color)
+                    .ifPresent(presented::add);
+        }
+        return Lists.newArrayList(presented);
+    }
+
+    public List<Square> squares() {
+        return LevelUtils.getObjects(xy, map, Function.identity(), Element.values())
+                .stream()
+                .map(p -> new Square(SQUARE, p))
+                .collect(Collectors.toList());
+    }
 }
