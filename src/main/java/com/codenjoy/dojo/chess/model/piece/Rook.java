@@ -24,21 +24,27 @@ package com.codenjoy.dojo.chess.model.piece;
 
 
 import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.model.Element;
-import com.codenjoy.dojo.chess.model.Field;
-import com.codenjoy.dojo.chess.model.Move;
+import com.codenjoy.dojo.chess.model.Board;
 import com.codenjoy.dojo.services.Point;
 
 import java.util.List;
 
 public class Rook extends Piece {
+    private boolean moved;
 
-    public Rook(PieceType type, Color color, Point position) {
-        super(type, color, position);
+    public Rook(Color color, Board board, Point position) {
+        super(PieceType.ROOK, color, board, position);
+    }
+
+
+    @Override
+    public void move(Point destination) {
+        super.move(destination);
+        moved = true;
     }
 
     @Override
-    public List<Point> getAvailableMoves(Field field) {
+    public List<Point> getAvailableMoves() {
         return null;
     }
 }

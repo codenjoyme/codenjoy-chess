@@ -15,6 +15,17 @@ public class Move {
         this.to = to;
     }
 
+    public static Move decode(int... p) {
+        if (p.length < 4 || p.length > 5) {
+            throw new IllegalArgumentException();
+        }
+        Move move = Move.from(p[0], p[1]).to(p[2], p[3]);
+        if (p.length == 5) {
+            move.promotion(p[4]);
+        }
+        return move;
+    }
+
     public static Builder from(int x, int y) {
         return from(new PointImpl(x, y));
     }

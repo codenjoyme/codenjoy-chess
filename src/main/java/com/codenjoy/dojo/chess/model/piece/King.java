@@ -24,7 +24,7 @@ package com.codenjoy.dojo.chess.model.piece;
 
 
 import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.model.Field;
+import com.codenjoy.dojo.chess.model.Board;
 import com.codenjoy.dojo.services.Point;
 import com.google.common.collect.Lists;
 
@@ -34,14 +34,22 @@ import java.util.Optional;
 import static com.codenjoy.dojo.services.Direction.*;
 
 public class King extends Piece {
+    private boolean moved;
 
-    public King(PieceType type, Color color, Point position) {
-        super(type, color, position);
+    public King(Color color, Board board, Point position) {
+        super(PieceType.KING, color, board, position);
+    }
+
+
+    @Override
+    public void move(Point destination) {
+        super.move(destination);
+        moved = true;
     }
 
     @Override
-    public List<Point> getAvailableMoves(Field field) {
-        List<Point> moves = listOfAvailableMoves(field,
+    public List<Point> getAvailableMoves() {
+        List<Point> moves = listOfAvailableMoves(board,
                 LEFT.change(position),
                 UP.change(position),
                 RIGHT.change(position),
@@ -54,18 +62,18 @@ public class King extends Piece {
         return null;
     }
 
-    private List<Point> listOfAvailableMoves(Field field, Point... destinations) {
+    private List<Point> listOfAvailableMoves(Board board, Point... destinations) {
         List<Point> result = Lists.newArrayList();
         for (Point dest : destinations) {
-            if (isAvailable(field, dest)) {
+            if (isAvailable(board, dest)) {
                 result.add(dest);
             }
         }
         return result;
     }
 
-    private boolean isAvailable(Field field, Point dest) {
-        Optional<Piece> pieceAtDest = field.getAt(dest);
+    private boolean isAvailable(Board board, Point dest) {
+        Optional<Piece> pieceAtDest = board.getAt(dest);
         return pieceAtDest.isEmpty() || pieceAtDest.get().getColor() != color;
     }
 

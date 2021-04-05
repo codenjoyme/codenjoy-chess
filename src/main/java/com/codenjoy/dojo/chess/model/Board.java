@@ -30,11 +30,11 @@ import com.codenjoy.dojo.services.multiplayer.GameField;
 import java.util.List;
 import java.util.Optional;
 
-public interface Field extends GameField<Player> {
+public interface Board extends GameField<Player> {
 
     Optional<Piece> getAt(Point position);
 
     List<Move> getPossibleMoves(Piece piece);
 
-    List<Piece> getAvailablePieces();
+    GameSet newGameSet();
 }

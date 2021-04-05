@@ -26,6 +26,8 @@ package com.codenjoy.dojo.chess.model;
 import com.codenjoy.dojo.chess.service.Event;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 public class GameTest extends AbstractGameTest {
 
     @Test
@@ -52,9 +54,49 @@ public class GameTest extends AbstractGameTest {
         classicBoardAnd2Players();
 
         // when
-        move(whitePlayer, Move.decode(4, 1).to(5, 3));
+        move(whitePlayer, Move.from(4, 1).to(5, 3));
 
         // then
         fired(whiteListener, Event.WRONG_MOVE);
+    }
+
+    @Test
+    public void firstPlayerShouldBeWhite_andSecondShouldBeBlack() {
+
+        // when given
+        classicBoardAnd2Players();
+
+        // then
+        assertEquals(Color.WHITE, whitePlayer.getHero().getColor());
+        assertEquals(Color.BLACK, blackPlayer.getHero().getColor());
+    }
+
+    @Test
+    public void shouldNotRenderDeadPieces() {
+        // given
+        givenFl("rkbqwbkr" +
+                "pppp.ppp" +
+                "........" +
+                "........" +
+                "........" +
+                "....p..." +
+                "PPPPPPPP" +
+                "RKBQWBKR");
+        twoPlayers();
+
+        // when
+        move(whitePlayer, Move.from(5, 1).to(4, 2));
+        move(blackPlayer, Move.from(0, 6).to(0, 5));
+        move(whitePlayer, Move.from(4, 2).to(4, 3));
+
+        // then
+        assertE("rkbqwbkr" +
+                ".ppp.ppp" +
+                "p......." +
+                "........" +
+                "....P..." +
+                "........" +
+                "PPPPP.PP" +
+                "RKBQWBKR");
     }
 }

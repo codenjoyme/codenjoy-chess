@@ -24,7 +24,7 @@ package com.codenjoy.dojo.chess.model.piece;
 
 
 import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.model.Field;
+import com.codenjoy.dojo.chess.model.Board;
 import com.codenjoy.dojo.services.Point;
 
 import java.util.List;
@@ -33,14 +33,20 @@ public abstract class Piece {
 
     protected final Color color;
     protected final PieceType type;
+    protected final Board board;
     protected Point position;
     protected boolean alive;
 
-    public Piece(PieceType type, Color color, Point position) {
+    public Piece(PieceType type, Color color, Board board, Point position) {
         this.type = type;
         this.color = color;
+        this.board = board;
         this.position = position;
         this.alive = true;
+    }
+
+    public static Piece create(PieceType type, Color color, Board board, Point position) {
+        return type.getConstructor().apply(color, board, position);
     }
 
     public void move(Point destination) {
@@ -67,5 +73,9 @@ public abstract class Piece {
         return type;
     }
 
-    public abstract List<Point> getAvailableMoves(Field field);
+    public abstract List<Point> getAvailableMoves();
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
+    }
 }
