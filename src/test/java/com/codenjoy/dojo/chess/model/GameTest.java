@@ -23,10 +23,12 @@ package com.codenjoy.dojo.chess.model;
  */
 
 
-import com.codenjoy.dojo.chess.service.Event;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static com.codenjoy.dojo.chess.model.Color.BLACK;
+import static com.codenjoy.dojo.chess.model.Color.WHITE;
+import static com.codenjoy.dojo.chess.model.Move.from;
+import static com.codenjoy.dojo.chess.service.Event.WRONG_MOVE;
 
 public class GameTest extends AbstractGameTest {
 
@@ -34,7 +36,7 @@ public class GameTest extends AbstractGameTest {
     public void ShouldProperlyDrawBoard() {
 
         // when given
-        classicBoardAnd2Players();
+        classicBoard();
 
         // then
         assertE("rkbqwbkr" +
@@ -51,24 +53,13 @@ public class GameTest extends AbstractGameTest {
     public void ShouldFireWrongMoveEvent_WhenTryingToMakeWrongMove() {
 
         // given
-        classicBoardAnd2Players();
+        classicBoard();
 
         // when
-        move(whitePlayer, Move.from(4, 1).to(5, 3));
+        move(WHITE, from(4, 1).to(5, 3));
 
         // then
-        fired(whiteListener, Event.WRONG_MOVE);
-    }
-
-    @Test
-    public void firstPlayerShouldBeWhite_andSecondShouldBeBlack() {
-
-        // when given
-        classicBoardAnd2Players();
-
-        // then
-        assertEquals(Color.WHITE, whitePlayer.getHero().getColor());
-        assertEquals(Color.BLACK, blackPlayer.getHero().getColor());
+        fired(WHITE, WRONG_MOVE);
     }
 
     @Test
@@ -82,12 +73,11 @@ public class GameTest extends AbstractGameTest {
                 "....p..." +
                 "PPPPPPPP" +
                 "RKBQWBKR");
-        twoPlayers();
 
         // when
-        move(whitePlayer, Move.from(5, 1).to(4, 2));
-        move(blackPlayer, Move.from(0, 6).to(0, 5));
-        move(whitePlayer, Move.from(4, 2).to(4, 3));
+        move(WHITE, from(5, 1).to(4, 2));
+        move(BLACK, from(0, 6).to(0, 5));
+        move(WHITE, from(4, 2).to(4, 3));
 
         // then
         assertE("rkbqwbkr" +

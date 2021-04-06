@@ -25,6 +25,7 @@ package com.codenjoy.dojo.chess.model.piece;
 
 import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Board;
+import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 
 import java.util.List;
@@ -50,10 +51,10 @@ public abstract class Piece {
     }
 
     public void move(Point destination) {
-//        if (!getMoves().contains(destination)) {
-            // ?
-//            return;
-//        }
+        if (!getAvailableMoves().contains(destination)) {
+            return;
+        }
+        board.getAt(destination).ifPresent(p -> p.setAlive(false));
         position = destination;
     }
 
@@ -74,6 +75,10 @@ public abstract class Piece {
     }
 
     public abstract List<Point> getAvailableMoves();
+
+    public Direction getAttackDirection() {
+        return color == Color.WHITE ? Direction.UP : Direction.DOWN;
+    }
 
     public void setAlive(boolean alive) {
         this.alive = alive;

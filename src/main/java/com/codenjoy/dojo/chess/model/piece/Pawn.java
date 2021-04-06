@@ -66,8 +66,4 @@ public class Pawn extends Piece {
         }
         return moves;
     }
-
-    private Direction getAttackDirection() {
-        return color == Color.WHITE ? Direction.UP : Direction.DOWN;
-    }
 }

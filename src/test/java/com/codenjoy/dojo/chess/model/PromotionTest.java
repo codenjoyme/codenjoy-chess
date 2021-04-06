@@ -4,6 +4,11 @@ import com.codenjoy.dojo.chess.model.piece.PieceType;
 import com.codenjoy.dojo.chess.service.Event;
 import org.junit.Test;
 
+import static com.codenjoy.dojo.chess.model.Color.*;
+import static com.codenjoy.dojo.chess.model.Move.*;
+import static com.codenjoy.dojo.chess.service.Event.*;
+
+// Wiki: https://en.wikipedia.org/wiki/Promotion_(chess)
 public class PromotionTest extends AbstractGameTest {
 
     @Test
@@ -18,10 +23,9 @@ public class PromotionTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "RKBQWBKR");
-        twoPlayers();
 
         // when
-        move(whitePlayer, Move.from(7, 6).to(7, 7).promotion(PieceType.KING));
+        move(WHITE, from(7, 6).to(7, 7).promotion(PieceType.KING));
 
         // then
         assertE("w......." +
@@ -32,7 +36,7 @@ public class PromotionTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "RKBQWBKR");
-        fired(whiteListener, Event.WRONG_MOVE);
+        fired(WHITE, WRONG_MOVE);
     }
 
     @Test
@@ -47,10 +51,9 @@ public class PromotionTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "RKBQWBKR");
-        twoPlayers();
 
         // when
-        move(whitePlayer, Move.from(7, 5).to(7, 6).promotion(PieceType.QUEEN));
+        move(WHITE, from(7, 5).to(7, 6).promotion(PieceType.QUEEN));
 
         // then
         assertE("w......." +
@@ -61,7 +64,7 @@ public class PromotionTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "RKBQWBKR");
-        fired(whiteListener, Event.WRONG_MOVE);
+        fired(WHITE, WRONG_MOVE);
     }
 
     @Test
@@ -76,10 +79,9 @@ public class PromotionTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "RKB.WBKR");
-        twoPlayers();
 
         // when
-        move(whitePlayer, Move.from(7, 6).to(7, 5).promotion(PieceType.PAWN));
+        move(WHITE, from(7, 6).to(7, 5).promotion(PieceType.PAWN));
 
         // then
         assertE("w......." +
@@ -90,7 +92,7 @@ public class PromotionTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "RKBQWBKR");
-        fired(whiteListener, Event.WRONG_MOVE);
+        fired(WHITE, WRONG_MOVE);
     }
 
     @Test
@@ -105,10 +107,9 @@ public class PromotionTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "RKBQWBKR");
-        twoPlayers();
 
         // when
-        move(whitePlayer, Move.from(7, 6).to(7, 7).promotion(PieceType.QUEEN));
+        move(WHITE, from(7, 6).to(7, 7).promotion(PieceType.QUEEN));
 
         // then
         assertE("w......Q" +
@@ -119,6 +120,6 @@ public class PromotionTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "RKBQWBKR");
-        neverFired(whiteListener, Event.WRONG_MOVE);
+        neverFired(WHITE, WRONG_MOVE);
     }
 }

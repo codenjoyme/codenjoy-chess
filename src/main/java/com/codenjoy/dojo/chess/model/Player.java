@@ -41,6 +41,10 @@ public class Player extends GamePlayer<GameSet, Board> implements Tickable {
         return gameSet;
     }
 
+    public Color getColor() {
+        return gameSet.getColor();
+    }
+
     @Override
     public GameSet getHero() {
         return gameSet; // TODO implement me

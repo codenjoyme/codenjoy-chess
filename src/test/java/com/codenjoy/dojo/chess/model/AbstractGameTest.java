@@ -13,18 +13,19 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.stubbing.OngoingStubbing;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 public abstract class AbstractGameTest {
+    private Map<Color, Player> players = new HashMap<>();
+    private Map<Player, EventListener> listeners = new HashMap<>();
+
     protected Chess game;
     protected Dice dice;
-    protected EventListener whiteListener;
-    protected EventListener blackListener;
-    protected Player whitePlayer;
-    protected Player blackPlayer;
     protected PrinterFactory printerFactory;
     protected GameSettings settings;
 
@@ -42,45 +43,51 @@ public abstract class AbstractGameTest {
         }
     }
 
-    public void neverFired(EventListener listener, Event event) {
-        verify(listener, never()).event(event);
+    public void neverFired(Color color, Event event) {
+        EventListener eventListener = listeners.get(players.get(color));
+        verify(eventListener, never()).event(event);
     }
 
-    public void fired(EventListener listener, Event event) {
-        fired(listener, 1, event);
+    public void fired(Color color, int times, Event event) {
+        EventListener eventListener = listeners.get(players.get(color));
+        verify(eventListener, times(times)).event(event);
     }
 
-    public void fired(EventListener listener, int times, Event event) {
-        verify(listener, times(times)).event(event);
+    public void fired(Color color, Event event) {
+        fired(color, 1, event);
     }
 
-    public void fired(EventListener listener, Event... events) {
+    public void fired(Color color, Event... events) {
         ArgumentCaptor<Event> captor = ArgumentCaptor.forClass(Event.class);
-        verify(listener, times(events.length)).event(captor.capture());
+        EventListener eventListener = listeners.get(players.get(color));
+        verify(eventListener, times(events.length)).event(captor.capture());
         assertEquals(Arrays.asList(events), captor.getAllValues());
     }
 
     protected void givenFl(String board) {
+        players.clear();
+        listeners.clear();
         Level level = new Level(board);
         game = new Chess(level, dice, settings);
+        for (int i = 0; i < level.presentedColors().size(); i++) {
+            EventListener listener = mock(EventListener.class);
+            Player player = new Player(listener, settings);
+            game.newGame(player);
+            players.put(player.getColor(), player);
+            listeners.put(player, listener);
+        }
     }
 
-    protected void twoPlayers() {
-        whiteListener = mock(EventListener.class);
-        whitePlayer = new Player(whiteListener, settings);
-        game.newGame(whitePlayer);
-
-        blackListener = mock(EventListener.class);
-        blackPlayer = new Player(blackListener, settings);
-        game.newGame(blackPlayer);
+    protected GameSet getGameSet(Color color) {
+        return players.get(color).getGameSet();
     }
 
     protected void assertE(String expected) {
         assertEquals(TestUtils.injectN(expected), printerFactory.getPrinter(
-                game.reader(), whitePlayer).print());
+                game.reader(), players.values().iterator().next()).print());
     }
 
-    protected void classicBoardAnd2Players() {
+    protected void classicBoard() {
         givenFl("rkbqwbkr" +
                 "pppppppp" +
                 "........" +
@@ -89,11 +96,10 @@ public abstract class AbstractGameTest {
                 "........" +
                 "PPPPPPPP" +
                 "RKBQWBKR");
-        twoPlayers();
     }
 
-    protected void move(Player player, Move move) {
-        player.getHero().act(move.command());
+    protected void move(Color color, Move move) {
+        players.get(color).getHero().act(move.command());
         game.tick();
     }
 }
