@@ -51,7 +51,7 @@ public class GameSet extends PlayerHero<Board> {
                 .findFirst();
     }
 
-    public Map<Piece, List<Point>> getAvailableMoves() {
+    public Map<Piece, List<Move>> getAvailableMoves() {
         return pieces.stream()
                 .collect(Collectors.toMap(Function.identity(), Piece::getAvailableMoves));
     }
@@ -90,9 +90,8 @@ public class GameSet extends PlayerHero<Board> {
         Piece piece = field.getAt(command.getFrom())
                 .orElse(null);
 
-        if (piece.getAvailableMoves().contains(command.getTo())) {
-            field.getAt(command.getTo()).ifPresent(p -> p.setAlive(false));
-            piece.move(command.getTo());
+        if (piece.getAvailableMoves().contains(command)) {
+            piece.move(command);
             lastMove = command;
         } else {
             triedWrongMove = true;

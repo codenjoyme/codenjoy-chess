@@ -40,34 +40,34 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public void move(Point destination) {
+    public void move(Move move) {
         Point p;
-        if ((p = Direction.RIGHT.change(getAttackDirection().change(position))).equals(destination)) {
+        if ((p = Direction.RIGHT.change(getAttackDirection().change(position))).equals(move.getTo())) {
             if (board.getAt(p).isEmpty()) {
                 Piece piece = board.getAt(getAttackDirection().inverted().change(p)).orElse(null);
                 piece.setAlive(false);
             }
         }
-        if ((p = Direction.LEFT.change(getAttackDirection().change(position))).equals(destination)) {
+        if ((p = Direction.LEFT.change(getAttackDirection().change(position))).equals(move.getTo())) {
             if (board.getAt(p).isEmpty()) {
                 Piece piece = board.getAt(getAttackDirection().inverted().change(p)).orElse(null);
                 piece.setAlive(false);
             }
         }
-        super.move(destination);
+        super.move(move);
         moved = true;
     }
 
     @Override
-    public List<Point> getAvailableMoves() {
-        List<Point> moves = Lists.newArrayList();
+    public List<Move> getAvailableMoves() {
+        List<Move> moves = Lists.newArrayList();
         Point step = getAttackDirection().change(position);
         if (board.getAt(step).isEmpty()) {
-            moves.add(step);
+            moves.add(Move.from(position).to(step));
             if (!moved) {
                 step = getAttackDirection().change(step);
                 if (board.getAt(step).isEmpty()) {
-                    moves.add(step);
+                    moves.add(Move.from(position).to(step));
                 }
             }
         }
@@ -76,20 +76,20 @@ public class Pawn extends Piece {
             if (board.getAt(lastMove.getTo()).get() instanceof Pawn
                     && Direction.LEFT.change(position).equals(lastMove.getTo())
                     && Direction.LEFT.change(getAttackDirection().change(getAttackDirection().change(position))).equals(lastMove.getFrom())) {
-                moves.add(Direction.LEFT.change(getAttackDirection().change(position)));
+                moves.add(Move.from(position).to(Direction.LEFT.change(getAttackDirection().change(position))));
             }
             if (board.getAt(lastMove.getTo()).get() instanceof Pawn
                     && Direction.RIGHT.change(position).equals(lastMove.getTo())
                     && Direction.RIGHT.change(getAttackDirection().change(getAttackDirection().change(position))).equals(lastMove.getFrom())) {
-                moves.add(Direction.RIGHT.change(getAttackDirection().change(position)));
+                moves.add(Move.from(position).to(Direction.RIGHT.change(getAttackDirection().change(position))));
             }
         }
         step = getAttackDirection().change(position);
         if (board.getAt(Direction.RIGHT.change(step)).isPresent()) {
-            moves.add(Direction.RIGHT.change(step));
+            moves.add(Move.from(position).to(Direction.RIGHT.change(step)));
         }
         if (board.getAt(Direction.LEFT.change(step)).isPresent()) {
-            moves.add(Direction.LEFT.change(step));
+            moves.add(Move.from(position).to(Direction.LEFT.change(step)));
         }
         return moves;
     }

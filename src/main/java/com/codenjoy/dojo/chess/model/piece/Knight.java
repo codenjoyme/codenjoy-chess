@@ -25,6 +25,7 @@ package com.codenjoy.dojo.chess.model.piece;
 
 import com.codenjoy.dojo.chess.model.Board;
 import com.codenjoy.dojo.chess.model.Color;
+import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.google.common.collect.Lists;
@@ -39,9 +40,10 @@ public class Knight extends Piece {
     }
 
     @Override
-    public List<Point> getAvailableMoves() {
+    public List<Move> getAvailableMoves() {
         return moves().stream()
                 .filter(this::isAvailable)
+                .map(m -> Move.from(position).to(m))
                 .collect(Collectors.toList());
     }
 
@@ -65,5 +67,4 @@ public class Knight extends Piece {
                 new PointImpl(x + 1, y - 2)
         );
     }
-
 }

@@ -25,6 +25,7 @@ package com.codenjoy.dojo.chess.model.piece;
 
 import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Board;
+import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.services.Point;
 
 import java.util.List;
@@ -38,13 +39,13 @@ public class Rook extends Piece {
 
 
     @Override
-    public void move(Point destination) {
-        super.move(destination);
+    public void move(Move move) {
+        super.move(move);
         moved = true;
     }
 
     @Override
-    public List<Point> getAvailableMoves() {
+    public List<Move> getAvailableMoves() {
         return null;
     }
 }

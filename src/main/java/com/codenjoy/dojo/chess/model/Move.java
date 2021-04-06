@@ -4,6 +4,8 @@ import com.codenjoy.dojo.chess.model.piece.PieceType;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 
+import java.util.Objects;
+
 public class Move {
     private final Point from;
     private final Point to;
@@ -59,6 +61,19 @@ public class Move {
 
     public boolean withPromotion() {
         return promotion != null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Move move = (Move) o;
+        return Objects.equals(from, move.from) && Objects.equals(to, move.to) && promotion == move.promotion;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(from, to, promotion);
     }
 
     public static class Builder {

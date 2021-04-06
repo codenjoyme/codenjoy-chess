@@ -25,6 +25,7 @@ package com.codenjoy.dojo.chess.model.piece;
 
 import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Board;
+import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.google.common.collect.Lists;
@@ -41,8 +42,8 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public List<Point> getAvailableMoves() {
-        ArrayList<Point> moves = Lists.newArrayList();
+    public List<Move> getAvailableMoves() {
+        ArrayList<Move> moves = Lists.newArrayList();
         moves.addAll(availableDiagonalMoves(board, LEFT, UP));
         moves.addAll(availableDiagonalMoves(board, UP, RIGHT));
         moves.addAll(availableDiagonalMoves(board, RIGHT, DOWN));
@@ -50,15 +51,15 @@ public class Bishop extends Piece {
         return moves;
     }
 
-    private List<Point> availableDiagonalMoves(Board board, Direction one, Direction two) {
-        List<Point> result = Lists.newArrayList();
+    private List<Move> availableDiagonalMoves(Board board, Direction one, Direction two) {
+        List<Move> result = Lists.newArrayList();
         Point dest = diagonal(position, one, two);
         while (board.getAt(dest).isEmpty()) {
-            result.add(dest);
+            result.add(Move.from(position).to(dest));
             dest = diagonal(dest, one, two);
         }
         if (board.getAt(dest).get().getColor() != color) {
-            result.add(dest);
+            result.add(Move.from(position).to(dest));
         }
         return result;
     }
