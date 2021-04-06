@@ -42,8 +42,8 @@ public class Chess implements Board {
     private final GameSettings settings;
     private final Level level;
 
-    private final List<Color> presentedColors;
-    private final List<Player> players = new LinkedList<>();
+    private final List<Player> players = Lists.newLinkedList();
+    private final List<Move> history = Lists.newArrayList();
 
     private int currentPlayerId;
 
@@ -51,12 +51,15 @@ public class Chess implements Board {
         this.dice = dice;
         this.settings = settings;
         this.level = level;
-        this.presentedColors = level.presentedColors();
     }
 
     @Override
     public void tick() {
-        players.get(currentPlayerId).tick();
+        Player player = players.get(currentPlayerId);
+        Move move = player.makeMove();
+        if (move != null) {
+            history.add(move);
+        }
         currentPlayerId = (currentPlayerId + 1) % players.size();
     }
 
@@ -86,6 +89,16 @@ public class Chess implements Board {
     }
 
     @Override
+    public List<Move> getHistory() {
+        return history;
+    }
+
+    @Override
+    public Move getLastMove() {
+        return history.isEmpty() ? null : history.get(history.size() - 1);
+    }
+
+    @Override
     public GameSet newGameSet() {
         Color color = players.stream()
                 .map(Player::getGameSet)
@@ -95,7 +108,7 @@ public class Chess implements Board {
                 .map(c -> Color.byPriority(c.getPriority() + 1))
                 .orElse(Color.withHighestPriority());
 
-        if (!presentedColors.contains(color)) {
+        if (!level.presentedColors().contains(color)) {
             // log
             return null;
         }
@@ -114,7 +127,7 @@ public class Chess implements Board {
 //        if (players.contains(player)) {
 //         ???   
 //        }
-        if (players.size() == presentedColors.size()) {
+        if (players.size() == level.presentedColors().size()) {
             // players limit reached
             return;
         }

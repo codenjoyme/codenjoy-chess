@@ -1,5 +1,6 @@
 package com.codenjoy.dojo.chess.model;
 
+import com.codenjoy.dojo.chess.model.piece.Pawn;
 import com.codenjoy.dojo.chess.model.piece.Piece;
 import com.codenjoy.dojo.chess.model.piece.PieceType;
 import com.codenjoy.dojo.services.Point;
@@ -17,6 +18,7 @@ public class GameSet extends PlayerHero<Board> {
     private final List<Piece> pieces;
     private Move command;
     private boolean triedWrongMove;
+    private Move lastMove = null;
 
     public GameSet(List<Piece> pieces, Board board) {
         if (pieces.isEmpty()) {
@@ -87,13 +89,20 @@ public class GameSet extends PlayerHero<Board> {
         }
         Piece piece = field.getAt(command.getFrom())
                 .orElse(null);
+
         if (piece.getAvailableMoves().contains(command.getTo())) {
             field.getAt(command.getTo()).ifPresent(p -> p.setAlive(false));
             piece.move(command.getTo());
+            lastMove = command;
         } else {
             triedWrongMove = true;
+            lastMove = null;
         }
         command = null;
+    }
+
+    public Move getLastMove() {
+        return lastMove;
     }
 
     public boolean isTriedWrongMove() {

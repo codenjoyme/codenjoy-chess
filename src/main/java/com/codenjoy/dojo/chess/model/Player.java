@@ -29,7 +29,7 @@ import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.Tickable;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 
-public class Player extends GamePlayer<GameSet, Board> implements Tickable {
+public class Player extends GamePlayer<GameSet, Board> {
 
     private GameSet gameSet;
 
@@ -59,11 +59,11 @@ public class Player extends GamePlayer<GameSet, Board> implements Tickable {
         return true; // TODO implement me
     }
 
-    @Override
-    public void tick() {
+    public Move makeMove() {
         gameSet.tick();
         if (gameSet.isTriedWrongMove()) {
             listener.event(Event.WRONG_MOVE);
         }
+        return gameSet.getLastMove();
     }
 }

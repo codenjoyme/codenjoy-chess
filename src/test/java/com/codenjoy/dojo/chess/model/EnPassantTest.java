@@ -57,8 +57,8 @@ public class EnPassantTest extends AbstractGameTest {
         move(BLACK, from(4, 3).to(5, 2));
 
         // then
-        assertE("rkbqwbkr" +
-                "pppp.ppp" +
+        assertE("rkb.wbkr" +
+                "pppppppp" +
                 "........" +
                 "........" +
                 "....qP.." +
@@ -89,14 +89,14 @@ public class EnPassantTest extends AbstractGameTest {
                 "p......." +
                 "........" +
                 "....pP.." +
-                ".......p" +
+                ".......P" +
                 "PPPPP.P." +
                 "RKBQWBKR");
 
         // when trying to make "en passant"
-        move(WHITE, from(4, 3).to(5, 2));
+        move(BLACK, from(4, 3).to(5, 2));
 
         // then
-        fired(WHITE, WRONG_MOVE);
+        fired(BLACK, WRONG_MOVE);
     }
 }

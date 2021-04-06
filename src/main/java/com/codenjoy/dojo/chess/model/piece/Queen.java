@@ -26,6 +26,7 @@ package com.codenjoy.dojo.chess.model.piece;
 import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Board;
 import com.codenjoy.dojo.services.Point;
+import com.google.common.collect.Lists;
 
 import java.util.List;
 
@@ -37,6 +38,6 @@ public class Queen extends Piece {
 
     @Override
     public List<Point> getAvailableMoves() {
-        return null;
+        return Lists.newArrayList();
     }
 }

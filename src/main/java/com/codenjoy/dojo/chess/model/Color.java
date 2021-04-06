@@ -1,13 +1,17 @@
 package com.codenjoy.dojo.chess.model;
 
+import com.codenjoy.dojo.services.Direction;
+
 public enum Color {
-    WHITE(0),
-    BLACK(1);
+    WHITE(0, Direction.UP),
+    BLACK(1, Direction.DOWN);
 
     private final int priority;
+    private final Direction attackDirection;
 
-    Color(int priority) {
+    Color(int priority, Direction attackDirection) {
         this.priority = priority;
+        this.attackDirection = attackDirection;
     }
 
     public int getPriority() {
@@ -25,5 +29,9 @@ public enum Color {
 
     public static Color withHighestPriority() {
         return WHITE;
+    }
+
+    public Direction getAttackDirection() {
+        return attackDirection;
     }
 }

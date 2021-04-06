@@ -77,7 +77,7 @@ public abstract class Piece {
     public abstract List<Point> getAvailableMoves();
 
     public Direction getAttackDirection() {
-        return color == Color.WHITE ? Direction.UP : Direction.DOWN;
+        return color.getAttackDirection();
     }
 
     public void setAlive(boolean alive) {

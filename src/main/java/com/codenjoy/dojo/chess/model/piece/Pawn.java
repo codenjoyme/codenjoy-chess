@@ -25,6 +25,7 @@ package com.codenjoy.dojo.chess.model.piece;
 
 import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Board;
+import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.google.common.collect.Lists;
@@ -40,6 +41,19 @@ public class Pawn extends Piece {
 
     @Override
     public void move(Point destination) {
+        Point p;
+        if ((p = Direction.RIGHT.change(getAttackDirection().change(position))).equals(destination)) {
+            if (board.getAt(p).isEmpty()) {
+                Piece piece = board.getAt(getAttackDirection().inverted().change(p)).orElse(null);
+                piece.setAlive(false);
+            }
+        }
+        if ((p = Direction.LEFT.change(getAttackDirection().change(position))).equals(destination)) {
+            if (board.getAt(p).isEmpty()) {
+                Piece piece = board.getAt(getAttackDirection().inverted().change(p)).orElse(null);
+                piece.setAlive(false);
+            }
+        }
         super.move(destination);
         moved = true;
     }
@@ -55,6 +69,19 @@ public class Pawn extends Piece {
                 if (board.getAt(step).isEmpty()) {
                     moves.add(step);
                 }
+            }
+        }
+        Move lastMove = board.getLastMove();
+        if (lastMove != null) {
+            if (board.getAt(lastMove.getTo()).get() instanceof Pawn
+                    && Direction.LEFT.change(position).equals(lastMove.getTo())
+                    && Direction.LEFT.change(getAttackDirection().change(getAttackDirection().change(position))).equals(lastMove.getFrom())) {
+                moves.add(Direction.LEFT.change(getAttackDirection().change(position)));
+            }
+            if (board.getAt(lastMove.getTo()).get() instanceof Pawn
+                    && Direction.RIGHT.change(position).equals(lastMove.getTo())
+                    && Direction.RIGHT.change(getAttackDirection().change(getAttackDirection().change(position))).equals(lastMove.getFrom())) {
+                moves.add(Direction.RIGHT.change(getAttackDirection().change(position)));
             }
         }
         step = getAttackDirection().change(position);
