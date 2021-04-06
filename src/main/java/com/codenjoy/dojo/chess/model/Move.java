@@ -10,6 +10,10 @@ public class Move {
     private final Point from;
     private final Point to;
 
+    public PieceType getPromotion() {
+        return promotion;
+    }
+
     private PieceType promotion;
 
     private Move(Point from, Point to) {

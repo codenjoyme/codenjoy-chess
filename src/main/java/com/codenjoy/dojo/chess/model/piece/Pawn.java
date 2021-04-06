@@ -64,6 +64,13 @@ public class Pawn extends Piece {
         Point step = getAttackDirection().change(position);
         if (board.getAt(step).isEmpty()) {
             moves.add(Move.from(position).to(step));
+            if (step.getY() == 0 || step.getY() == board.getSize() - 1) {
+                for (PieceType ptype : PieceType.values()) {
+                    if (ptype != PieceType.KING) {
+                        moves.add(Move.from(position).to(step).promotion(ptype));
+                    }
+                }
+            }
             if (!moved) {
                 step = getAttackDirection().change(step);
                 if (board.getAt(step).isEmpty()) {
@@ -71,6 +78,7 @@ public class Pawn extends Piece {
                 }
             }
         }
+        // en passant
         Move lastMove = board.getLastMove();
         if (lastMove != null) {
             if (board.getAt(lastMove.getTo()).get() instanceof Pawn

@@ -123,6 +123,11 @@ public class Chess implements Board {
     }
 
     @Override
+    public int getSize() {
+        return level.getSize();
+    }
+
+    @Override
     public void newGame(Player player) {
 //        if (players.contains(player)) {
 //         ???   

@@ -91,7 +91,7 @@ public class PromotionTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "........" +
-                "RKBQWBKR");
+                "RKB.WBKR");
         fired(WHITE, WRONG_MOVE);
     }
 

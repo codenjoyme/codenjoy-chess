@@ -40,4 +40,6 @@ public interface Board extends GameField<Player> {
     Move getLastMove();
 
     GameSet newGameSet();
+
+    int getSize();
 }

@@ -93,6 +93,10 @@ public class GameSet extends PlayerHero<Board> {
         if (piece.getAvailableMoves().contains(command)) {
             piece.move(command);
             lastMove = command;
+            if (command.withPromotion()) {
+                pieces.remove(piece);
+                pieces.add(command.getPromotion().getConstructor().apply(getColor(), field, piece.getPosition()));
+            }
         } else {
             triedWrongMove = true;
             lastMove = null;
