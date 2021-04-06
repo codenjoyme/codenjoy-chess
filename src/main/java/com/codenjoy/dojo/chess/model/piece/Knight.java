@@ -10,12 +10,12 @@ package com.codenjoy.dojo.chess.model.piece;
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -23,11 +23,14 @@ package com.codenjoy.dojo.chess.model.piece;
  */
 
 
-import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Board;
+import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.PointImpl;
+import com.google.common.collect.Lists;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Knight extends Piece {
 
@@ -37,6 +40,30 @@ public class Knight extends Piece {
 
     @Override
     public List<Point> getAvailableMoves() {
-        return null;
+        return moves().stream()
+                .filter(this::isAvailable)
+                .collect(Collectors.toList());
     }
+
+    private boolean isAvailable(Point position) {
+        return board.getAt(position)
+                .map(p -> p.getColor() == color)
+                .orElse(true);
+    }
+
+    private List<Point> moves() {
+        int x = position.getX();
+        int y = position.getY();
+        return Lists.newArrayList(
+                new PointImpl(x - 2, y - 1),
+                new PointImpl(x - 2, y + 1),
+                new PointImpl(x + 2, y - 1),
+                new PointImpl(x + 2, y + 1),
+                new PointImpl(x - 1, y + 2),
+                new PointImpl(x + 1, y + 2),
+                new PointImpl(x - 1, y - 2),
+                new PointImpl(x + 1, y - 2)
+        );
+    }
+
 }
