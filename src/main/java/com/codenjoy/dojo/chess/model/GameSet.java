@@ -89,7 +89,7 @@ public class GameSet extends PlayerHero<Board> {
         Piece piece = field.getAt(command.getFrom())
                 .orElse(null);
         if (piece.getAvailableMoves().contains(command)) {
-            if (field.getAt(command.getTo()).isPresent() && field.getAt(command.getTo()).get().getColor() == piece.getColor()) {
+            if (isCastling(command)) {
                 // castling
                 if (!tryCastling((Rook) field.getAt(command.getTo()).get())) {
                     triedWrongMove = true;
@@ -112,6 +112,20 @@ public class GameSet extends PlayerHero<Board> {
             lastMove = null;
         }
         command = null;
+    }
+
+    private boolean isCastling(Move move) {
+        Optional<Piece> optPieceOne = field.getAt(command.getFrom());
+        Optional<Piece> optPieceTwo = field.getAt(command.getTo());
+        if (optPieceOne.isEmpty() || optPieceTwo.isEmpty()) {
+            return false;
+        }
+        Piece pieceOne = optPieceOne.get();
+        Piece pieceTwo = optPieceTwo.get();
+        if (pieceOne.getColor() != pieceTwo.getColor()) {
+            return false;
+        }
+        return pieceOne.getType() == PieceType.KING && pieceTwo.getType() == PieceType.ROOK;
     }
 
     private boolean tryCastling(Rook rook) {
