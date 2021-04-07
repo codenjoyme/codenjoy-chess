@@ -61,11 +61,10 @@ public class EnPassantTest extends AbstractGameTest {
                 "pppppppp" +
                 "........" +
                 "........" +
-                "....qP.." +
-                "........" +
+                ".....P.." +
+                ".....q.." +
                 "PPPPP.PP" +
                 "RKBQWBKR");
-        fired(BLACK, WRONG_MOVE);
     }
 
     @Test

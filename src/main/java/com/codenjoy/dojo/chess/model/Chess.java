@@ -128,6 +128,23 @@ public class Chess implements Board {
     }
 
     @Override
+    public boolean isInBounds(Point point) {
+        return !point.isOutOf(getSize());
+    }
+
+    @Override
+    public boolean isUnderAttack(Point point, Color color) {
+        return players.stream()
+                .map(Player::getGameSet)
+                .filter(gameSet -> gameSet.getColor() != color)
+                .map(GameSet::getPieces)
+                .flatMap(Collection::stream)
+                .map(Piece::getAvailableMoves)
+                .flatMap(Collection::stream)
+                .anyMatch(m -> m.getTo().equals(point));
+    }
+
+    @Override
     public void newGame(Player player) {
 //        if (players.contains(player)) {
 //         ???   

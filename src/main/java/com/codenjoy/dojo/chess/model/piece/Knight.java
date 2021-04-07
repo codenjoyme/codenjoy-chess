@@ -50,7 +50,7 @@ public class Knight extends Piece {
     private boolean isAvailable(Point position) {
         return board.getAt(position)
                 .map(p -> p.getColor() == color)
-                .orElse(true);
+                .orElse(board.isInBounds(position));
     }
 
     private List<Point> moves() {

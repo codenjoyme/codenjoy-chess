@@ -1,8 +1,7 @@
 package com.codenjoy.dojo.chess.model;
 
-import com.codenjoy.dojo.chess.model.piece.Pawn;
-import com.codenjoy.dojo.chess.model.piece.Piece;
-import com.codenjoy.dojo.chess.model.piece.PieceType;
+import com.codenjoy.dojo.chess.model.piece.*;
+import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.multiplayer.PlayerHero;
@@ -89,19 +88,77 @@ public class GameSet extends PlayerHero<Board> {
         }
         Piece piece = field.getAt(command.getFrom())
                 .orElse(null);
-
         if (piece.getAvailableMoves().contains(command)) {
-            piece.move(command);
-            lastMove = command;
-            if (command.withPromotion()) {
-                pieces.remove(piece);
-                pieces.add(command.getPromotion().getConstructor().apply(getColor(), field, piece.getPosition()));
+            if (field.getAt(command.getTo()).isPresent() && field.getAt(command.getTo()).get().getColor() == piece.getColor()) {
+                // castling
+                if (!tryCastling((Rook) field.getAt(command.getTo()).get())) {
+                    triedWrongMove = true;
+                    lastMove = null;
+                } else {
+                    lastMove = command;
+                }
+                command = null;
+                return;
+            } else {
+                piece.move(command);
+                lastMove = command;
+                if (command.withPromotion()) {
+                    pieces.remove(piece);
+                    pieces.add(command.getPromotion().getConstructor().apply(getColor(), field, piece.getPosition()));
+                }
             }
         } else {
             triedWrongMove = true;
             lastMove = null;
         }
         command = null;
+    }
+
+    private boolean tryCastling(Rook rook) {
+        King king = getKing();
+        if (king == null) {
+            throw new IllegalStateException("King is null");
+        }
+        if (rook.isMoved() || king.isMoved()) {
+            return false;
+        }
+        if (field.isUnderAttack(king.getPosition(), getColor())) {
+            return false;
+        }
+        Direction direction = defineDirection(king.getPosition(), rook.getPosition());
+        if (direction == null) {
+            throw new IllegalStateException();
+        }
+        Point rookPosition = direction.change(king.getPosition());
+        if (field.getAt(rookPosition).isPresent() || field.isUnderAttack(rookPosition, getColor())) {
+            return false;
+        }
+        Point kingPosition = direction.change(rookPosition);
+        if (field.getAt(kingPosition).isPresent() || field.isUnderAttack(kingPosition, getColor())) {
+            return false;
+        }
+        rook.move(rookPosition);
+        king.move(kingPosition);
+        return true;
+    }
+
+    private Direction defineDirection(Point from, Point to) {
+        if (from.equals(to)) {
+            return null;
+        }
+        if (from.getX() == to.getX()) {
+            return from.getY() < to.getY() ? Direction.UP : Direction.DOWN;
+        }
+        if (from.getY() == to.getY()) {
+            return from.getX() < to.getX() ? Direction.RIGHT : Direction.LEFT;
+        }
+        return null;
+    }
+
+    private King getKing() {
+        return (King) pieces.stream()
+                .filter(p -> p.getType() == PieceType.KING)
+                .findFirst().orElse(null);
     }
 
     public Move getLastMove() {

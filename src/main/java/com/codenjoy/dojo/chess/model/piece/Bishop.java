@@ -54,11 +54,11 @@ public class Bishop extends Piece {
     private List<Move> availableDiagonalMoves(Board board, Direction one, Direction two) {
         List<Move> result = Lists.newArrayList();
         Point dest = diagonal(position, one, two);
-        while (board.getAt(dest).isEmpty()) {
+        while (board.isInBounds(dest) && board.getAt(dest).isEmpty()) {
             result.add(Move.from(position).to(dest));
             dest = diagonal(dest, one, two);
         }
-        if (board.getAt(dest).get().getColor() != color) {
+        if (board.isInBounds(dest) && board.getAt(dest).isPresent() && board.getAt(dest).get().getColor() != color) {
             result.add(Move.from(position).to(dest));
         }
         return result;

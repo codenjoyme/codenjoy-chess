@@ -146,6 +146,14 @@ public class CastlingTest extends AbstractGameTest {
         move(WHITE, from(4, 0).to(0, 0));
 
         // then
+        assertE(".w......" +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "R.b.W..R");
         fired(WHITE, WRONG_MOVE);
     }
 
@@ -327,8 +335,8 @@ public class CastlingTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "........" +
-                "........" +
-                "R....RW.");
+                "R......." +
+                ".....RW.");
 
         neverFired(WHITE, WRONG_MOVE);
     }

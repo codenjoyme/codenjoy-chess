@@ -42,4 +42,9 @@ public interface Board extends GameField<Player> {
     GameSet newGameSet();
 
     int getSize();
+
+    boolean isInBounds(Point point);
+
+
+    boolean isUnderAttack(Point point, Color color);
 }

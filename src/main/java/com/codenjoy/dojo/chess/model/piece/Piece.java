@@ -38,6 +38,11 @@ public abstract class Piece {
     protected final Board board;
     protected Point position;
     protected boolean alive;
+    protected boolean moved;
+
+    public boolean isMoved() {
+        return moved;
+    }
 
     public Piece(PieceType type, Color color, Board board, Point position) {
         this.type = type;
@@ -52,11 +57,9 @@ public abstract class Piece {
     }
 
     public void move(Move move) {
-        if (!getAvailableMoves().contains(move)) {
-            return;
-        }
         board.getAt(move.getTo()).ifPresent(p -> p.setAlive(false));
         position = move.getTo();
+        moved = true;
     }
 
     public Color getColor() {

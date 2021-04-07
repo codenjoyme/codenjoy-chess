@@ -23,8 +23,8 @@ package com.codenjoy.dojo.chess.model.piece;
  */
 
 
-import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Board;
+import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.services.Point;
 import com.google.common.collect.Lists;
@@ -35,22 +35,20 @@ import java.util.Optional;
 import static com.codenjoy.dojo.services.Direction.*;
 
 public class King extends Piece {
-    private boolean moved;
 
     public King(Color color, Board board, Point position) {
         super(PieceType.KING, color, board, position);
     }
 
-
-    @Override
-    public void move(Move move) {
-        super.move(move);
+    public void move(Point position) {
+        board.getAt(position).ifPresent(p -> p.setAlive(false));
+        this.position = position;
         moved = true;
     }
 
     @Override
     public List<Move> getAvailableMoves() {
-        List<Point> moves = listOfAvailableMoves(board,
+        List<Move> moves = listOfAvailableMoves(board,
                 LEFT.change(position),
                 UP.change(position),
                 RIGHT.change(position),
@@ -60,14 +58,36 @@ public class King extends Piece {
                 RIGHT.change(DOWN.change(position)),
                 DOWN.change(LEFT.change(position))
         );
-        return null;
+        if (!moved) {
+            Point point = position;
+            do {
+                point = LEFT.change(point);
+            } while (board.isInBounds(point) && (board.getAt(point).isEmpty() || (board.getAt(point).get().getType() != PieceType.ROOK && board.getAt(point).get().getColor() != color)));
+            if (board.getAt(point).isPresent()) {
+                Piece rook = board.getAt(point).get();
+                if (!rook.isMoved()) {
+                    moves.add(Move.from(position).to(point));
+                }
+            }
+            point = position;
+            do {
+                point = RIGHT.change(point);
+            } while (board.isInBounds(point) && (board.getAt(point).isEmpty() || (board.getAt(point).get().getType() != PieceType.ROOK && board.getAt(point).get().getColor() != color)));
+            if (board.getAt(point).isPresent()) {
+                Piece rook = board.getAt(point).get();
+                if (!rook.isMoved()) {
+                    moves.add(Move.from(position).to(point));
+                }
+            }
+        }
+        return moves;
     }
 
-    private List<Point> listOfAvailableMoves(Board board, Point... destinations) {
-        List<Point> result = Lists.newArrayList();
+    private List<Move> listOfAvailableMoves(Board board, Point... destinations) {
+        List<Move> result = Lists.newArrayList();
         for (Point dest : destinations) {
             if (isAvailable(board, dest)) {
-                result.add(dest);
+                result.add(Move.from(position).to(dest));
             }
         }
         return result;
@@ -75,7 +95,7 @@ public class King extends Piece {
 
     private boolean isAvailable(Board board, Point dest) {
         Optional<Piece> pieceAtDest = board.getAt(dest);
-        return pieceAtDest.isEmpty() || pieceAtDest.get().getColor() != color;
+        return board.isInBounds(dest) && (pieceAtDest.isEmpty() || pieceAtDest.get().getColor() != color);
     }
 
 }
