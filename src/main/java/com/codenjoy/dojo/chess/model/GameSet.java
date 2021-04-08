@@ -88,6 +88,12 @@ public class GameSet extends PlayerHero<Board> {
         }
         Piece piece = field.getAt(command.getFrom())
                 .orElse(null);
+        if (piece.getColor() != getColor()) {
+            triedWrongMove = true;
+            lastMove = null;
+            command = null;
+            return;
+        }
         if (piece.getAvailableMoves().contains(command)) {
             if (isCastling(command)) {
                 // castling

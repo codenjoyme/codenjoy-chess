@@ -23,9 +23,10 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
+@SuppressWarnings({"rawtypes", "unused", "unchecked", "SpellCheckingInspection"})
 public abstract class AbstractGameTest {
-    private Map<Color, Player> players = new HashMap<>();
-    private Map<Player, EventListener> listeners = new HashMap<>();
+    private final Map<Color, Player> players = new HashMap<>();
+    private final Map<Player, EventListener> listeners = new HashMap<>();
 
     protected Chess game;
     private String board;
@@ -93,19 +94,23 @@ public abstract class AbstractGameTest {
     }
 
     protected void assertE(String expected) {
-        assertEquals(TestUtils.injectN(expected), printerFactory.getPrinter(
-                game.reader(), players.values().iterator().next()).print());
+        assertE(expected, Color.WHITE);
     }
 
-    protected void classicBoard() {
-        givenFl("rkbqwbkr" +
+    protected void assertE(String expected, Color playerColor) {
+        assertEquals(TestUtils.injectN(expected), printerFactory.getPrinter(
+                game.reader(), players.get(playerColor)).print());
+    }
+
+    protected String classicBoard() {
+        return "rkbqwbkr" +
                 "pppppppp" +
                 "........" +
                 "........" +
                 "........" +
                 "........" +
                 "PPPPPPPP" +
-                "RKBQWBKR");
+                "RKBQWBKR";
     }
 
     protected void move(Color color, Move move) {

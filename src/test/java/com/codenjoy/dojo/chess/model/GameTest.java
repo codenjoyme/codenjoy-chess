@@ -30,30 +30,34 @@ import static com.codenjoy.dojo.chess.model.Color.WHITE;
 import static com.codenjoy.dojo.chess.model.Move.from;
 import static com.codenjoy.dojo.chess.service.Event.WRONG_MOVE;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class GameTest extends AbstractGameTest {
 
     @Test
-    public void ShouldProperlyDrawBoard() {
+    public void shouldDrawBoardProperlyForWhites() {
 
-        // when given
-        classicBoard();
+        // when
+        givenFl(classicBoard());
 
         // then
-        assertE("rkbqwbkr" +
-                "pppppppp" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "PPPPPPPP" +
-                "RKBQWBKR");
+        assertE(classicBoard(), WHITE);
     }
 
     @Test
-    public void ShouldFireWrongMoveEvent_WhenTryingToMakeWrongMove() {
+    public void shouldDrawBoardForBlacksSameAsForWhites() {
+
+        // when
+        givenFl(classicBoard());
+
+        // then
+        assertE(classicBoard(), BLACK);
+    }
+
+    @Test
+    public void shouldFireWrongMoveEvent_whenTryingToMakeWrongMove() {
 
         // given
-        classicBoard();
+        givenFl(classicBoard());
 
         // when
         move(WHITE, from(4, 1).to(5, 3));
@@ -90,5 +94,17 @@ public class GameTest extends AbstractGameTest {
                 "RKBQWBKR");
     }
 
-    // SHOULD NOT WALK ENEMIES PIECES
+    @Test
+    public void shouldNotBePossibleToMoveEnemyPieces() {
+
+        // given
+        givenFl(classicBoard());
+
+        // when
+        move(WHITE, from(0, 6).to(0, 5));
+
+        // then
+        assertE(classicBoard());
+        fired(WHITE, WRONG_MOVE);
+    }
 }

@@ -8,6 +8,7 @@ import static com.codenjoy.dojo.chess.model.Move.from;
 import static com.codenjoy.dojo.chess.service.Event.WRONG_MOVE;
 
 // Wiki: https://en.wikipedia.org/wiki/En_passant
+@SuppressWarnings("SpellCheckingInspection")
 public class EnPassantTest extends AbstractGameTest {
 
     @Test

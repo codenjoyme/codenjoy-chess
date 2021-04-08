@@ -1,14 +1,16 @@
 package com.codenjoy.dojo.chess.model;
 
 import com.codenjoy.dojo.chess.model.piece.PieceType;
-import com.codenjoy.dojo.chess.service.Event;
 import org.junit.Test;
 
-import static com.codenjoy.dojo.chess.model.Color.*;
-import static com.codenjoy.dojo.chess.model.Move.*;
-import static com.codenjoy.dojo.chess.service.Event.*;
+import static com.codenjoy.dojo.chess.model.Color.WHITE;
+import static com.codenjoy.dojo.chess.model.Move.from;
+import static com.codenjoy.dojo.chess.service.Event.WRONG_MOVE;
 
-// Wiki: https://en.wikipedia.org/wiki/Promotion_(chess)
+/**
+ * Wiki: https://en.wikipedia.org/wiki/Promotion_(chess)
+ */
+@SuppressWarnings("SpellCheckingInspection")
 public class PromotionTest extends AbstractGameTest {
 
     @Test

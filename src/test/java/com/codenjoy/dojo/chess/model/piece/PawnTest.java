@@ -21,8 +21,7 @@ public class PawnTest extends AbstractPieceTest {
     @Override
     public void shouldMoveInAccordanceWithClassicChessRules() {
 
-        // given
-        classicBoard();
+        givenFl(classicBoard());
         Piece whitePawn = getPieceAt(4, 1);
 
         assertCanMoveOnlyTo(whitePawn,
@@ -148,8 +147,7 @@ public class PawnTest extends AbstractPieceTest {
     @Test
     public void shouldNotBeAbleToMoveTwoStepsForward_ifNotAtStartPosition() {
 
-        // given
-        classicBoard();
+        givenFl(classicBoard());
         Piece whitePawn = getPieceAt(4, 1);
 
         // when
@@ -165,8 +163,7 @@ public class PawnTest extends AbstractPieceTest {
     @Test
     public void blackPawnsShouldBeAbleToMoveDown() {
 
-        // given
-        classicBoard();
+        givenFl(classicBoard());
         Piece blackPawn = getPieceAt(3, 6);
 
         // when
