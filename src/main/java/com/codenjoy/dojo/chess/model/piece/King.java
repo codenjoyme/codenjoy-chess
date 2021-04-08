@@ -26,6 +26,7 @@ package com.codenjoy.dojo.chess.model.piece;
 import com.codenjoy.dojo.chess.model.Board;
 import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Move;
+import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.google.common.collect.Lists;
 
@@ -61,26 +62,44 @@ public class King extends Piece {
         if (!moved) {
             Point point = position;
             do {
-                point = LEFT.change(point);
+                point = getAttackDirection().counterClockwise().change(point);
             } while (board.isInBounds(point) && (board.getAt(point).isEmpty() || (board.getAt(point).get().getType() != PieceType.ROOK && board.getAt(point).get().getColor() != color)));
             if (board.getAt(point).isPresent()) {
                 Piece rook = board.getAt(point).get();
-                if (!rook.isMoved()) {
-                    moves.add(Move.from(position).to(point));
+                Direction direction = defineDirection(position, rook.getPosition());
+                Point rookPosition = direction.change(position);
+                Point kingPosition = direction.change(rookPosition);
+                if (!board.isUnderAttack(rookPosition, color) && !board.isUnderAttack(kingPosition, color)) {
+                    if (rook.getColor() == color && !rook.isMoved()) {
+                        moves.add(Move.from(position).to(point));
+                    }
                 }
             }
             point = position;
             do {
-                point = RIGHT.change(point);
+                point = getAttackDirection().clockwise().change(point);
             } while (board.isInBounds(point) && (board.getAt(point).isEmpty() || (board.getAt(point).get().getType() != PieceType.ROOK && board.getAt(point).get().getColor() != color)));
             if (board.getAt(point).isPresent()) {
                 Piece rook = board.getAt(point).get();
-                if (!rook.isMoved()) {
+                if (rook.getColor() == color && !rook.isMoved()) {
                     moves.add(Move.from(position).to(point));
                 }
             }
         }
         return moves;
+    }
+
+    private Direction defineDirection(Point from, Point to) {
+        if (from.equals(to)) {
+            return null;
+        }
+        if (from.getX() == to.getX()) {
+            return from.getY() < to.getY() ? Direction.UP : Direction.DOWN;
+        }
+        if (from.getY() == to.getY()) {
+            return from.getX() < to.getX() ? Direction.RIGHT : Direction.LEFT;
+        }
+        return null;
     }
 
     private List<Move> listOfAvailableMoves(Board board, Point... destinations) {
