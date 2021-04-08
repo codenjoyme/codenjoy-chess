@@ -44,7 +44,7 @@ public class Chess implements Board {
     private final Level level;
 
     private final List<Player> players = Lists.newLinkedList();
-    private final List<Move> history = Lists.newArrayList();
+    private final GameHistory history = new GameHistory();
 
     private int currentPlayerId;
 
@@ -59,7 +59,7 @@ public class Chess implements Board {
         Player player = players.get(currentPlayerId);
         Move move = player.makeMove();
         if (move != null) {
-            history.add(move);
+            history.add(player.getColor(), move);
         }
         players.stream()
                 .filter(p -> !p.getGameSet().isAlive())
@@ -112,13 +112,13 @@ public class Chess implements Board {
     }
 
     @Override
-    public List<Move> getHistory() {
-        return history;
+    public Move getLastMove() {
+        return history.getLastRecord().getMove();
     }
 
     @Override
-    public Move getLastMove() {
-        return history.isEmpty() ? null : history.get(history.size() - 1);
+    public GameHistory getHistory() {
+        return history;
     }
 
     @Override

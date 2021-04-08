@@ -10,25 +10,25 @@ package com.codenjoy.dojo.chess.model.piece;
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
 
+import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Element;
 import com.codenjoy.dojo.services.PointImpl;
 import org.fest.util.Arrays;
 import org.junit.Test;
 
-import static com.codenjoy.dojo.chess.model.Color.BLACK;
-import static com.codenjoy.dojo.chess.model.Color.WHITE;
+import static com.codenjoy.dojo.chess.model.Color.*;
 import static com.codenjoy.dojo.chess.model.Move.from;
 import static com.codenjoy.dojo.chess.service.Event.WRONG_MOVE;
 import static org.junit.Assert.assertFalse;
@@ -195,6 +195,51 @@ public class PawnTest extends AbstractPieceTest {
         assertCanMoveOnlyTo(preconditions, blackPawn,
                 new PointImpl(3, 5),
                 new PointImpl(3, 4)
+        );
+    }
+
+    private String fourPlayersBoard() {
+        return "  rkbqwbkr  " +
+                "  pppppppp  " +
+                "IZ........zi" +
+                "LZ........zl" +
+                "GZ........zg" +
+                "XZ........zx" +
+                "YZ........zy" +
+                "GZ........zg" +
+                "LZ........zl" +
+                "IZ........zi" +
+                "  PPPPPPPP  " +
+                "  RKBQWBKR  ";
+    }
+
+    @Test
+    public void pawnsOfEachColorShouldMoveInSpecifiedDirection() {
+
+        givenFl(fourPlayersBoard());
+        Piece redPawn = getPieceAt(1, 5);
+        Piece bluePawn = getPieceAt(10, 5);
+
+        // when
+        Preconditions preconditionsForRed = () -> {
+            move(WHITE, from(4, 1).to(4, 3));
+            move(BLACK, from(4, 10).to(4, 9));
+        };
+
+        Preconditions preconditionsForBlue = () -> {
+            preconditionsForRed.run();
+            move(RED, from(1, 5).to(2, 5));
+        };
+
+        // then
+        assertCanMoveOnlyTo(preconditionsForRed, redPawn,
+                new PointImpl(2, 5),
+                new PointImpl(3, 5)
+        );
+
+        assertCanMoveOnlyTo(preconditionsForBlue, bluePawn,
+                new PointImpl(9, 5),
+                new PointImpl(8, 5)
         );
     }
 }

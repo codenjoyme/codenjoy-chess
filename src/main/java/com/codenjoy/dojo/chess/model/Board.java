@@ -36,7 +36,8 @@ public interface Board extends GameField<Player> {
 
     List<Move> getPossibleMoves(Piece piece);
 
-    List<Move> getHistory();
+    abstract GameHistory getHistory();
+
     Move getLastMove();
 
     GameSet newGameSet();

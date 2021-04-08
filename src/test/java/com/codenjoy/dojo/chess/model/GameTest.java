@@ -23,6 +23,7 @@ package com.codenjoy.dojo.chess.model;
  */
 
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.Color.BLACK;
@@ -31,7 +32,7 @@ import static com.codenjoy.dojo.chess.model.Move.from;
 import static com.codenjoy.dojo.chess.service.Event.*;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class TwoPlayersGameTest extends AbstractGameTest {
+public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldDrawBoardProperlyForWhites() {
@@ -154,5 +155,10 @@ public class TwoPlayersGameTest extends AbstractGameTest {
         assertE("W.." +
                 "..." +
                 "...");
+    }
+
+    @Test
+    public void shouldBeThrownIllegalArgumentException_whenTryToMakeGameSetWithoutKing() {
+        Assert.assertThrows(IllegalArgumentException.class, () -> givenFl("ppp....W."));
     }
 }
