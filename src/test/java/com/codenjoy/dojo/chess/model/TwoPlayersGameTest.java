@@ -31,7 +31,7 @@ import static com.codenjoy.dojo.chess.model.Move.from;
 import static com.codenjoy.dojo.chess.service.Event.*;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class GameTest extends AbstractGameTest {
+public class TwoPlayersGameTest extends AbstractGameTest {
 
     @Test
     public void shouldDrawBoardProperlyForWhites() {

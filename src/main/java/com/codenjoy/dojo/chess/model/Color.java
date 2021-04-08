@@ -26,7 +26,9 @@ import com.codenjoy.dojo.services.Direction;
 
 public enum Color {
     WHITE(0, Direction.UP),
-    BLACK(1, Direction.DOWN);
+    BLACK(1, Direction.DOWN),
+    RED(2, Direction.RIGHT),
+    BLUE(3, Direction.LEFT);
 
     private final int priority;
     private final Direction attackDirection;

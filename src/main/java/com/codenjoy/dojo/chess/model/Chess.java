@@ -200,6 +200,10 @@ public class Chess implements Board {
                         .map(Square::toReaderEl)
                         .collect(Collectors.toList());
 
+                List<ReaderEl> barriers = level.barriers().stream()
+                        .map(Barrier::toReaderEl)
+                        .collect(Collectors.toList());
+
                 List<ReaderEl> pieces = players.stream()
                         .map(Player::getGameSet)
                         .filter(Objects::nonNull)
@@ -209,6 +213,7 @@ public class Chess implements Board {
                         .map(ReaderEl::create)
                         .collect(Collectors.toList());
 
+                result.addAll(barriers);
                 result.addAll(pieces);
                 result.addAll(squares);
                 return result;

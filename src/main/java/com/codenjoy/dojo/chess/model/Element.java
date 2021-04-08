@@ -26,10 +26,13 @@ package com.codenjoy.dojo.chess.model;
 import com.codenjoy.dojo.services.printer.CharElements;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public enum Element implements CharElements {
 
     SQUARE('.'),
+    BARRIER(' '),
 
     WHITE_KING('W'),
     WHITE_QUEEN('Q'),
@@ -43,7 +46,21 @@ public enum Element implements CharElements {
     BLACK_ROOK('r'),
     BLACK_BISHOP('b'),
     BLACK_KNIGHT('k'),
-    BLACK_PAWN('p');
+    BLACK_PAWN('p'),
+
+    RED_KING('Y'),
+    RED_QUEEN('X'),
+    RED_ROOK('I'),
+    RED_BISHOP('G'),
+    RED_KNIGHT('L'),
+    RED_PAWN('Z'),
+
+    BLUE_KING('y'),
+    BLUE_QUEEN('x'),
+    BLUE_ROOK('i'),
+    BLUE_BISHOP('g'),
+    BLUE_KNIGHT('l'),
+    BLUE_PAWN('z');
 
     final char ch;
 
@@ -61,16 +78,6 @@ public enum Element implements CharElements {
         return String.valueOf(ch);
     }
 
-    public Color color() {
-        if (Arrays.asList(whitePieces()).contains(this)) {
-            return Color.WHITE;
-        }
-        if (Arrays.asList(blackPieces()).contains(this)) {
-            return Color.BLACK;
-        }
-        return null;
-    }
-
     public static Element of(char ch) {
         for (Element element : Element.values()) {
             if (element.ch == ch) {
@@ -80,11 +87,10 @@ public enum Element implements CharElements {
         return null;
     }
 
-    public static Element[] whitePieces() {
-        return new Element[]{WHITE_KING, WHITE_QUEEN, WHITE_ROOK, WHITE_BISHOP, WHITE_KNIGHT, WHITE_PAWN};
-    }
-
-    public static Element[] blackPieces() {
-        return new Element[]{BLACK_KING, BLACK_QUEEN, BLACK_ROOK, BLACK_BISHOP, BLACK_KNIGHT, BLACK_PAWN};
+    public static Element[] pieces() {
+        return Arrays.stream(Element.values())
+                .filter(e -> e != SQUARE)
+                .filter(e -> e != BARRIER)
+                .toArray(Element[]::new);
     }
 }

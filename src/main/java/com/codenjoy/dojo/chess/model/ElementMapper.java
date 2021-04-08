@@ -10,12 +10,12 @@ package com.codenjoy.dojo.chess.model;
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -24,6 +24,9 @@ package com.codenjoy.dojo.chess.model;
 
 import com.codenjoy.dojo.chess.model.piece.Piece;
 import com.codenjoy.dojo.chess.model.piece.PieceType;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Maps;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,21 +37,41 @@ import static com.codenjoy.dojo.chess.model.Element.*;
 import static com.codenjoy.dojo.chess.model.piece.PieceType.*;
 
 public class ElementMapper {
-    private static final Map<ColorAndType, Element> elementsByColorAndType = new HashMap<>() {{
-        put(new ColorAndType(WHITE, KING), WHITE_KING);
-        put(new ColorAndType(WHITE, QUEEN), WHITE_QUEEN);
-        put(new ColorAndType(WHITE, KNIGHT), WHITE_KNIGHT);
-        put(new ColorAndType(WHITE, BISHOP), WHITE_BISHOP);
-        put(new ColorAndType(WHITE, ROOK), WHITE_ROOK);
-        put(new ColorAndType(WHITE, PAWN), WHITE_PAWN);
+    private static final BiMap<ColorAndType, Element> elementsByColorAndType = HashBiMap.create();
 
-        put(new ColorAndType(BLACK, KING), BLACK_KING);
-        put(new ColorAndType(BLACK, QUEEN), BLACK_QUEEN);
-        put(new ColorAndType(BLACK, KNIGHT), BLACK_KNIGHT);
-        put(new ColorAndType(BLACK, BISHOP), BLACK_BISHOP);
-        put(new ColorAndType(BLACK, ROOK), BLACK_ROOK);
-        put(new ColorAndType(BLACK, PAWN), BLACK_PAWN);
-    }};
+    static {
+        define(WHITE, KING, WHITE_KING);
+        define(WHITE, QUEEN, WHITE_QUEEN);
+        define(WHITE, KNIGHT, WHITE_KNIGHT);
+        define(WHITE, BISHOP, WHITE_BISHOP);
+        define(WHITE, ROOK, WHITE_ROOK);
+        define(WHITE, PAWN, WHITE_PAWN);
+
+        define(BLACK, KING, BLACK_KING);
+        define(BLACK, QUEEN, BLACK_QUEEN);
+        define(BLACK, KNIGHT, BLACK_KNIGHT);
+        define(BLACK, BISHOP, BLACK_BISHOP);
+        define(BLACK, ROOK, BLACK_ROOK);
+        define(BLACK, PAWN, BLACK_PAWN);
+
+        define(RED, KING, RED_KING);
+        define(RED, QUEEN, RED_QUEEN);
+        define(RED, KNIGHT, RED_KNIGHT);
+        define(RED, BISHOP, RED_BISHOP);
+        define(RED, ROOK, RED_ROOK);
+        define(RED, PAWN, RED_PAWN);
+
+        define(BLUE, KING, BLUE_KING);
+        define(BLUE, QUEEN, BLUE_QUEEN);
+        define(BLUE, KNIGHT, BLUE_KNIGHT);
+        define(BLUE, BISHOP, BLUE_BISHOP);
+        define(BLUE, ROOK, BLUE_ROOK);
+        define(BLUE, PAWN, BLUE_PAWN);
+    }
+
+    private static void define(Color color, PieceType type, Element element) {
+        elementsByColorAndType.put(new ColorAndType(color, type), element);
+    }
 
     public static Element mapToElement(Piece piece) {
         return mapToElement(piece.getColor(), piece.getType());
@@ -56,6 +79,14 @@ public class ElementMapper {
 
     public static Element mapToElement(Color color, PieceType pieceType) {
         return elementsByColorAndType.get(new ColorAndType(color, pieceType));
+    }
+
+    public static Color mapToColor(Element element) {
+        return elementsByColorAndType.inverse().get(element).color;
+    }
+
+    public static PieceType mapToPieceType(Element element) {
+        return elementsByColorAndType.inverse().get(element).type;
     }
 
     private static class ColorAndType {

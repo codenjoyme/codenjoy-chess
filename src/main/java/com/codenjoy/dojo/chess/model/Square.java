@@ -28,8 +28,8 @@ public class Square {
     private final Element element;
     private final Point position;
 
-    public Square(Element element, Point position) {
-        this.element = element;
+    public Square(Point position) {
+        this.element = Element.SQUARE;
         this.position = position;
     }
 

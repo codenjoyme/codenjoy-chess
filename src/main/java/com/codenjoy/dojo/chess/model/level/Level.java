@@ -10,12 +10,12 @@ package com.codenjoy.dojo.chess.model.level;
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -23,10 +23,7 @@ package com.codenjoy.dojo.chess.model.level;
  */
 
 
-import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.model.Element;
-import com.codenjoy.dojo.chess.model.ElementMapper;
-import com.codenjoy.dojo.chess.model.Square;
+import com.codenjoy.dojo.chess.model.*;
 import com.codenjoy.dojo.chess.model.piece.PieceType;
 import com.codenjoy.dojo.services.LengthToXY;
 import com.codenjoy.dojo.services.Point;
@@ -40,6 +37,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.codenjoy.dojo.chess.model.Element.BARRIER;
 import static com.codenjoy.dojo.chess.model.Element.SQUARE;
 
 public class Level {
@@ -64,16 +62,25 @@ public class Level {
         Set<Color> presented = Sets.newHashSet();
         for (int i = 0; i < map.length(); i++) {
             Optional.ofNullable(Element.of(map.charAt(i)))
-                    .map(Element::color)
+                    .filter(e -> Lists.newArrayList(Element.pieces()).contains(e))
+                    .map(ElementMapper::mapToColor)
                     .ifPresent(presented::add);
         }
         return Lists.newArrayList(presented);
     }
 
     public List<Square> squares() {
-        return LevelUtils.getObjects(xy, map, Function.identity(), Element.values())
-                .stream()
-                .map(p -> new Square(SQUARE, p))
+        List<Point> squares = LevelUtils.getObjects(xy, map, Function.identity(), SQUARE);
+        List<Point> pieces = LevelUtils.getObjects(xy, map, Function.identity(), Element.pieces());
+        squares.addAll(pieces);
+        return squares.stream()
+                .map(Square::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<Barrier> barriers() {
+        return LevelUtils.getObjects(xy, map, Function.identity(), BARRIER).stream()
+                .map(Barrier::new)
                 .collect(Collectors.toList());
     }
 }
