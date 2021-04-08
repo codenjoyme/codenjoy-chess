@@ -98,4 +98,13 @@ public class King extends Piece {
         return board.isInBounds(dest) && (pieceAtDest.isEmpty() || pieceAtDest.get().getColor() != color);
     }
 
+    @Override
+    public void setAlive(boolean value) {
+        this.alive = value;
+        if (!alive) {
+            board.getPieces(color).stream()
+                    .filter(Piece::isAlive)
+                    .forEach(p -> p.setAlive(false));
+        }
+    }
 }

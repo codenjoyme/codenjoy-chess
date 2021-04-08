@@ -54,6 +54,14 @@ public class GameSet extends PlayerHero<Board> {
         init(board);
     }
 
+    public boolean isAlive() {
+        return pieces.stream()
+                .filter(p -> p.getType() == PieceType.KING)
+                .findAny()
+                .map(Piece::isAlive)
+                .orElse(false);
+    }
+
     public Color getColor() {
         return pieces.get(0).getColor();
     }

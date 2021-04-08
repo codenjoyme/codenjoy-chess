@@ -26,6 +26,7 @@ package com.codenjoy.dojo.chess.model;
 import com.codenjoy.dojo.chess.model.level.Level;
 import com.codenjoy.dojo.chess.model.piece.Piece;
 import com.codenjoy.dojo.chess.model.piece.PieceType;
+import com.codenjoy.dojo.chess.service.Event;
 import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Point;
@@ -60,6 +61,15 @@ public class Chess implements Board {
         if (move != null) {
             history.add(move);
         }
+        players.stream()
+                .filter(p -> !p.getGameSet().isAlive())
+                .forEach(p -> p.event(Event.GAME_OVER));
+        List<Player> alivePlayers = players.stream()
+                .filter(Player::isAlive)
+                .collect(Collectors.toList());
+        if (alivePlayers.size() == 1) {
+            alivePlayers.get(0).event(Event.WIN);
+        }
         currentPlayerId = (currentPlayerId + 1) % players.size();
     }
 
@@ -71,12 +81,21 @@ public class Chess implements Board {
         return level.getSize();
     }
 
+    @Override
     public List<Piece> getPieces() {
         return players.stream()
                 .map(Player::getGameSet)
                 .map(GameSet::getPieces)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Piece> getPieces(Color color) {
+        Player player = players.stream()
+                .filter(p -> p.getColor() == color)
+                .findAny().orElse(null);
+        return player.getGameSet().getPieces();
     }
 
     @Override

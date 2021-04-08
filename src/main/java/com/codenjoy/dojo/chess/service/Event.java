@@ -24,5 +24,5 @@ package com.codenjoy.dojo.chess.service;
 
 
 public enum Event {
-    WIN, WRONG_MOVE;
+    WIN, WRONG_MOVE, GAME_OVER;
 }

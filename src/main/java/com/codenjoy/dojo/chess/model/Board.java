@@ -47,4 +47,8 @@ public interface Board extends GameField<Player> {
 
 
     boolean isUnderAttack(Point point, Color color);
+
+    List<Piece> getPieces();
+
+    List<Piece> getPieces(Color color);
 }

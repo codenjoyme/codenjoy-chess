@@ -28,7 +28,7 @@ import org.junit.Test;
 import static com.codenjoy.dojo.chess.model.Color.BLACK;
 import static com.codenjoy.dojo.chess.model.Color.WHITE;
 import static com.codenjoy.dojo.chess.model.Move.from;
-import static com.codenjoy.dojo.chess.service.Event.WRONG_MOVE;
+import static com.codenjoy.dojo.chess.service.Event.*;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class GameTest extends AbstractGameTest {
@@ -104,5 +104,55 @@ public class GameTest extends AbstractGameTest {
         // then
         assertE(classicBoard());
         fired(WHITE, WRONG_MOVE);
+    }
+
+    @Test
+    public void shouldBeFiredGameOverEvent_whenKingDies() {
+
+        givenFl("w.." +
+                "W.." +
+                "...");
+
+        // when
+        move(WHITE, from(0, 1).to(0, 2));
+
+        // then
+        assertE("W.." +
+                "..." +
+                "...");
+        fired(BLACK, GAME_OVER);
+    }
+
+    @Test
+    public void shouldBeFiredWinEventForPlayer_whichKingLastsAlone() {
+
+        givenFl("w.." +
+                "W.." +
+                "...");
+
+        // when
+        move(WHITE, from(0, 1).to(0, 2));
+
+        // then
+        assertE("W.." +
+                "..." +
+                "...");
+        fired(WHITE, WIN);
+    }
+
+    @Test
+    public void allPiecesShouldDieWithTheirKing() {
+
+        givenFl("wpp" +
+                "W.." +
+                "...");
+
+        // when
+        move(WHITE, from(0, 1).to(0, 2));
+
+        // then
+        assertE("W.." +
+                "..." +
+                "...");
     }
 }

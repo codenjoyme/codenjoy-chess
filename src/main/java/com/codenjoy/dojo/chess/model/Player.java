@@ -26,12 +26,13 @@ package com.codenjoy.dojo.chess.model;
 import com.codenjoy.dojo.chess.service.Event;
 import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.services.EventListener;
-import com.codenjoy.dojo.services.Tickable;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 
 public class Player extends GamePlayer<GameSet, Board> {
 
     private GameSet gameSet;
+    private boolean alive;
+    private boolean winner;
 
     public Player(EventListener listener, GameSettings settings) {
         super(listener, settings);
@@ -53,10 +54,33 @@ public class Player extends GamePlayer<GameSet, Board> {
     @Override
     public void newHero(Board board) {
         gameSet = board.newGameSet();
+        alive = true;
+        winner = false;
     }
 
+    @Override
     public boolean isAlive() {
-        return true; // TODO implement me
+        return alive;
+    }
+
+    @Override
+    public boolean isWin() {
+        return winner;
+    }
+
+    @Override
+    public void event(Object eventObj) {
+        super.event(eventObj);
+        Event event = (Event) eventObj;
+        switch (event) {
+            case WIN:
+                winner = true;
+                break;
+            case GAME_OVER:
+                winner = false;
+                alive = false;
+                break;
+        }
     }
 
     public Move makeMove() {
