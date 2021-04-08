@@ -43,7 +43,7 @@ public class PawnTest extends AbstractPieceTest {
                 "....p..." +
                 ".....P.." +
                 "RKBQWBKR");
-        Piece blackPawn = getPieceAt(4 ,2);
+        Piece blackPawn = getPieceAt(4, 2);
 
         // when
         move(WHITE, from(5, 1).to(4, 2));
@@ -73,7 +73,7 @@ public class PawnTest extends AbstractPieceTest {
                 "....Q..." +
                 ".....P.." +
                 "RKB.WBKR");
-        Piece whiteQueen = getPieceAt(4 ,2);
+        Piece whiteQueen = getPieceAt(4, 2);
 
         // when
         move(WHITE, from(5, 1).to(4, 2));

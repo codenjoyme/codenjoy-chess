@@ -93,10 +93,10 @@ public class Pawn extends Piece {
             }
         }
         step = getAttackDirection().change(position);
-        if (board.getAt(Direction.RIGHT.change(step)).isPresent()) {
+        if (board.getAt(Direction.RIGHT.change(step)).isPresent() && board.getAt(Direction.RIGHT.change(step)).get().getColor() != color) {
             moves.add(Move.from(position).to(Direction.RIGHT.change(step)));
         }
-        if (board.getAt(Direction.LEFT.change(step)).isPresent()) {
+        if (board.getAt(Direction.LEFT.change(step)).isPresent() && board.getAt(Direction.LEFT.change(step)).get().getColor() != color) {
             moves.add(Move.from(position).to(Direction.LEFT.change(step)));
         }
         return moves;
