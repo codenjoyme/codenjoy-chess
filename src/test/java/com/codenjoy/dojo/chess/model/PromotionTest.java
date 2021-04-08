@@ -1,5 +1,27 @@
 package com.codenjoy.dojo.chess.model;
 
+/*-
+ * #%L
+ * Codenjoy - it's a dojo-like platform from developers to developers.
+ * %%
+ * Copyright (C) 2018 - 2021 Codenjoy
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
+
 import com.codenjoy.dojo.chess.model.piece.PieceType;
 import org.junit.Test;
 
@@ -14,9 +36,8 @@ import static com.codenjoy.dojo.chess.service.Event.WRONG_MOVE;
 public class PromotionTest extends AbstractGameTest {
 
     @Test
-    public void ShouldBeFiredWrongMove_WhenTryingToPromoteKing() {
+    public void shouldBeFiredWrongMove_whenTryingToPromoteKing() {
 
-        // given
         givenFl("w......." +
                 ".......P" +
                 "........" +
@@ -42,9 +63,8 @@ public class PromotionTest extends AbstractGameTest {
     }
 
     @Test
-    public void ShouldNotBeAllowed_WhenTryingToPromoteIfPawnNotAtLastLine() {
+    public void shouldNotBeAllowed_whenTryingToPromoteIfPawnNotAtLastLine() {
 
-        // given
         givenFl("w......." +
                 "........" +
                 ".......P" +
@@ -70,9 +90,8 @@ public class PromotionTest extends AbstractGameTest {
     }
 
     @Test
-    public void ShouldNotBeAllowed_WhenTryingToMakePromotionByNotAPawn() {
+    public void shouldNotBeAllowed_whenTryingToMakePromotionByNotAPawn() {
 
-        // given
         givenFl("w......." +
                 ".......Q" +
                 "........" +
@@ -98,9 +117,8 @@ public class PromotionTest extends AbstractGameTest {
     }
 
     @Test
-    public void ShouldBeAllowed_WhenTryingToPromoteAPieceExceptKing() {
+    public void shouldBeAllowed_whenTryingToPromoteAPieceExceptKing() {
 
-        // given
         givenFl("w......." +
                 ".......P" +
                 "........" +

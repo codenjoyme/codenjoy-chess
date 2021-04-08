@@ -56,7 +56,6 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldFireWrongMoveEvent_whenTryingToMakeWrongMove() {
 
-        // given
         givenFl(classicBoard());
 
         // when
@@ -68,7 +67,7 @@ public class GameTest extends AbstractGameTest {
 
     @Test
     public void shouldNotRenderDeadPieces() {
-        // given
+
         givenFl("rkbqwbkr" +
                 "pppp.ppp" +
                 "........" +
@@ -97,7 +96,6 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldNotBePossibleToMoveEnemyPieces() {
 
-        // given
         givenFl(classicBoard());
 
         // when

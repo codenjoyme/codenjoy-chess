@@ -1,5 +1,27 @@
 package com.codenjoy.dojo.chess.model;
 
+/*-
+ * #%L
+ * Codenjoy - it's a dojo-like platform from developers to developers.
+ * %%
+ * Copyright (C) 2018 - 2021 Codenjoy
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
+
 import com.codenjoy.dojo.chess.model.level.Level;
 import com.codenjoy.dojo.chess.model.piece.Piece;
 import com.codenjoy.dojo.chess.service.Event;
@@ -26,13 +48,26 @@ import static org.mockito.Mockito.*;
 @SuppressWarnings({"rawtypes", "unused", "unchecked", "SpellCheckingInspection"})
 public abstract class AbstractGameTest {
     private final Map<Color, Player> players = new HashMap<>();
+
     private final Map<Player, EventListener> listeners = new HashMap<>();
 
-    protected Chess game;
     private String board;
+
+    protected Chess game;
     protected Dice dice;
     protected PrinterFactory printerFactory;
     protected GameSettings settings;
+
+    protected static String classicBoard() {
+        return "rkbqwbkr" +
+                "pppppppp" +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "PPPPPPPP" +
+                "RKBQWBKR";
+    }
 
     @Before
     public void setup() {
@@ -89,10 +124,6 @@ public abstract class AbstractGameTest {
         }
     }
 
-    protected GameSet getGameSet(Color color) {
-        return players.get(color).getGameSet();
-    }
-
     protected void assertE(String expected) {
         assertE(expected, Color.WHITE);
     }
@@ -100,17 +131,6 @@ public abstract class AbstractGameTest {
     protected void assertE(String expected, Color playerColor) {
         assertEquals(TestUtils.injectN(expected), printerFactory.getPrinter(
                 game.reader(), players.get(playerColor)).print());
-    }
-
-    protected String classicBoard() {
-        return "rkbqwbkr" +
-                "pppppppp" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "PPPPPPPP" +
-                "RKBQWBKR";
     }
 
     protected void move(Color color, Move move) {

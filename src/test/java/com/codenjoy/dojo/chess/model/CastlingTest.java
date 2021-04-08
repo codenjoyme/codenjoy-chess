@@ -1,5 +1,27 @@
 package com.codenjoy.dojo.chess.model;
 
+/*-
+ * #%L
+ * Codenjoy - it's a dojo-like platform from developers to developers.
+ * %%
+ * Copyright (C) 2018 - 2021 Codenjoy
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
+
 import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.Color.BLACK;
@@ -16,7 +38,6 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeCastling_ifKingAlreadyMoved() {
 
-        // given
         givenFl(".w......" +
                 "........" +
                 "........" +
@@ -40,7 +61,6 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeCastling_ifCastlingAlreadyDoneOnce() {
 
-        // given
         givenFl(".w......" +
                 "........" +
                 "........" +
@@ -88,7 +108,6 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeCastlingWithRook_ifTheRookAlreadyMoved() {
 
-        // given
         givenFl(".w......" +
                 "........" +
                 "........" +
@@ -112,7 +131,6 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeCastling_ifThereIsFriendlyPieceBetweenKingAndRook() {
 
-        // given
         givenFl(".w......" +
                 "........" +
                 "........" +
@@ -132,7 +150,6 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeCastling_ifThereIsEnemyPieceBetweenKingAndRook() {
 
-        // given
         givenFl(".w......" +
                 "........" +
                 "........" +
@@ -160,7 +177,6 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeCastling_ifKingIsUnderACheck() {
 
-        // given
         givenFl(".w......" +
                 "........" +
                 "........" +
@@ -180,7 +196,6 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeLongCastling_ifKingShouldPassThroughSquareWhichAttackedByEnemy() {
 
-        // given
         givenFl(".w......" +
                 "........" +
                 "........" +
@@ -200,7 +215,6 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeShortCastling_ifKingShouldPassThroughSquareWhichAttackedByEnemy() {
 
-        // given
         givenFl(".w......" +
                 "........" +
                 "........" +
@@ -220,7 +234,6 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeLongCastling_ifAfterThatKingWillBeUnderCheck() {
 
-        // given
         givenFl(".w......" +
                 "........" +
                 "........" +
@@ -240,7 +253,6 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeShortCastling_ifAfterThatKingWillBeUnderCheck() {
 
-        // given
         givenFl(".w......" +
                 "........" +
                 "........" +
@@ -260,7 +272,6 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeCastling_ifRookAndKingIsUnderAttackOfOnePiece() {
 
-        // given
         givenFl(".w......" +
                 "........" +
                 "........" +
@@ -285,7 +296,6 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldBeAbleToMakeCastling_ifThereIsNoPieceBetweenKingAndRook() {
 
-        // given
         givenFl(".w......" +
                 "........" +
                 "........" +
@@ -313,7 +323,6 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldBeAbleToMakeCastlingWithRook_evenIfAnotherRookAlreadyMoved() {
 
-        // given
         givenFl(".w......" +
                 "........" +
                 "........" +
@@ -344,7 +353,6 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldBeAbleToMakeCastling_ifRookIsUnderAttack() {
 
-        // given
         givenFl(".w......" +
                 "........" +
                 "........" +

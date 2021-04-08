@@ -59,9 +59,7 @@ public class ScoresTest {
         win();
         win();
 
-        assertEquals(140
-                + 4* settings.integer(WIN_SCORE),
-                scores.getScore());
+        assertEquals(140 + 4 * settings.integer(WIN_SCORE), scores.getScore());
     }
 
     @Test
