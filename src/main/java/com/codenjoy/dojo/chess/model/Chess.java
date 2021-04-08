@@ -63,6 +63,10 @@ public class Chess implements Board {
         currentPlayerId = (currentPlayerId + 1) % players.size();
     }
 
+    public Color getCurrentColor() {
+        return players.get(currentPlayerId).getColor();
+    }
+
     public int size() {
         return level.getSize();
     }
@@ -146,9 +150,6 @@ public class Chess implements Board {
 
     @Override
     public void newGame(Player player) {
-//        if (players.contains(player)) {
-//         ???   
-//        }
         if (players.size() == level.presentedColors().size()) {
             // players limit reached
             return;
@@ -200,4 +201,5 @@ public class Chess implements Board {
     public GameSettings settings() {
         return settings;
     }
+
 }

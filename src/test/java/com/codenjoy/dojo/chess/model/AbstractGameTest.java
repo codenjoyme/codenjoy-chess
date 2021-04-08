@@ -1,10 +1,13 @@
 package com.codenjoy.dojo.chess.model;
 
 import com.codenjoy.dojo.chess.model.level.Level;
+import com.codenjoy.dojo.chess.model.piece.Piece;
 import com.codenjoy.dojo.chess.service.Event;
 import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.EventListener;
+import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.printer.PrinterFactory;
 import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
 import com.codenjoy.dojo.utils.TestUtils;
@@ -25,6 +28,7 @@ public abstract class AbstractGameTest {
     private Map<Player, EventListener> listeners = new HashMap<>();
 
     protected Chess game;
+    private String board;
     protected Dice dice;
     protected PrinterFactory printerFactory;
     protected GameSettings settings;
@@ -34,6 +38,11 @@ public abstract class AbstractGameTest {
         dice = mock(Dice.class);
         printerFactory = new PrinterFactoryImpl();
         settings = new GameSettings();
+    }
+
+    protected void reset() {
+        setup();
+        givenFl(board);
     }
 
     protected void dice(int... ints) {
@@ -65,6 +74,7 @@ public abstract class AbstractGameTest {
     }
 
     protected void givenFl(String board) {
+        this.board = board;
         players.clear();
         listeners.clear();
         Level level = new Level(board);
@@ -101,5 +111,16 @@ public abstract class AbstractGameTest {
     protected void move(Color color, Move move) {
         players.get(color).getHero().act(move.command());
         game.tick();
+    }
+
+    protected Piece getPieceAt(int x, int y) {
+        return getPieceAt(new PointImpl(x, y));
+    }
+
+    protected Piece getPieceAt(Point position) {
+        return game.getPieces().stream()
+                .filter(p -> p.getPosition().equals(position))
+                .findFirst()
+                .orElse(null);
     }
 }

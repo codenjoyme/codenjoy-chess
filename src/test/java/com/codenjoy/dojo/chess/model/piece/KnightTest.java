@@ -1,29 +1,48 @@
 package com.codenjoy.dojo.chess.model.piece;
 
-import com.codenjoy.dojo.chess.model.AbstractGameTest;
-import org.junit.Test;
+import com.codenjoy.dojo.chess.model.Element;
+import com.codenjoy.dojo.services.PointImpl;
 
-import static com.codenjoy.dojo.chess.model.Color.BLACK;
 import static com.codenjoy.dojo.chess.model.Color.WHITE;
 import static com.codenjoy.dojo.chess.model.Move.from;
 import static com.codenjoy.dojo.chess.service.Event.WRONG_MOVE;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class KnightTest extends AbstractGameTest {
+public class KnightTest extends AbstractPieceTest {
 
-    private void knightSurroundedByEnemyPawns() {
+    public KnightTest() {
+        super(Element.WHITE_KNIGHT);
+    }
+
+    @Override
+    public void shouldMoveInAccordanceWithClassicChessRules() {
+
+        // when
         givenFl("w......." +
                 "........" +
-                "........" +
-                "..ppp..." +
-                "..pKp..." +
+                "...b...." +
+                "..pp...." +
+                ".qpKp..." +
                 "..ppp..." +
                 "........" +
                 ".......W");
+        Piece whiteKnight = getPieceAt(3, 3);
+
+        // then
+        assertCanMoveOnlyTo(whiteKnight,
+                new PointImpl(1, 2),
+                new PointImpl(1, 4),
+                new PointImpl(5, 2),
+                new PointImpl(5, 4),
+                new PointImpl(2, 5),
+                new PointImpl(4, 5),
+                new PointImpl(2, 1),
+                new PointImpl(4, 1)
+        );
     }
 
-    @Test
+    @Override
     public void shouldBeAbleToTakeEnemyPiece() {
 
         givenFl("w......." +
@@ -34,7 +53,7 @@ public class KnightTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 ".......W");
-        Piece enemyQueen = getGameSet(BLACK).getPieceAt(4, 5).get();
+        Piece enemyQueen = getPieceAt(4, 5);
 
         // when
         move(WHITE, from(3, 3).to(4, 5));
@@ -52,7 +71,7 @@ public class KnightTest extends AbstractGameTest {
         assertFalse(enemyQueen.isAlive());
     }
 
-    @Test
+    @Override
     public void shouldNotBeAbleToTakeFriendlyPiece() {
 
         givenFl("w......." +
@@ -63,7 +82,7 @@ public class KnightTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 ".......W");
-        Piece friendlyQueen = getGameSet(WHITE).getPieceAt(4, 5).get();
+        Piece friendlyQueen = getPieceAt(4, 5);
 
         // when
         move(WHITE, from(3, 3).to(4, 5));
@@ -79,389 +98,5 @@ public class KnightTest extends AbstractGameTest {
                 ".......W");
         fired(WHITE, WRONG_MOVE);
         assertTrue(friendlyQueen.isAlive());
-    }
-
-    @Test
-    public void shouldBeAbleToJumpOverPieces_LeftDown() {
-
-        // given
-        knightSurroundedByEnemyPawns();
-
-        // when
-        move(WHITE, from(3, 3).to(1, 2));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "..ppp..." +
-                "..p.p..." +
-                ".Kppp..." +
-                "........" +
-                ".......W");
-        neverFired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void shouldBeAbleToJumpOverPieces_LeftUp() {
-
-        // given
-        knightSurroundedByEnemyPawns();
-
-        // when
-        move(WHITE, from(3, 3).to(1, 4));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                ".Kppp..." +
-                "..p.p..." +
-                "..ppp..." +
-                "........" +
-                ".......W");
-        neverFired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void shouldBeAbleToJumpOverPieces_RightDown() {
-
-        // given
-        knightSurroundedByEnemyPawns();
-
-        // when
-        move(WHITE, from(3, 3).to(5, 2));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "..ppp..." +
-                "..p.p..." +
-                "..pppK.." +
-                "........" +
-                ".......W");
-        neverFired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void shouldBeAbleToJumpOverPieces_RightUp() {
-
-        // given
-        knightSurroundedByEnemyPawns();
-
-        // when
-        move(WHITE, from(3, 3).to(5, 4));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "..pppK.." +
-                "..p.p..." +
-                "..ppp..." +
-                "........" +
-                ".......W");
-        neverFired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void shouldBeAbleToJumpOverPieces_UpLeft() {
-
-        // given
-        knightSurroundedByEnemyPawns();
-
-        // when
-        move(WHITE, from(3, 3).to(2, 5));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "..K....." +
-                "..ppp..." +
-                "..p.p..." +
-                "..ppp..." +
-                "........" +
-                ".......W");
-        neverFired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void shouldBeAbleToJumpOverPieces_UpRight() {
-
-        // given
-        knightSurroundedByEnemyPawns();
-
-        // when
-        move(WHITE, from(3, 3).to(4, 5));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "....K..." +
-                "..ppp..." +
-                "..p.p..." +
-                "..ppp..." +
-                "........" +
-                ".......W");
-        neverFired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void shouldBeAbleToJumpOverPieces_DownLeft() {
-
-        // given
-        knightSurroundedByEnemyPawns();
-
-        // when
-        move(WHITE, from(3, 3).to(2, 1));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "..ppp..." +
-                "..p.p..." +
-                "..ppp..." +
-                "..K....." +
-                ".......W");
-        neverFired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void shouldBeAbleToJumpOverPieces_DownRight() {
-
-        // given
-        knightSurroundedByEnemyPawns();
-
-        // when
-        move(WHITE, from(3, 3).to(4, 1));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "..ppp..." +
-                "..p.p..." +
-                "..ppp..." +
-                "....K..." +
-                ".......W");
-        neverFired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void shouldNotBeAbleToWalkHorizontally_Right() {
-
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...K...." +
-                "........" +
-                "........" +
-                ".......W");
-
-        // when
-        move(WHITE, from(3, 3).to(4, 3));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...K...." +
-                "........" +
-                "........" +
-                ".......W");
-        fired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void shouldNotBeAbleToWalkHorizontally_Left() {
-
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...K...." +
-                "........" +
-                "........" +
-                ".......W");
-
-        // when
-        move(WHITE, from(3, 3).to(2, 3));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...K...." +
-                "........" +
-                "........" +
-                ".......W");
-        fired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void shouldNotBeAbleToWalkVertically_Up() {
-
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...K...." +
-                "........" +
-                "........" +
-                ".......W");
-
-        // when
-        move(WHITE, from(3, 3).to(3, 5));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...K...." +
-                "........" +
-                "........" +
-                ".......W");
-        fired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void shouldNotBeAbleToWalkVertically_Down() {
-
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...K...." +
-                "........" +
-                "........" +
-                ".......W");
-
-        // when
-        move(WHITE, from(3, 3).to(3, 1));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...K...." +
-                "........" +
-                "........" +
-                ".......W");
-        fired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void shouldNotBeAbleToWalkDiagonally_UpRight() {
-
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...K...." +
-                "........" +
-                "........" +
-                ".......W");
-
-        // when
-        move(WHITE, from(3, 3).to(4, 4));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...K...." +
-                "........" +
-                "........" +
-                ".......W");
-        fired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void shouldNotBeAbleToWalkDiagonally_UpLeft() {
-
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...K...." +
-                "........" +
-                "........" +
-                ".......W");
-
-        // when
-        move(WHITE, from(3, 3).to(2, 4));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...K...." +
-                "........" +
-                "........" +
-                ".......W");
-        fired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void shouldNotBeAbleToWalkDiagonally_DownRight() {
-
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...K...." +
-                "........" +
-                "........" +
-                ".......W");
-
-        // when
-        move(WHITE, from(3, 3).to(4, 2));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...K...." +
-                "........" +
-                "........" +
-                ".......W");
-        fired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void shouldNotBeAbleToWalkDiagonally_DownLeft() {
-
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...K...." +
-                "........" +
-                "........" +
-                ".......W");
-
-        // when
-        move(WHITE, from(3, 3).to(1, 1));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...K...." +
-                "........" +
-                "........" +
-                ".......W");
-        fired(WHITE, WRONG_MOVE);
     }
 }

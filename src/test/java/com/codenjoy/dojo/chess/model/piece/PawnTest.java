@@ -1,6 +1,8 @@
 package com.codenjoy.dojo.chess.model.piece;
 
-import com.codenjoy.dojo.chess.model.AbstractGameTest;
+import com.codenjoy.dojo.chess.model.Element;
+import com.codenjoy.dojo.services.PointImpl;
+import org.fest.util.Arrays;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.Color.BLACK;
@@ -8,49 +10,29 @@ import static com.codenjoy.dojo.chess.model.Color.WHITE;
 import static com.codenjoy.dojo.chess.model.Move.from;
 import static com.codenjoy.dojo.chess.service.Event.WRONG_MOVE;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-public class PawnTest extends AbstractGameTest {
+public class PawnTest extends AbstractPieceTest {
 
-    @Test
-    public void ShouldBeAbleToWalkForward() {
+    public PawnTest() {
+        super(Element.WHITE_PAWN);
+    }
+
+    @Override
+    public void shouldMoveInAccordanceWithClassicChessRules() {
 
         // given
         classicBoard();
+        Piece whitePawn = getPieceAt(4, 1);
 
-        // when
-        move(WHITE, from(4, 1).to(4, 2));
-        move(BLACK, from(0, 6).to(0, 5));
-        move(WHITE, from(4, 2).to(4, 3));
-        move(BLACK, from(3, 6).to(3, 5));
-
-        // then
-        neverFired(WHITE, WRONG_MOVE);
-        neverFired(BLACK, WRONG_MOVE);
+        assertCanMoveOnlyTo(whitePawn,
+                new PointImpl(4, 2),
+                new PointImpl(4, 3)
+        );
     }
 
-    @Test
-    public void ShouldBeAbleToWalkTwoCellsForward_FromStartPosition() {
-
-        // given
-        classicBoard();
-
-        // when
-        move(WHITE, from(4, 1).to(4, 3));
-
-        // then
-        assertE("rkbqwbkr" +
-                "pppppppp" +
-                "........" +
-                "........" +
-                "....P..." +
-                "........" +
-                "PPPP.PPP" +
-                "RKBQWBKR");
-        neverFired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void ShouldBeAbleToWalkDiagonallyAndGetEnemyPiece_IfThereIsEnemyPiece() {
+    @Override
+    public void shouldBeAbleToTakeEnemyPiece() {
 
         // given
         givenFl("rkbqwbkr" +
@@ -59,9 +41,9 @@ public class PawnTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "....p..." +
-                "PPPPPPPP" +
+                ".....P.." +
                 "RKBQWBKR");
-        Piece enemyPawn = getGameSet(BLACK).getPieceAt(4, 2).orElse(null);
+        Piece blackPawn = getPieceAt(4 ,2);
 
         // when
         move(WHITE, from(5, 1).to(4, 2));
@@ -73,16 +55,46 @@ public class PawnTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "....P..." +
-                "PPPPP.PP" +
+                "........" +
                 "RKBQWBKR");
-        assertFalse(enemyPawn.isAlive());
+        assertFalse(blackPawn.isAlive());
         neverFired(WHITE, WRONG_MOVE);
     }
 
-    @Test
-    public void ShouldNotBeAbleToWalkTwoCellsForward_IfThereIsAnotherPieceOnTheWay() {
+    @Override
+    public void shouldNotBeAbleToTakeFriendlyPiece() {
 
         // given
+        givenFl("rkbqwbkr" +
+                "pppp.ppp" +
+                "........" +
+                "........" +
+                "........" +
+                "....Q..." +
+                ".....P.." +
+                "RKB.WBKR");
+        Piece whiteQueen = getPieceAt(4 ,2);
+
+        // when
+        move(WHITE, from(5, 1).to(4, 2));
+
+        // then
+        assertE("rkbqwbkr" +
+                "pppp.ppp" +
+                "........" +
+                "........" +
+                "........" +
+                "....Q..." +
+                ".....P.." +
+                "RKB.WBKR");
+        assertTrue(whiteQueen.isAlive());
+        fired(WHITE, WRONG_MOVE);
+    }
+
+    @Test
+    public void shouldNotBeAbleToMoveSomewhere_ifThereIsEnemyPieceOnTheWay() {
+
+        // when given
         givenFl("rkbqwbkr" +
                 "pppp.ppp" +
                 "........" +
@@ -91,18 +103,34 @@ public class PawnTest extends AbstractGameTest {
                 "....p..." +
                 "PPPPPPPP" +
                 "RKBQWBKR");
-
-        // when
-        move(WHITE, from(4, 1).to(4, 3));
+        Piece whitePawn = getPieceAt(4, 1);
 
         // then
-        fired(WHITE, WRONG_MOVE);
+        assertCanMoveOnlyTo(whitePawn, Arrays.array());
     }
 
     @Test
-    public void ShouldNotBeAbleToWalkTwoCellsForward_IfThereIsAnotherPieceAtTargetSquare() {
+    public void shouldNotBeAbleToMoveSomewhere_ifThereIsFriendlyPieceOnTheWay() {
 
-        // given
+        // when given
+        givenFl("rkbqwbkr" +
+                "pppp.ppp" +
+                "........" +
+                "........" +
+                "........" +
+                "....Q..." +
+                "PPPPPPPP" +
+                "RKB.WBKR");
+        Piece whitePawn = getPieceAt(4, 1);
+
+        // then
+        assertCanMoveOnlyTo(whitePawn, Arrays.array());
+    }
+
+    @Test
+    public void shouldNotBeAbleToMoveTwoStepsForward_ifThereIsAnotherPieceAtTheTargetPosition() {
+
+        // when given
         givenFl("rkbqwbkr" +
                 "pppp.ppp" +
                 "........" +
@@ -111,60 +139,43 @@ public class PawnTest extends AbstractGameTest {
                 "........" +
                 "PPPPPPPP" +
                 "RKBQWBKR");
-
-        // when
-        move(WHITE, from(4, 1).to(4, 3));
+        Piece whitePawn = getPieceAt(4, 1);
 
         // then
-        fired(WHITE, WRONG_MOVE);
+        assertCanMoveOnlyTo(whitePawn, new PointImpl(4, 2));
     }
 
     @Test
-    public void ShouldNotBeAbleToWalkForward_IfThereIsAnotherPieceAtTargetSquare() {
-
-        // given
-        givenFl("r.bqwbkr" +
-                "pppppppp" +
-                "........" +
-                "........" +
-                "........" +
-                "....k..." +
-                "PPPPPPPP" +
-                "RKBQWBKR");
-
-        // when
-        move(WHITE, from(4, 1).to(4, 2));
-
-        // then
-        fired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void ShouldNotBeAbleToWalkTwoCellsForward_IfNotStaysOnStartPosition() {
+    public void shouldNotBeAbleToMoveTwoStepsForward_ifNotAtStartPosition() {
 
         // given
         classicBoard();
+        Piece whitePawn = getPieceAt(4, 1);
 
         // when
-        move(WHITE, from(4, 1).to(4, 2));
-        move(BLACK, from(3, 6).to(3, 5));
-        move(WHITE, from(4, 2).to(4, 4)); // trying move two cells forward not from start position
+        Preconditions preconditions = () -> {
+            move(WHITE, from(4, 1).to(4, 2));
+            move(BLACK, from(3, 6).to(3, 5));
+        };
 
         // then
-        fired(WHITE, WRONG_MOVE);
+        assertCanMoveOnlyTo(preconditions, whitePawn, new PointImpl(4, 3));
     }
 
     @Test
-    public void ShouldBeAbleToGoDown_WhenPlaysBlack() {
+    public void blackPawnsShouldBeAbleToMoveDown() {
 
         // given
         classicBoard();
+        Piece blackPawn = getPieceAt(3, 6);
 
         // when
-        move(WHITE, from(4, 1).to(4, 2));
-        move(BLACK, from(3, 6).to(3, 5));
+        Preconditions preconditions = () -> move(WHITE, from(4, 1).to(4, 2));
 
         // then
-        neverFired(BLACK, WRONG_MOVE);
+        assertCanMoveOnlyTo(preconditions, blackPawn,
+                new PointImpl(3, 5),
+                new PointImpl(3, 4)
+        );
     }
 }

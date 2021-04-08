@@ -1,125 +1,52 @@
 package com.codenjoy.dojo.chess.model.piece;
 
-import com.codenjoy.dojo.chess.model.AbstractGameTest;
+import com.codenjoy.dojo.chess.model.Element;
+import com.codenjoy.dojo.services.PointImpl;
 import org.junit.Test;
 
-import static com.codenjoy.dojo.chess.model.Color.BLACK;
 import static com.codenjoy.dojo.chess.model.Color.WHITE;
 import static com.codenjoy.dojo.chess.model.Move.from;
 import static com.codenjoy.dojo.chess.service.Event.WRONG_MOVE;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-public class BishopTest extends AbstractGameTest {
+public class BishopTest extends AbstractPieceTest {
 
-    @Test
-    public void shouldBeAbleToWalkDiagonal_UpRight() {
+    public BishopTest() {
+        super(Element.WHITE_BISHOP);
+    }
+
+    @Override
+    public void shouldMoveInAccordanceWithClassicChessRules() {
 
         givenFl("w......." +
                 "........" +
                 "........" +
                 "........" +
-                "........" +
-                "........" +
-                "........" +
-                "B......W");
-
-        // when
-        move(WHITE, from(0, 0).to(7, 7));
-
-        // then
-        assertE("w......B" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
+                "...B...." +
                 "........" +
                 "........" +
                 ".......W");
-        neverFired(WHITE, WRONG_MOVE);
+        Piece whiteBishop = getPieceAt(3, 3);
+
+        assertCanMoveOnlyTo(whiteBishop,
+                new PointImpl(0, 0),
+                new PointImpl(1, 1),
+                new PointImpl(2, 2),
+                new PointImpl(4, 4),
+                new PointImpl(5, 5),
+                new PointImpl(6, 6),
+                new PointImpl(7, 7),
+                new PointImpl(6, 0),
+                new PointImpl(5, 1),
+                new PointImpl(4, 2),
+                new PointImpl(2, 4),
+                new PointImpl(1, 5),
+                new PointImpl(0, 6)
+        );
     }
 
-    @Test
-    public void shouldBeAbleToWalkDiagonal_UpLeft() {
-
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "......BW");
-
-        // when
-        move(WHITE, from(6, 0).to(0, 6));
-
-        // then
-        assertE("w......." +
-                "B......." +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                ".......W");
-        neverFired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void shouldBeAbleToWalkDiagonal_DownRight() {
-
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "B......." +
-                "........" +
-                ".......W");
-
-        // when
-        move(WHITE, from(0, 2).to(2, 0));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "..B....W");
-        neverFired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void shouldBeAbleToWalkDiagonal_DownLeft() {
-
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                ".....B.." +
-                "........" +
-                "........" +
-                ".......W");
-
-        // when
-        move(WHITE, from(5, 3).to(2, 0));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "..B....W");
-        neverFired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
+    @Override
     public void shouldBeAbleToTakeEnemyPiece() {
 
         givenFl("w......." +
@@ -130,7 +57,7 @@ public class BishopTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "q......W");
-        Piece enemiesQueen = getGameSet(BLACK).getPieceAt(0, 0).get();
+        Piece blackQueen = getPieceAt(0, 0);
 
         // when
         move(WHITE, from(3, 3).to(0, 0));
@@ -145,11 +72,11 @@ public class BishopTest extends AbstractGameTest {
                 "........" +
                 "B......W");
         neverFired(WHITE, WRONG_MOVE);
-        assertFalse(enemiesQueen.isAlive());
+        assertFalse(blackQueen.isAlive());
     }
 
-    @Test
-    public void shouldNotBeAbleToWalkHorizontally_Right() {
+    @Override
+    public void shouldNotBeAbleToTakeFriendlyPiece() {
 
         givenFl("w......." +
                 "........" +
@@ -158,10 +85,11 @@ public class BishopTest extends AbstractGameTest {
                 "...B...." +
                 "........" +
                 "........" +
-                ".......W");
+                "Q......W");
+        Piece whiteQueen = getPieceAt(0, 0);
 
         // when
-        move(WHITE, from(3, 3).to(4, 3));
+        move(WHITE, from(3, 3).to(0, 0));
 
         // then
         assertE("w......." +
@@ -171,93 +99,13 @@ public class BishopTest extends AbstractGameTest {
                 "...B...." +
                 "........" +
                 "........" +
-                ".......W");
+                "Q......W");
         fired(WHITE, WRONG_MOVE);
+        assertTrue(whiteQueen.isAlive());
     }
 
     @Test
-    public void shouldNotBeAbleToWalkHorizontally_Left() {
-
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...B...." +
-                "........" +
-                "........" +
-                ".......W");
-
-        // when
-        move(WHITE, from(3, 3).to(1, 3));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...B...." +
-                "........" +
-                "........" +
-                ".......W");
-        fired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void shouldNotBeAbleToWalkVertically_Up() {
-
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...B...." +
-                "........" +
-                "........" +
-                ".......W");
-
-        // when
-        move(WHITE, from(3, 3).to(3, 6));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...B...." +
-                "........" +
-                "........" +
-                ".......W");
-        fired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void shouldNotBeAbleToWalkVertically_Down() {
-
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...B...." +
-                "........" +
-                "........" +
-                ".......W");
-
-        // when
-        move(WHITE, from(3, 3).to(3, 0));
-
-        // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...B...." +
-                "........" +
-                "........" +
-                ".......W");
-        fired(WHITE, WRONG_MOVE);
-    }
-
-    @Test
-    public void shouldNotBeAbleToWalkThroughEnemyPiece() {
+    public void shouldNotBeAbleToMoveThroughEnemyPiece() {
 
         givenFl("w......." +
                 "........" +
@@ -309,4 +157,5 @@ public class BishopTest extends AbstractGameTest {
                 ".......W");
         fired(WHITE, WRONG_MOVE);
     }
+
 }

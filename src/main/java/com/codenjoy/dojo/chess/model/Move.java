@@ -10,6 +10,14 @@ public class Move {
     private final Point from;
     private final Point to;
 
+    @Override
+    public String toString() {
+        return "Move " +
+                "from " + from +
+                " to " + to +
+                (withPromotion() ? " with promotion " + promotion : "");
+    }
+
     public PieceType getPromotion() {
         return promotion;
     }

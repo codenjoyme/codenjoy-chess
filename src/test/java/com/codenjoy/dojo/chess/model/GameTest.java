@@ -89,4 +89,6 @@ public class GameTest extends AbstractGameTest {
                 "PPPPP.PP" +
                 "RKBQWBKR");
     }
+
+    // SHOULD NOT WALK ENEMIES PIECES
 }
