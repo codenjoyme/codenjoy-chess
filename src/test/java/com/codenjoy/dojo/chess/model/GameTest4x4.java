@@ -2,6 +2,7 @@ package com.codenjoy.dojo.chess.model;
 
 import com.codenjoy.dojo.chess.model.piece.Piece;
 import com.codenjoy.dojo.chess.service.Event;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.Color.*;
@@ -9,62 +10,8 @@ import static com.codenjoy.dojo.chess.model.Move.*;
 import static com.codenjoy.dojo.chess.service.Event.*;
 import static org.junit.Assert.assertFalse;
 
-public class FourPlayersGameTest extends AbstractGameTest {
-
-    private String fourPlayersBoard() {
-        return  "  rkbqwbkr  " +
-                "  pppppppp  " +
-                "IZ........zi" +
-                "LZ........zl" +
-                "GZ........zg" +
-                "XZ........zx" +
-                "YZ........zy" +
-                "GZ........zg" +
-                "LZ........zl" +
-                "IZ........zi" +
-                "  PPPPPPPP  " +
-                "  RKBQWBKR  ";
-    }
-
-    @Test
-    public void shouldDrawBoardProperlyForWhites() {
-
-        // when
-        givenFl(fourPlayersBoard());
-
-        // then
-        assertE(fourPlayersBoard(), WHITE);
-    }
-
-    @Test
-    public void shouldDrawBoardProperlyForBlacks() {
-
-        // when
-        givenFl(fourPlayersBoard());
-
-        // then
-        assertE(fourPlayersBoard(), BLACK);
-    }
-
-    @Test
-    public void shouldDrawBoardProperlyForReds() {
-
-        // when
-        givenFl(fourPlayersBoard());
-
-        // then
-        assertE(fourPlayersBoard(), RED);
-    }
-
-    @Test
-    public void shouldDrawBoardProperlyForBlues() {
-
-        // when
-        givenFl(fourPlayersBoard());
-
-        // then
-        assertE(fourPlayersBoard(), BLUE);
-    }
+@Ignore
+public class GameTest4x4 extends AbstractGameTest {
 
     private String whiteKnightSurroundedByPieces() {
         return "  ....w...  " +
@@ -158,8 +105,4 @@ public class FourPlayersGameTest extends AbstractGameTest {
         neverFired(WHITE, WRONG_MOVE);
         assertFalse(redPawn.isAlive());
     }
-
-    // castling
-    // en passant
-    // promotion
 }

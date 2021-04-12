@@ -107,12 +107,15 @@ public class GameSet extends PlayerHero<Board> {
 
     @Override
     public void act(int... codes) {
-        command = Move.decode(codes);
+        if (field.getCurrentColor() == getColor()) {
+            command = Move.decode(codes);
+        }
     }
 
     @Override
     public void tick() {
         triedWrongMove = false;
+        lastMove = null;
         if (command == null) {
             return;
         }

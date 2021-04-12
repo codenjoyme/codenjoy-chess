@@ -52,4 +52,9 @@ public interface Board extends GameField<Player> {
     List<Piece> getPieces();
 
     List<Piece> getPieces(Color color);
+
+    List<Color> getColors();
+
+    Color getCurrentColor();
+
 }

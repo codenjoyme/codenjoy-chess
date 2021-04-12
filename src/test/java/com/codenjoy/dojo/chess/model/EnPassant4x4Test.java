@@ -1,6 +1,7 @@
 package com.codenjoy.dojo.chess.model;
 
 import com.codenjoy.dojo.chess.model.piece.Piece;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.Color.*;
@@ -8,6 +9,7 @@ import static com.codenjoy.dojo.chess.model.Move.from;
 import static com.codenjoy.dojo.chess.service.Event.WRONG_MOVE;
 import static org.junit.Assert.assertFalse;
 
+@Ignore
 public class EnPassant4x4Test extends AbstractGameTest {
 
     @Test

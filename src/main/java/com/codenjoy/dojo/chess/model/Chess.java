@@ -58,9 +58,10 @@ public class Chess implements Board {
     public void tick() {
         Player player = players.get(currentPlayerId);
         Move move = player.makeMove();
-        if (move != null) {
-            history.add(player.getColor(), move);
+        if (move == null) {
+            return;
         }
+        history.add(player.getColor(), move);
         players.stream()
                 .filter(p -> !p.getGameSet().isAlive())
                 .forEach(p -> p.event(Event.GAME_OVER));
@@ -73,6 +74,7 @@ public class Chess implements Board {
         currentPlayerId = (currentPlayerId + 1) % players.size();
     }
 
+    @Override
     public Color getCurrentColor() {
         return players.get(currentPlayerId).getColor();
     }
@@ -96,6 +98,11 @@ public class Chess implements Board {
                 .filter(p -> p.getColor() == color)
                 .findAny().orElse(null);
         return player.getGameSet().getPieces();
+    }
+
+    @Override
+    public List<Color> getColors() {
+        return level.presentedColors();
     }
 
     @Override
@@ -123,15 +130,18 @@ public class Chess implements Board {
 
     @Override
     public GameSet newGameSet() {
-        Color color = players.stream()
+        List<Color> usedColors = players.stream()
                 .map(Player::getGameSet)
                 .filter(Objects::nonNull)
                 .map(GameSet::getColor)
-                .max(Comparator.comparingInt(Color::getPriority))
-                .map(c -> Color.byPriority(c.getPriority() + 1))
+                .collect(Collectors.toList());
+
+        Color color = level.presentedColors().stream()
+                .filter(c -> !usedColors.contains(c))
+                .min(Comparator.comparingInt(Color::getPriority))
                 .orElse(Color.withHighestPriority());
 
-        if (!level.presentedColors().contains(color)) {
+        if (color == null) {
             // log
             return null;
         }

@@ -198,48 +198,49 @@ public class PawnTest extends AbstractPieceTest {
         );
     }
 
-    private String fourPlayersBoard() {
-        return "  rkbqwbkr  " +
-                "  pppppppp  " +
-                "IZ........zi" +
-                "LZ........zl" +
-                "GZ........zg" +
-                "XZ........zx" +
-                "YZ........zy" +
-                "GZ........zg" +
-                "LZ........zl" +
-                "IZ........zi" +
-                "  PPPPPPPP  " +
-                "  RKBQWBKR  ";
-    }
+//    private String fourPlayersBoard() {
+//        return "  rkbqwbkr  " +
+//                "  pppppppp  " +
+//                "IZ........zi" +
+//                "LZ........zl" +
+//                "GZ........zg" +
+//                "XZ........zx" +
+//                "YZ........zy" +
+//                "GZ........zg" +
+//                "LZ........zl" +
+//                "IZ........zi" +
+//                "  PPPPPPPP  " +
+//                "  RKBQWBKR  ";
+//    }
 
-    @Test
-    public void pawnsOfEachColorShouldMoveInSpecifiedDirection() {
-
-        givenFl(fourPlayersBoard());
-        Piece redPawn = getPieceAt(1, 5);
-        Piece bluePawn = getPieceAt(10, 5);
-
-        // when
-        Preconditions preconditionsForRed = () -> {
-            move(WHITE, from(4, 1).to(4, 3));
-            move(BLACK, from(4, 10).to(4, 9));
-        };
-
-        Preconditions preconditionsForBlue = () -> {
-            preconditionsForRed.run();
-            move(RED, from(1, 5).to(2, 5));
-        };
-
-        // then
-        assertCanMoveOnlyTo(preconditionsForRed, redPawn,
-                new PointImpl(2, 5),
-                new PointImpl(3, 5)
-        );
-
-        assertCanMoveOnlyTo(preconditionsForBlue, bluePawn,
-                new PointImpl(9, 5),
-                new PointImpl(8, 5)
-        );
-    }
+//    TODO:  4x4
+//    @Test
+//    public void pawnsOfEachColorShouldMoveInSpecifiedDirection() {
+//
+//        givenFl(fourPlayersBoard());
+//        Piece redPawn = getPieceAt(1, 5);
+//        Piece bluePawn = getPieceAt(10, 5);
+//
+//        // when
+//        Preconditions preconditionsForRed = () -> {
+//            move(WHITE, from(4, 1).to(4, 3));
+//            move(BLACK, from(4, 10).to(4, 9));
+//        };
+//
+//        Preconditions preconditionsForBlue = () -> {
+//            preconditionsForRed.run();
+//            move(RED, from(1, 5).to(2, 5));
+//        };
+//
+//        // then
+//        assertCanMoveOnlyTo(preconditionsForRed, redPawn,
+//                new PointImpl(2, 5),
+//                new PointImpl(3, 5)
+//        );
+//
+//        assertCanMoveOnlyTo(preconditionsForBlue, bluePawn,
+//                new PointImpl(9, 5),
+//                new PointImpl(8, 5)
+//        );
+//    }
 }
