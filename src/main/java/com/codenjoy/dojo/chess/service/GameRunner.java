@@ -23,6 +23,8 @@ package com.codenjoy.dojo.chess.service;
  */
 
 
+import com.codenjoy.dojo.chess.client.Board;
+import com.codenjoy.dojo.chess.client.ai.AISolver;
 import com.codenjoy.dojo.chess.model.*;
 import com.codenjoy.dojo.client.ClientBoard;
 import com.codenjoy.dojo.client.Solver;
@@ -69,12 +71,12 @@ public class GameRunner extends AbstractGameType<GameSettings> {
 
     @Override
     public Class<? extends Solver> getAI() {
-        return null;
+        return AISolver.class;
     }
 
     @Override
     public Class<? extends ClientBoard> getBoard() {
-        return null;
+        return Board.class;
     }
 
     @Override

@@ -48,7 +48,7 @@ public class Player extends GamePlayer<GameSet, Board> {
 
     @Override
     public GameSet getHero() {
-        return gameSet; // TODO implement me
+        return gameSet;
     }
 
     @Override

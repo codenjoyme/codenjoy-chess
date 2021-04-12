@@ -28,6 +28,7 @@ import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.Color.BLACK;
 import static com.codenjoy.dojo.chess.model.Color.WHITE;
+import static com.codenjoy.dojo.chess.model.Move.*;
 import static com.codenjoy.dojo.chess.model.Move.from;
 import static com.codenjoy.dojo.chess.service.Event.*;
 
@@ -67,6 +68,32 @@ public class GameTest extends AbstractGameTest {
     }
 
     @Test
+    public void shouldBeFiredWrongMove_whenTryToMoveEnemyPiece() {
+
+        givenFl(classicBoard());
+
+        // when
+        move(WHITE, from(0, 6).to(0, 5));
+
+        // then
+        assertE(classicBoard());
+        fired(WHITE, WRONG_MOVE);
+    }
+
+    @Test
+    public void shouldBeFiredWrongMove_whenSquareDoesntHavePiece() {
+
+        givenFl(classicBoard());
+
+        // when
+        move(WHITE, from(1, 3).to(1, 4));
+
+        // then
+        assertE(classicBoard());
+        fired(WHITE, WRONG_MOVE);
+    }
+
+    @Test
     public void shouldNotRenderDeadPieces() {
 
         givenFl("rkbqwbkr" +
@@ -92,19 +119,6 @@ public class GameTest extends AbstractGameTest {
                 "........" +
                 "PPPPP.PP" +
                 "RKBQWBKR");
-    }
-
-    @Test
-    public void shouldNotBePossibleToMoveEnemyPieces() {
-
-        givenFl(classicBoard());
-
-        // when
-        move(WHITE, from(0, 6).to(0, 5));
-
-        // then
-        assertE(classicBoard());
-        fired(WHITE, WRONG_MOVE);
     }
 
     @Test

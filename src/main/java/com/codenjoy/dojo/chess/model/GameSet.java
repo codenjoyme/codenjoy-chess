@@ -27,7 +27,10 @@ import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.multiplayer.PlayerHero;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -35,11 +38,12 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class GameSet extends PlayerHero<Board> {
+    private final static Logger LOGGER = LoggerFactory.getLogger(GameSet.class);
 
     private final List<Piece> pieces;
-    private Move command;
     private boolean triedWrongMove;
-    private Move lastMove = null;
+    private Move lastMove;
+    private Move command;
 
     public GameSet(List<Piece> pieces, Board board) {
         if (pieces.isEmpty()) {
@@ -107,8 +111,12 @@ public class GameSet extends PlayerHero<Board> {
 
     @Override
     public void act(int... codes) {
+        LOGGER.info("ACT{}, Color: {}", Arrays.toString(codes), getColor());
         if (field.getCurrentColor() == getColor()) {
             command = Move.decode(codes);
+            if (command == null) {
+                LOGGER.warn("Game set with color {} received invalid action parameters: {}", getColor(), Arrays.toString(codes));
+            }
         }
     }
 
@@ -119,9 +127,10 @@ public class GameSet extends PlayerHero<Board> {
         if (command == null) {
             return;
         }
+        // TODO: Piece can be null then wrong move
         Piece piece = field.getAt(command.getFrom())
                 .orElse(null);
-        if (piece.getColor() != getColor()) {
+        if (piece == null || piece.getColor() != getColor()) {
             triedWrongMove = true;
             lastMove = null;
             command = null;
@@ -153,7 +162,7 @@ public class GameSet extends PlayerHero<Board> {
         command = null;
     }
 
-    private boolean isCastling(Move move) {
+    private boolean isCastling(Move command) {
         Optional<Piece> optPieceOne = field.getAt(command.getFrom());
         Optional<Piece> optPieceTwo = field.getAt(command.getTo());
         if (optPieceOne.isEmpty() || optPieceTwo.isEmpty()) {
