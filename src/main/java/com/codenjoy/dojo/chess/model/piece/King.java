@@ -38,7 +38,7 @@ import static com.codenjoy.dojo.services.Direction.*;
 public class King extends Piece {
 
     public King(Color color, Board board, Point position) {
-        super(PieceType.KING, color, board, position);
+        super(Type.KING, color, board, position);
     }
 
     public void move(Point position) {
@@ -63,7 +63,7 @@ public class King extends Piece {
             Point point = position;
             do {
                 point = getAttackDirection().counterClockwise().change(point);
-            } while (board.isInBounds(point) && (board.getAt(point).isEmpty() || (board.getAt(point).get().getType() != PieceType.ROOK && board.getAt(point).get().getColor() != color)));
+            } while (board.isInBounds(point) && (board.getAt(point).isEmpty() || (board.getAt(point).get().getType() != Type.ROOK && board.getAt(point).get().getColor() != color)));
             if (board.getAt(point).isPresent()) {
                 Piece rook = board.getAt(point).get();
                 Direction direction = defineDirection(position, rook.getPosition());
@@ -78,7 +78,7 @@ public class King extends Piece {
             point = position;
             do {
                 point = getAttackDirection().clockwise().change(point);
-            } while (board.isInBounds(point) && (board.getAt(point).isEmpty() || (board.getAt(point).get().getType() != PieceType.ROOK && board.getAt(point).get().getColor() != color)));
+            } while (board.isInBounds(point) && (board.getAt(point).isEmpty() || (board.getAt(point).get().getType() != Type.ROOK && board.getAt(point).get().getColor() != color)));
             if (board.getAt(point).isPresent()) {
                 Piece rook = board.getAt(point).get();
                 if (rook.getColor() == color && !rook.isMoved()) {

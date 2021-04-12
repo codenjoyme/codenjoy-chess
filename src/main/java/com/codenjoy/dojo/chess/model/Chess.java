@@ -25,7 +25,6 @@ package com.codenjoy.dojo.chess.model;
 
 import com.codenjoy.dojo.chess.model.level.Level;
 import com.codenjoy.dojo.chess.model.piece.Piece;
-import com.codenjoy.dojo.chess.model.piece.PieceType;
 import com.codenjoy.dojo.chess.service.Event;
 import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.services.Dice;
@@ -146,7 +145,7 @@ public class Chess implements Board {
             return null;
         }
         List<Piece> result = Lists.newArrayList();
-        for (PieceType type : PieceType.values()) {
+        for (Piece.Type type : Piece.Type.values()) {
             List<Piece> pieces = level.pieces(color, type).stream()
                     .map(position -> Piece.create(type, color, this, position))
                     .collect(Collectors.toList());

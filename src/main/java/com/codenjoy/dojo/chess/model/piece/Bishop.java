@@ -38,7 +38,7 @@ import static com.codenjoy.dojo.services.Direction.*;
 public class Bishop extends Piece {
 
     public Bishop(Color color, Board board, Point position) {
-        super(PieceType.BISHOP, color, board, position);
+        super(Type.BISHOP, color, board, position);
     }
 
     @Override

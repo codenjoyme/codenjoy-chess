@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 
 public class Rook extends Piece {
     public Rook(Color color, Board board, Point position) {
-        super(PieceType.ROOK, color, board, position);
+        super(Type.ROOK, color, board, position);
     }
 
     public void move(Point position) {

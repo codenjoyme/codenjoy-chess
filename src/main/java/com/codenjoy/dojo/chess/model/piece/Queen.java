@@ -38,7 +38,7 @@ import static com.codenjoy.dojo.services.Direction.*;
 public class Queen extends Piece {
 
     public Queen(Color color, Board board, Point position) {
-        super(PieceType.QUEEN, color, board, position);
+        super(Type.QUEEN, color, board, position);
     }
 
     @Override

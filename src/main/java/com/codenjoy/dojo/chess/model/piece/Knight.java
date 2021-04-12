@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 public class Knight extends Piece {
 
     public Knight(Color color, Board board, Point position) {
-        super(PieceType.KNIGHT, color, board, position);
+        super(Type.KNIGHT, color, board, position);
     }
 
     @Override

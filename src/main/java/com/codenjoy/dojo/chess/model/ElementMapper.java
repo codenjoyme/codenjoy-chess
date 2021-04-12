@@ -23,18 +23,14 @@ package com.codenjoy.dojo.chess.model;
  */
 
 import com.codenjoy.dojo.chess.model.piece.Piece;
-import com.codenjoy.dojo.chess.model.piece.PieceType;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.common.collect.Maps;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.codenjoy.dojo.chess.model.Color.*;
 import static com.codenjoy.dojo.chess.model.Element.*;
-import static com.codenjoy.dojo.chess.model.piece.PieceType.*;
+import static com.codenjoy.dojo.chess.model.piece.Piece.Type.*;
 
 public class ElementMapper {
     private static final BiMap<ColorAndType, Element> elementsByColorAndType = HashBiMap.create();
@@ -69,7 +65,7 @@ public class ElementMapper {
         define(BLUE, PAWN, BLUE_PAWN);
     }
 
-    private static void define(Color color, PieceType type, Element element) {
+    private static void define(Color color, Piece.Type type, Element element) {
         elementsByColorAndType.put(new ColorAndType(color, type), element);
     }
 
@@ -77,23 +73,23 @@ public class ElementMapper {
         return mapToElement(piece.getColor(), piece.getType());
     }
 
-    public static Element mapToElement(Color color, PieceType pieceType) {
-        return elementsByColorAndType.get(new ColorAndType(color, pieceType));
+    public static Element mapToElement(Color color, Piece.Type type) {
+        return elementsByColorAndType.get(new ColorAndType(color, type));
     }
 
     public static Color mapToColor(Element element) {
         return elementsByColorAndType.inverse().get(element).color;
     }
 
-    public static PieceType mapToPieceType(Element element) {
+    public static Piece.Type mapToPieceType(Element element) {
         return elementsByColorAndType.inverse().get(element).type;
     }
 
     private static class ColorAndType {
         private final Color color;
-        private final PieceType type;
+        private final Piece.Type type;
 
-        public ColorAndType(Color color, PieceType type) {
+        public ColorAndType(Color color, Piece.Type type) {
             this.color = color;
             this.type = type;
         }

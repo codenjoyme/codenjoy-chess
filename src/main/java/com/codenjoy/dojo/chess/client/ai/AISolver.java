@@ -23,12 +23,14 @@ package com.codenjoy.dojo.chess.client.ai;
  */
 
 import com.codenjoy.dojo.chess.client.Board;
+import com.codenjoy.dojo.chess.model.Chess;
 import com.codenjoy.dojo.client.Solver;
 import com.codenjoy.dojo.services.Dice;
 
 public class AISolver implements Solver<Board> {
 
     private Dice dice;
+    private Chess chess;
 
     public static int i;
     public AISolver(Dice dice) {
@@ -37,6 +39,7 @@ public class AISolver implements Solver<Board> {
 
     @Override
     public String get(final Board board) {
+
         return "ACT(1,6,1,4)";
     }
 }

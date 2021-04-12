@@ -49,7 +49,7 @@ public class GameSet extends PlayerHero<Board> {
         if (pieces.isEmpty()) {
             throw new IllegalArgumentException("Game set should contain at least one piece");
         }
-        List<Piece> kings = pieces.stream().filter(p -> p.getType() == PieceType.KING)
+        List<Piece> kings = pieces.stream().filter(p -> p.getType() == Piece.Type.KING)
                 .collect(Collectors.toList());
         if (kings.size() != 1) {
             throw new IllegalArgumentException("Should be exactly 1 king piece in game set");
@@ -60,7 +60,7 @@ public class GameSet extends PlayerHero<Board> {
 
     public boolean isAlive() {
         return pieces.stream()
-                .filter(p -> p.getType() == PieceType.KING)
+                .filter(p -> p.getType() == Piece.Type.KING)
                 .findAny()
                 .map(Piece::isAlive)
                 .orElse(false);
@@ -173,7 +173,7 @@ public class GameSet extends PlayerHero<Board> {
         if (pieceOne.getColor() != pieceTwo.getColor()) {
             return false;
         }
-        return pieceOne.getType() == PieceType.KING && pieceTwo.getType() == PieceType.ROOK;
+        return pieceOne.getType() == Piece.Type.KING && pieceTwo.getType() == Piece.Type.ROOK;
     }
 
     private boolean tryCastling(Rook rook) {
@@ -219,7 +219,7 @@ public class GameSet extends PlayerHero<Board> {
 
     private King getKing() {
         return (King) pieces.stream()
-                .filter(p -> p.getType() == PieceType.KING)
+                .filter(p -> p.getType() == Piece.Type.KING)
                 .findFirst().orElse(null);
     }
 

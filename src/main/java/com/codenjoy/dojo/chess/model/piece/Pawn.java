@@ -47,7 +47,7 @@ public class Pawn extends Piece {
     private boolean moved;
 
     public Pawn(Color color, Board board, Point position) {
-        super(PieceType.PAWN, color, board, position);
+        super(Type.PAWN, color, board, position);
     }
 
     @Override
@@ -76,8 +76,8 @@ public class Pawn extends Piece {
         if (board.getAt(step).isEmpty()) {
             moves.add(Move.from(position).to(step));
             if (step.getY() == 0 || step.getY() == board.getSize() - 1) {
-                for (PieceType ptype : PieceType.values()) {
-                    if (ptype != PieceType.KING) {
+                for (Type ptype : Type.values()) {
+                    if (ptype != Type.KING) {
                         moves.add(Move.from(position).to(step).promotion(ptype));
                     }
                 }

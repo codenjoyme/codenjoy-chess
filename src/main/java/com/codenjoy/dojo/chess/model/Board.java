@@ -36,7 +36,7 @@ public interface Board extends GameField<Player> {
 
     List<Move> getPossibleMoves(Piece piece);
 
-    abstract GameHistory getHistory();
+    GameHistory getHistory();
 
     Move getLastMove();
 
@@ -45,7 +45,6 @@ public interface Board extends GameField<Player> {
     int getSize();
 
     boolean isInBounds(Point point);
-
 
     boolean isUnderAttack(Point point, Color color);
 

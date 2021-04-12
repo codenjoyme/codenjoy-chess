@@ -22,7 +22,7 @@ package com.codenjoy.dojo.chess.model;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.model.piece.PieceType;
+import com.codenjoy.dojo.chess.model.piece.Piece;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 
@@ -40,11 +40,11 @@ public class Move {
                 (withPromotion() ? " with promotion " + promotion : "");
     }
 
-    public PieceType getPromotion() {
+    public Piece.Type getPromotion() {
         return promotion;
     }
 
-    private PieceType promotion;
+    private Piece.Type promotion;
 
     private Move(Point from, Point to) {
         this.from = from;
@@ -84,13 +84,13 @@ public class Move {
         return to;
     }
 
-    public Move promotion(PieceType piece) {
+    public Move promotion(Piece.Type piece) {
         promotion = piece;
         return this;
     }
 
     public Move promotion(int pieceId) {
-        return promotion(PieceType.byId(pieceId));
+        return promotion(Piece.Type.byId(pieceId));
     }
 
     public boolean withPromotion() {

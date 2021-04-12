@@ -28,13 +28,14 @@ import com.codenjoy.dojo.chess.model.Board;
 import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.multiplayer.TriFunction;
 
 import java.util.List;
 
 public abstract class Piece {
 
     protected final Color color;
-    protected final PieceType type;
+    protected final Type type;
     protected final Board board;
     protected Point position;
     protected boolean alive;
@@ -44,7 +45,7 @@ public abstract class Piece {
         return moved;
     }
 
-    public Piece(PieceType type, Color color, Board board, Point position) {
+    public Piece(Type type, Color color, Board board, Point position) {
         this.type = type;
         this.color = color;
         this.board = board;
@@ -52,7 +53,7 @@ public abstract class Piece {
         this.alive = true;
     }
 
-    public static Piece create(PieceType type, Color color, Board board, Point position) {
+    public static Piece create(Type type, Color color, Board board, Point position) {
         return type.getConstructor().apply(color, board, position);
     }
 
@@ -74,7 +75,7 @@ public abstract class Piece {
         return alive;
     }
 
-    public PieceType getType() {
+    public Type getType() {
         return type;
     }
 
@@ -86,5 +87,39 @@ public abstract class Piece {
 
     public void setAlive(boolean alive) {
         this.alive = alive;
+    }
+
+    public enum Type {
+        KING(0, King::new),
+        QUEEN(1, Queen::new),
+        KNIGHT(2, Knight::new),
+        BISHOP(3, Bishop::new),
+        ROOK(4, Rook::new),
+        PAWN(5, Pawn::new);
+
+        private final int id;
+        private final TriFunction<Color, Board, Point, Piece> constructor;
+
+        Type(int id, TriFunction<Color, Board, Point, Piece> constructor) {
+            this.id = id;
+            this.constructor = constructor;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public TriFunction<Color, Board, Point, Piece> getConstructor() {
+            return constructor;
+        }
+
+        public static Type byId(int id) {
+            for (Type type : Type.values()) {
+                if (type.id == id) {
+                    return type;
+                }
+            }
+            return null;
+        }
     }
 }

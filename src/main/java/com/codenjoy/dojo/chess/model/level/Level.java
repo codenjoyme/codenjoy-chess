@@ -24,7 +24,7 @@ package com.codenjoy.dojo.chess.model.level;
 
 
 import com.codenjoy.dojo.chess.model.*;
-import com.codenjoy.dojo.chess.model.piece.PieceType;
+import com.codenjoy.dojo.chess.model.piece.Piece;
 import com.codenjoy.dojo.services.LengthToXY;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.utils.LevelUtils;
@@ -54,7 +54,7 @@ public class Level {
         return (int) Math.sqrt(map.length());
     }
 
-    public List<Point> pieces(Color color, PieceType type) {
+    public List<Point> pieces(Color color, Piece.Type type) {
         return LevelUtils.getObjects(xy, map, Function.identity(), ElementMapper.mapToElement(color, type));
     }
 

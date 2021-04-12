@@ -22,7 +22,7 @@ package com.codenjoy.dojo.chess.model;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.model.piece.PieceType;
+import com.codenjoy.dojo.chess.model.piece.Piece;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.Color.WHITE;
@@ -48,7 +48,7 @@ public class PromotionTest extends AbstractGameTest {
                 "RKBQWBKR");
 
         // when
-        move(WHITE, from(7, 6).to(7, 7).promotion(PieceType.KING));
+        move(WHITE, from(7, 6).to(7, 7).promotion(Piece.Type.KING));
 
         // then
         assertE("w......." +
@@ -75,7 +75,7 @@ public class PromotionTest extends AbstractGameTest {
                 "RKBQWBKR");
 
         // when
-        move(WHITE, from(7, 5).to(7, 6).promotion(PieceType.QUEEN));
+        move(WHITE, from(7, 5).to(7, 6).promotion(Piece.Type.QUEEN));
 
         // then
         assertE("w......." +
@@ -102,7 +102,7 @@ public class PromotionTest extends AbstractGameTest {
                 "RKB.WBKR");
 
         // when
-        move(WHITE, from(7, 6).to(7, 5).promotion(PieceType.PAWN));
+        move(WHITE, from(7, 6).to(7, 5).promotion(Piece.Type.PAWN));
 
         // then
         assertE("w......." +
@@ -129,7 +129,7 @@ public class PromotionTest extends AbstractGameTest {
                 "RKBQWBKR");
 
         // when
-        move(WHITE, from(7, 6).to(7, 7).promotion(PieceType.QUEEN));
+        move(WHITE, from(7, 6).to(7, 7).promotion(Piece.Type.QUEEN));
 
         // then
         assertE("w......Q" +
