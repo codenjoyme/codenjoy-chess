@@ -26,8 +26,6 @@ package com.codenjoy.dojo.chess.model;
 import com.codenjoy.dojo.services.printer.CharElements;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public enum Element implements CharElements {
 
