@@ -23,8 +23,8 @@ package com.codenjoy.dojo.chess.model.piece;
  */
 
 
-import com.codenjoy.dojo.chess.model.Board;
 import com.codenjoy.dojo.chess.model.Color;
+import com.codenjoy.dojo.chess.model.GameBoard;
 import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
@@ -37,19 +37,19 @@ import static com.codenjoy.dojo.services.Direction.*;
 
 public class King extends Piece {
 
-    public King(Color color, Board board, Point position) {
+    public King(Color color, GameBoard board, Point position) {
         super(Type.KING, color, board, position);
     }
 
     public void move(Point position) {
-        board.getAt(position).ifPresent(p -> p.setAlive(false));
+        board.getPieceAt(position).ifPresent(p -> p.setAlive(false));
         this.position = position;
         moved = true;
     }
 
     @Override
     public List<Move> getAvailableMoves() {
-        List<Move> moves = listOfAvailableMoves(board,
+        List<Move> moves = listOfAvailableMoves(
                 LEFT.change(position),
                 UP.change(position),
                 RIGHT.change(position),
@@ -63,9 +63,9 @@ public class King extends Piece {
             Point point = position;
             do {
                 point = getAttackDirection().counterClockwise().change(point);
-            } while (board.isInBounds(point) && (board.getAt(point).isEmpty() || (board.getAt(point).get().getType() != Type.ROOK && board.getAt(point).get().getColor() != color)));
-            if (board.getAt(point).isPresent()) {
-                Piece rook = board.getAt(point).get();
+            } while (board.isInBounds(point) && (board.getPieceAt(point).isEmpty() || (board.getPieceAt(point).get().getType() != Type.ROOK && board.getPieceAt(point).get().getColor() != color)));
+            if (board.getPieceAt(point).isPresent()) {
+                Piece rook = board.getPieceAt(point).get();
                 Direction direction = defineDirection(position, rook.getPosition());
                 Point rookPosition = direction.change(position);
                 Point kingPosition = direction.change(rookPosition);
@@ -78,9 +78,9 @@ public class King extends Piece {
             point = position;
             do {
                 point = getAttackDirection().clockwise().change(point);
-            } while (board.isInBounds(point) && (board.getAt(point).isEmpty() || (board.getAt(point).get().getType() != Type.ROOK && board.getAt(point).get().getColor() != color)));
-            if (board.getAt(point).isPresent()) {
-                Piece rook = board.getAt(point).get();
+            } while (board.isInBounds(point) && (board.getPieceAt(point).isEmpty() || (board.getPieceAt(point).get().getType() != Type.ROOK && board.getPieceAt(point).get().getColor() != color)));
+            if (board.getPieceAt(point).isPresent()) {
+                Piece rook = board.getPieceAt(point).get();
                 if (rook.getColor() == color && !rook.isMoved()) {
                     moves.add(Move.from(position).to(point));
                 }
@@ -102,28 +102,28 @@ public class King extends Piece {
         return null;
     }
 
-    private List<Move> listOfAvailableMoves(Board board, Point... destinations) {
+    private List<Move> listOfAvailableMoves(Point... destinations) {
         List<Move> result = Lists.newArrayList();
         for (Point dest : destinations) {
-            if (isAvailable(board, dest)) {
+            if (isAvailable(dest)) {
                 result.add(Move.from(position).to(dest));
             }
         }
         return result;
     }
 
-    private boolean isAvailable(Board board, Point dest) {
-        Optional<Piece> pieceAtDest = board.getAt(dest);
+    private boolean isAvailable(Point dest) {
+        Optional<Piece> pieceAtDest = board.getPieceAt(dest);
         return board.isInBounds(dest) && (pieceAtDest.isEmpty() || pieceAtDest.get().getColor() != color);
     }
 
     @Override
-    public void setAlive(boolean value) {
-        this.alive = value;
-        if (!alive) {
-            board.getPieces(color).stream()
-                    .filter(Piece::isAlive)
-                    .forEach(p -> p.setAlive(false));
+    public void setAlive(boolean alive) {
+        if (this.alive && !alive) {
+            this.alive = false;
+            board.die(color);
+        } else {
+            this.alive = alive;
         }
     }
 }

@@ -35,7 +35,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static com.codenjoy.dojo.chess.model.Move.from;
-import static com.codenjoy.dojo.chess.service.Event.WRONG_MOVE;
+import static com.codenjoy.dojo.chess.model.Event.WRONG_MOVE;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractPieceTest extends AbstractGameTest {
@@ -78,8 +78,8 @@ public abstract class AbstractPieceTest extends AbstractGameTest {
     protected void assertCanMoveOnlyTo(Preconditions preconditions, Piece piece, Point... positionsArray) {
         List<Point> positions = Lists.newArrayList(positionsArray);
         Color color = piece.getColor();
-        for (int x = -1; x <= game.size(); x++) {
-            for (int y = -1; y <= game.size(); y++) {
+        for (int x = -1; x <= getBoardSize(); x++) {
+            for (int y = -1; y <= getBoardSize(); y++) {
                 reset();
                 Piece p = getPieceAt(piece.getPosition());
                 if (preconditions != null) {

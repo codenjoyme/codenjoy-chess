@@ -22,7 +22,6 @@ package com.codenjoy.dojo.chess.model.piece;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Element;
 import com.codenjoy.dojo.services.PointImpl;
 import org.fest.util.Arrays;
@@ -30,7 +29,7 @@ import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.Color.*;
 import static com.codenjoy.dojo.chess.model.Move.from;
-import static com.codenjoy.dojo.chess.service.Event.WRONG_MOVE;
+import static com.codenjoy.dojo.chess.model.Event.WRONG_MOVE;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

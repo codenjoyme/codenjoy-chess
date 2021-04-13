@@ -24,11 +24,10 @@ package com.codenjoy.dojo.chess.model.piece;
 
 
 import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.model.Board;
+import com.codenjoy.dojo.chess.model.GameBoard;
 import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
-import com.codenjoy.dojo.services.multiplayer.TriFunction;
 
 import java.util.List;
 
@@ -36,16 +35,12 @@ public abstract class Piece {
 
     protected final Color color;
     protected final Type type;
-    protected final Board board;
+    protected final GameBoard board;
     protected Point position;
     protected boolean alive;
     protected boolean moved;
 
-    public boolean isMoved() {
-        return moved;
-    }
-
-    public Piece(Type type, Color color, Board board, Point position) {
+    public Piece(Type type, Color color, GameBoard board, Point position) {
         this.type = type;
         this.color = color;
         this.board = board;
@@ -53,14 +48,40 @@ public abstract class Piece {
         this.alive = true;
     }
 
-    public static Piece create(Type type, Color color, Board board, Point position) {
-        return type.getConstructor().apply(color, board, position);
+    public static Piece create(Type type, Color color, GameBoard board, Point position) {
+        switch (type) {
+            case KING:
+                return new King(color, board, position);
+            case QUEEN:
+                return new Queen(color, board, position);
+            case KNIGHT:
+                return new Knight(color, board, position);
+            case ROOK:
+                return new Rook(color, board, position);
+            case BISHOP:
+                return new Bishop(color, board, position);
+            case PAWN:
+                return new Pawn(color, board, position);
+            default:
+                throw new IllegalArgumentException("Unknown piece type: " + type);
+        }
+    }
+
+    public boolean isMoved() {
+        return moved;
     }
 
     public void move(Move move) {
-        board.getAt(move.getTo()).ifPresent(p -> p.setAlive(false));
+        board.getPieceAt(move.getTo()).ifPresent(p -> p.setAlive(false));
         position = move.getTo();
         moved = true;
+    }
+
+    protected static Point diagonal(Point position, Direction one, Direction two) {
+        if (one == two || one.inverted() == two) {
+            throw new IllegalArgumentException("Directions should be perpendicular for diagonal position calculation");
+        }
+        return one.change(two.change(position));
     }
 
     public Color getColor() {
@@ -89,28 +110,39 @@ public abstract class Piece {
         this.alive = alive;
     }
 
+    @Override
+    public String toString() {
+        return "Piece{" +
+                "color=" + color +
+                ", type=" + type +
+                ", position=" + position +
+                ", alive=" + alive +
+                ", moved=" + moved +
+                '}';
+    }
+
     public enum Type {
-        KING(0, King::new),
-        QUEEN(1, Queen::new),
-        KNIGHT(2, Knight::new),
-        BISHOP(3, Bishop::new),
-        ROOK(4, Rook::new),
-        PAWN(5, Pawn::new);
+        KING(0, 20),
+        QUEEN(1, 9),
+        KNIGHT(2, 3),
+        BISHOP(3, 5),
+        ROOK(4, 5),
+        PAWN(5, 1);
 
         private final int id;
-        private final TriFunction<Color, Board, Point, Piece> constructor;
+        private final int cost;
 
-        Type(int id, TriFunction<Color, Board, Point, Piece> constructor) {
+        Type(int id, int cost) {
             this.id = id;
-            this.constructor = constructor;
+            this.cost = cost;
         }
 
         public int getId() {
             return id;
         }
 
-        public TriFunction<Color, Board, Point, Piece> getConstructor() {
-            return constructor;
+        public int getCost() {
+            return cost;
         }
 
         public static Type byId(int id) {

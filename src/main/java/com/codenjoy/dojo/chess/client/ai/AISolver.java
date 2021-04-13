@@ -23,7 +23,7 @@ package com.codenjoy.dojo.chess.client.ai;
  */
 
 import com.codenjoy.dojo.chess.client.Board;
-import com.codenjoy.dojo.chess.model.Chess;
+import com.codenjoy.dojo.chess.api.Chess;
 import com.codenjoy.dojo.client.Solver;
 import com.codenjoy.dojo.services.Dice;
 

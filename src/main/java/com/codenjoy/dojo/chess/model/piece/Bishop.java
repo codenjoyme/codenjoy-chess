@@ -24,7 +24,7 @@ package com.codenjoy.dojo.chess.model.piece;
 
 
 import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.model.Board;
+import com.codenjoy.dojo.chess.model.GameBoard;
 import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
@@ -37,35 +37,30 @@ import static com.codenjoy.dojo.services.Direction.*;
 
 public class Bishop extends Piece {
 
-    public Bishop(Color color, Board board, Point position) {
+    public Bishop(Color color, GameBoard board, Point position) {
         super(Type.BISHOP, color, board, position);
     }
 
     @Override
     public List<Move> getAvailableMoves() {
         ArrayList<Move> moves = Lists.newArrayList();
-        moves.addAll(availableDiagonalMoves(board, LEFT, UP));
-        moves.addAll(availableDiagonalMoves(board, UP, RIGHT));
-        moves.addAll(availableDiagonalMoves(board, RIGHT, DOWN));
-        moves.addAll(availableDiagonalMoves(board, DOWN, LEFT));
+        moves.addAll(availableDiagonalMoves(LEFT, UP));
+        moves.addAll(availableDiagonalMoves(UP, RIGHT));
+        moves.addAll(availableDiagonalMoves(RIGHT, DOWN));
+        moves.addAll(availableDiagonalMoves(DOWN, LEFT));
         return moves;
     }
 
-    private List<Move> availableDiagonalMoves(Board board, Direction one, Direction two) {
+    private List<Move> availableDiagonalMoves(Direction one, Direction two) {
         List<Move> result = Lists.newArrayList();
         Point dest = diagonal(position, one, two);
-        while (board.isInBounds(dest) && board.getAt(dest).isEmpty()) {
+        while (board.isInBounds(dest) && board.getPieceAt(dest).isEmpty()) {
             result.add(Move.from(position).to(dest));
             dest = diagonal(dest, one, two);
         }
-        if (board.isInBounds(dest) && board.getAt(dest).isPresent() && board.getAt(dest).get().getColor() != color) {
+        if (board.isInBounds(dest) && board.getPieceAt(dest).isPresent() && board.getPieceAt(dest).get().getColor() != color) {
             result.add(Move.from(position).to(dest));
         }
         return result;
-    }
-
-
-    private Point diagonal(Point position, Direction one, Direction two) {
-        return one.change(two.change(position));
     }
 }

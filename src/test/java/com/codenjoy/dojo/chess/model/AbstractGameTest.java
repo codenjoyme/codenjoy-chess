@@ -22,9 +22,10 @@ package com.codenjoy.dojo.chess.model;
  * #L%
  */
 
+import com.codenjoy.dojo.chess.api.Chess;
+import com.codenjoy.dojo.chess.api.Player;
 import com.codenjoy.dojo.chess.model.level.Level;
 import com.codenjoy.dojo.chess.model.piece.Piece;
-import com.codenjoy.dojo.chess.service.Event;
 import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.EventListener;
@@ -93,6 +94,16 @@ public abstract class AbstractGameTest {
         verify(eventListener, never()).event(event);
     }
 
+    public void neverFired(Event event) {
+        for (Map.Entry<Player, EventListener> entry: listeners.entrySet()) {
+            try {
+                verify(entry.getValue(), never()).event(event);
+            } catch (Throwable ex) {
+                System.err.println("Color: " + entry.getKey().getColor());
+            }
+        }
+    }
+
     public void fired(Color color, int times, Event event) {
         EventListener eventListener = listeners.get(players.get(color));
         verify(eventListener, times(times)).event(event);
@@ -143,9 +154,13 @@ public abstract class AbstractGameTest {
     }
 
     protected Piece getPieceAt(Point position) {
-        return game.getPieces().stream()
+        return game.getBoard().getPieces().stream()
                 .filter(p -> p.getPosition().equals(position))
                 .findFirst()
                 .orElse(null);
+    }
+
+    protected int getBoardSize() {
+        return game.getBoard().getSize();
     }
 }

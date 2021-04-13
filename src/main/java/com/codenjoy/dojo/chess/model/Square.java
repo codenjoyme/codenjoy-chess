@@ -22,6 +22,7 @@ package com.codenjoy.dojo.chess.model;
  * #L%
  */
 
+import com.codenjoy.dojo.chess.api.ReaderEl;
 import com.codenjoy.dojo.services.Point;
 
 public class Square {

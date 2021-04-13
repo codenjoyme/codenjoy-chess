@@ -23,13 +23,12 @@ package com.codenjoy.dojo.chess.model;
  */
 
 import com.codenjoy.dojo.chess.model.piece.Piece;
-import com.codenjoy.dojo.chess.service.Event;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.Color.*;
 import static com.codenjoy.dojo.chess.model.Move.*;
-import static com.codenjoy.dojo.chess.service.Event.*;
+import static com.codenjoy.dojo.chess.model.Event.*;
 import static org.junit.Assert.assertFalse;
 
 @Ignore

@@ -28,9 +28,8 @@ import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.Color.BLACK;
 import static com.codenjoy.dojo.chess.model.Color.WHITE;
-import static com.codenjoy.dojo.chess.model.Move.*;
 import static com.codenjoy.dojo.chess.model.Move.from;
-import static com.codenjoy.dojo.chess.service.Event.*;
+import static com.codenjoy.dojo.chess.model.Event.*;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class GameTest extends AbstractGameTest {
@@ -119,6 +118,7 @@ public class GameTest extends AbstractGameTest {
                 "........" +
                 "PPPPP.PP" +
                 "RKBQWBKR");
+        neverFired(WRONG_MOVE);
     }
 
     @Test

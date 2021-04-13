@@ -23,6 +23,8 @@ package com.codenjoy.dojo.chess.service;
  */
 
 
+import com.codenjoy.dojo.chess.api.Chess;
+import com.codenjoy.dojo.chess.api.Player;
 import com.codenjoy.dojo.chess.client.Board;
 import com.codenjoy.dojo.chess.client.ai.AISolver;
 import com.codenjoy.dojo.chess.model.*;

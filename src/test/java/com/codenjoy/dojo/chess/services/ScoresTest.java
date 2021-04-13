@@ -23,7 +23,7 @@ package com.codenjoy.dojo.chess.services;
  */
 
 
-import com.codenjoy.dojo.chess.service.Event;
+import com.codenjoy.dojo.chess.model.Event;
 import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.chess.service.Scores;
 import com.codenjoy.dojo.services.PlayerScores;

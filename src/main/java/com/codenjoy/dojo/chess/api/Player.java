@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.model;
+package com.codenjoy.dojo.chess.api;
 
 /*-
  * #%L
@@ -23,14 +23,17 @@ package com.codenjoy.dojo.chess.model;
  */
 
 
-import com.codenjoy.dojo.chess.service.Event;
+import com.codenjoy.dojo.chess.model.Color;
+import com.codenjoy.dojo.chess.model.Move;
+import com.codenjoy.dojo.chess.model.Event;
 import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.services.EventListener;
+import com.codenjoy.dojo.services.Joystick;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 
-public class Player extends GamePlayer<GameSet, Board> {
+public class Player extends GamePlayer<ChessPlayerHero, Chess> {
 
-    private GameSet gameSet;
+    private ChessPlayerHero hero;
     private boolean alive;
     private boolean winner;
 
@@ -38,34 +41,32 @@ public class Player extends GamePlayer<GameSet, Board> {
         super(listener, settings);
     }
 
-    public GameSet getGameSet() {
-        return gameSet;
-    }
-
     public Color getColor() {
-        return gameSet.getColor();
+        return hero.getColor();
     }
 
     @Override
-    public GameSet getHero() {
-        return gameSet;
+    public ChessPlayerHero getHero() {
+        return hero;
     }
 
     @Override
-    public void newHero(Board board) {
-        gameSet = board.newGameSet();
+    public void newHero(Chess game) {
+        Color color = game.getAvailableColor();
+        this.hero = new ChessPlayerHero(color, game);
+        game.getBoard().setUsed(color);
         alive = true;
         winner = false;
     }
 
     @Override
     public boolean isAlive() {
-        return alive;
+        return hero.isAlive();
     }
 
     @Override
     public boolean isWin() {
-        return winner;
+        return hero.isWinner();
     }
 
     @Override
@@ -84,10 +85,8 @@ public class Player extends GamePlayer<GameSet, Board> {
     }
 
     public Move makeMove() {
-        gameSet.tick();
-        if (gameSet.isTriedWrongMove()) {
-            listener.event(Event.WRONG_MOVE);
-        }
-        return gameSet.getLastMove();
+        hero.tick();
+        hero.getEvents().forEach(this::event);
+        return hero.getLastMove();
     }
 }

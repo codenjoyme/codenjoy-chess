@@ -23,8 +23,8 @@ package com.codenjoy.dojo.chess.model.piece;
  */
 
 
-import com.codenjoy.dojo.chess.model.Board;
 import com.codenjoy.dojo.chess.model.Color;
+import com.codenjoy.dojo.chess.model.GameBoard;
 import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 
 public class Knight extends Piece {
 
-    public Knight(Color color, Board board, Point position) {
+    public Knight(Color color, GameBoard board, Point position) {
         super(Type.KNIGHT, color, board, position);
     }
 
@@ -48,7 +48,7 @@ public class Knight extends Piece {
     }
 
     private boolean isAvailable(Point position) {
-        return board.getAt(position)
+        return board.getPieceAt(position)
                 .map(p -> p.getColor() != color)
                 .orElse(board.isInBounds(position));
     }

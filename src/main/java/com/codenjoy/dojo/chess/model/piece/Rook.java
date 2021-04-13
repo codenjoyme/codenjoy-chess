@@ -24,7 +24,7 @@ package com.codenjoy.dojo.chess.model.piece;
 
 
 import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.model.Board;
+import com.codenjoy.dojo.chess.model.GameBoard;
 import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
@@ -34,12 +34,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Rook extends Piece {
-    public Rook(Color color, Board board, Point position) {
+    public Rook(Color color, GameBoard board, Point position) {
         super(Type.ROOK, color, board, position);
     }
 
     public void move(Point position) {
-        board.getAt(position).ifPresent(p -> p.setAlive(false));
+        board.getPieceAt(position).ifPresent(p -> p.setAlive(false));
         this.position = position;
         moved = true;
     }
@@ -63,11 +63,11 @@ public class Rook extends Piece {
     private List<Move> foo(Direction d) {
         Point p = d.change(position);
         List<Point> points = Lists.newArrayList();
-        while (board.isInBounds(p) && board.getAt(p).isEmpty()) {
+        while (board.isInBounds(p) && board.getPieceAt(p).isEmpty()) {
             points.add(p);
             p = d.change(p);
         }
-        if (board.isInBounds(p) && board.getAt(p).isPresent() && board.getAt(p).get().getColor() != color) {
+        if (board.isInBounds(p) && board.getPieceAt(p).isPresent() && board.getPieceAt(p).get().getColor() != color) {
             points.add(p);
         }
         return points.stream()

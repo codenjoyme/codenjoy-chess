@@ -27,7 +27,7 @@ import org.junit.Test;
 import static com.codenjoy.dojo.chess.model.Color.BLACK;
 import static com.codenjoy.dojo.chess.model.Color.WHITE;
 import static com.codenjoy.dojo.chess.model.Move.from;
-import static com.codenjoy.dojo.chess.service.Event.WRONG_MOVE;
+import static com.codenjoy.dojo.chess.model.Event.WRONG_MOVE;
 
 public class CastlingTest extends AbstractGameTest {
 
@@ -194,6 +194,25 @@ public class CastlingTest extends AbstractGameTest {
     }
 
     @Test
+    public void shouldNotBeAbleToMakeCastling_whenPawnAttacksRookDestinationSquare() {
+
+        givenFl(".w......" +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "....p..." +
+                "R...W..R");
+
+        // when
+        move(WHITE, from(4, 0).to(0, 0));
+
+        // then
+        fired(WHITE, WRONG_MOVE);
+    }
+
+    @Test
     public void shouldNotBeAbleToMakeLongCastling_ifKingShouldPassThroughSquareWhichAttackedByEnemy() {
 
         givenFl(".w......" +
@@ -317,7 +336,7 @@ public class CastlingTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "R.B..RW.");
-        neverFired(WHITE, WRONG_MOVE);
+        neverFired(WRONG_MOVE);
     }
 
     @Test
@@ -334,7 +353,7 @@ public class CastlingTest extends AbstractGameTest {
         move(WHITE, from(0, 0).to(0, 1));
         move(BLACK, from(1, 7).to(1, 6));
 
-        // when trying to make castling with rook that already moved
+        // when trying to make castling with rook that not moved yet
         move(WHITE, from(4, 0).to(7, 0));
 
         // then
@@ -347,7 +366,7 @@ public class CastlingTest extends AbstractGameTest {
                 "R......." +
                 ".....RW.");
 
-        neverFired(WHITE, WRONG_MOVE);
+        neverFired(WRONG_MOVE);
     }
 
     @Test
@@ -374,6 +393,6 @@ public class CastlingTest extends AbstractGameTest {
                 "........" +
                 "........" +
                 "..WR...R");
-        neverFired(WHITE, WRONG_MOVE);
+        neverFired(WRONG_MOVE);
     }
 }

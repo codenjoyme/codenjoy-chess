@@ -1,10 +1,10 @@
-package com.codenjoy.dojo.chess.model;
+package com.codenjoy.dojo.chess.api;
 
 /*-
  * #%L
  * Codenjoy - it's a dojo-like platform from developers to developers.
  * %%
- * Copyright (C) 2018 Codenjoy
+ * Copyright (C) 2018 - 2021 Codenjoy
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -22,38 +22,29 @@ package com.codenjoy.dojo.chess.model;
  * #L%
  */
 
-
+import com.codenjoy.dojo.chess.model.Element;
+import com.codenjoy.dojo.chess.model.ElementMapper;
 import com.codenjoy.dojo.chess.model.piece.Piece;
 import com.codenjoy.dojo.services.Point;
-import com.codenjoy.dojo.services.multiplayer.GameField;
+import com.codenjoy.dojo.services.PointImpl;
+import com.codenjoy.dojo.services.State;
 
-import java.util.List;
-import java.util.Optional;
+public class ReaderEl extends PointImpl implements State<Element, Player> {
+    private final Element element;
 
-public interface Board extends GameField<Player> {
+    public static ReaderEl create(Piece piece) {
+        Point position = piece.getPosition();
+        Element element = ElementMapper.mapToElement(piece);
+        return new ReaderEl(position, element);
+    }
 
-    Optional<Piece> getAt(Point position);
+    public ReaderEl(Point position, Element element) {
+        super(position);
+        this.element = element;
+    }
 
-    List<Move> getPossibleMoves(Piece piece);
-
-    GameHistory getHistory();
-
-    Move getLastMove();
-
-    GameSet newGameSet();
-
-    int getSize();
-
-    boolean isInBounds(Point point);
-
-    boolean isUnderAttack(Point point, Color color);
-
-    List<Piece> getPieces();
-
-    List<Piece> getPieces(Color color);
-
-    List<Color> getColors();
-
-    Color getCurrentColor();
-
+    @Override
+    public Element state(Player player, Object... alsoAtPoint) {
+        return element;
+    }
 }

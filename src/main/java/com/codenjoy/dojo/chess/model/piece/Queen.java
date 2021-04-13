@@ -23,8 +23,8 @@ package com.codenjoy.dojo.chess.model.piece;
  */
 
 
-import com.codenjoy.dojo.chess.model.Board;
 import com.codenjoy.dojo.chess.model.Color;
+import com.codenjoy.dojo.chess.model.GameBoard;
 import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
@@ -37,7 +37,7 @@ import static com.codenjoy.dojo.services.Direction.*;
 
 public class Queen extends Piece {
 
-    public Queen(Color color, Board board, Point position) {
+    public Queen(Color color, GameBoard board, Point position) {
         super(Type.QUEEN, color, board, position);
     }
 
@@ -48,21 +48,21 @@ public class Queen extends Piece {
         result.addAll(foo(DOWN));
         result.addAll(foo(LEFT));
         result.addAll(foo(RIGHT));
-        result.addAll(availableDiagonalMoves(board, LEFT, UP));
-        result.addAll(availableDiagonalMoves(board, UP, RIGHT));
-        result.addAll(availableDiagonalMoves(board, RIGHT, DOWN));
-        result.addAll(availableDiagonalMoves(board, DOWN, LEFT));
+        result.addAll(availableDiagonalMoves(LEFT, UP));
+        result.addAll(availableDiagonalMoves(UP, RIGHT));
+        result.addAll(availableDiagonalMoves(RIGHT, DOWN));
+        result.addAll(availableDiagonalMoves(DOWN, LEFT));
         return result;
     }
 
     private List<Move> foo(Direction d) {
         Point p = d.change(position);
         List<Point> points = Lists.newArrayList();
-        while (board.isInBounds(p) && board.getAt(p).isEmpty()) {
+        while (board.isInBounds(p) && board.getPieceAt(p).isEmpty()) {
             points.add(p);
             p = d.change(p);
         }
-        if (board.isInBounds(p) && board.getAt(p).isPresent() && board.getAt(p).get().getColor() != color) {
+        if (board.isInBounds(p) && board.getPieceAt(p).isPresent() && board.getPieceAt(p).get().getColor() != color) {
             points.add(p);
         }
         return points.stream()
@@ -70,21 +70,16 @@ public class Queen extends Piece {
                 .collect(Collectors.toList());
     }
 
-    private List<Move> availableDiagonalMoves(Board board, Direction one, Direction two) {
+    private List<Move> availableDiagonalMoves(Direction one, Direction two) {
         List<Move> result = Lists.newArrayList();
         Point dest = diagonal(position, one, two);
-        while (board.isInBounds(dest) && board.getAt(dest).isEmpty()) {
+        while (board.isInBounds(dest) && board.getPieceAt(dest).isEmpty()) {
             result.add(Move.from(position).to(dest));
             dest = diagonal(dest, one, two);
         }
-        if (board.isInBounds(dest) && board.getAt(dest).isPresent() && board.getAt(dest).get().getColor() != color) {
+        if (board.isInBounds(dest) && board.getPieceAt(dest).isPresent() && board.getPieceAt(dest).get().getColor() != color) {
             result.add(Move.from(position).to(dest));
         }
         return result;
-    }
-
-
-    private Point diagonal(Point position, Direction one, Direction two) {
-        return one.change(two.change(position));
     }
 }
