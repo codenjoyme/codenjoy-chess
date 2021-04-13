@@ -28,8 +28,6 @@ import com.codenjoy.dojo.services.PlayerScores;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.codenjoy.dojo.chess.engine.service.GameSettings.Keys.WIN_SCORE;
-
 public class Scores implements PlayerScores {
 
     private final static int DEFAULT_SCORE = 0;
@@ -61,7 +59,8 @@ public class Scores implements PlayerScores {
     @Override
     public void event(Object event) {
         if (event.equals(Event.WIN)) {
-            score.addAndGet(settings.integer(WIN_SCORE));
+//            score.addAndGet(settings.integer(WIN_SCORE));
         }
+
     }
 }

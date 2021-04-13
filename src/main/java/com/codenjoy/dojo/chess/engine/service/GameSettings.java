@@ -24,21 +24,29 @@ package com.codenjoy.dojo.chess.engine.service;
 
 
 import com.codenjoy.dojo.chess.engine.level.Level;
+import com.codenjoy.dojo.chess.engine.level.Levels;
 import com.codenjoy.dojo.services.settings.SettingsImpl;
 import com.codenjoy.dojo.services.settings.SettingsReader;
 
-import static com.codenjoy.dojo.chess.engine.service.GameSettings.Keys.*;
+import static com.codenjoy.dojo.chess.engine.service.GameSettings.Option.*;
 
 public final class GameSettings extends SettingsImpl implements SettingsReader<GameSettings> {
 
-    public enum Keys implements Key {
+    public enum Option implements Key {
 
-        WIN_SCORE("Win score"),
-        LEVEL_MAP("Level map");
+        LEVEL_MAP("Level map"),
+        GAME_OVER_IF_WRONG_MOVE(
+                "If set TRUE and player making wrong move then he immediately loses, " +
+                        "if set FALSE the player skips move"
+        ),
+        WAIT_UNTIL_MAKE_A_MOVE(
+                "If set TRUE and player has not responded in right time then game waits him, " +
+                        "if set FALSE the player skips move"
+        );
 
-        private String key;
+        private final String key;
 
-        Keys(String key) {
+        Option(String key) {
             this.key = key;
         }
 
@@ -49,21 +57,12 @@ public final class GameSettings extends SettingsImpl implements SettingsReader<G
     }
 
     public GameSettings() {
-        integer(WIN_SCORE, 30);
-
-        multiline(LEVEL_MAP,
-                        "rkbqwbkr" +
-                        "pppppppp" +
-                        "........" +
-                        "........" +
-                        "........" +
-                        "........" +
-                        "PPPPPPPP" +
-                        "RKBQWBKR");
+        bool(GAME_OVER_IF_WRONG_MOVE, false);
+        bool(WAIT_UNTIL_MAKE_A_MOVE, false);
+        multiline(LEVEL_MAP, Levels.classicChessBoard());
     }
 
     public Level level() {
         return new Level(string(LEVEL_MAP));
     }
-
 }

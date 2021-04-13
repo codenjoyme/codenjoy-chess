@@ -8,19 +8,20 @@ import com.codenjoy.dojo.chess.engine.model.item.piece.Piece;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class GameBoard {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GameBoard.class);
     private final Level level;
     private final GameHistory history;
     private final List<Square> squares;
     private final List<Barrier> barriers;
     private final List<GameSet> gameSets;
-
     private final List<Color> used;
-
     private Color currentColor;
 
     public GameBoard(Level level) {
@@ -53,16 +54,15 @@ public class GameBoard {
 
     public boolean tryMove(Color color, Move move) {
         if (color != currentColor) {
+            LOGGER.warn("{} player trying to make a move, but current player is {}", color, currentColor);
             return false;
         }
-        GameSet currentGameSet = getCurrentGameSet();
-        if (currentGameSet.makeMove(move)) {
-            currentColor = nextColor();
-            history.add(color, move);
-            return true;
-        }
+        boolean moveCommitted = getCurrentGameSet().makeMove(move);
         currentColor = nextColor();
-        return false;
+        if (moveCommitted) {
+            history.add(color, move);
+        }
+        return moveCommitted;
     }
 
     private Color nextColor() {
