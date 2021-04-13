@@ -1,10 +1,10 @@
-package com.codenjoy.dojo.chess.client.ai;
+package com.codenjoy.dojo.chess.engine.model;
 
 /*-
  * #%L
  * Codenjoy - it's a dojo-like platform from developers to developers.
  * %%
- * Copyright (C) 2018 - 2021 Codenjoy
+ * Copyright (C) 2018 Codenjoy
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -22,24 +22,7 @@ package com.codenjoy.dojo.chess.client.ai;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.client.Board;
-import com.codenjoy.dojo.chess.engine.service.Chess;
-import com.codenjoy.dojo.client.Solver;
-import com.codenjoy.dojo.services.Dice;
 
-public class AISolver implements Solver<Board> {
-
-    private Dice dice;
-    private Chess chess;
-
-    public static int i;
-    public AISolver(Dice dice) {
-        this.dice = dice;
-    }
-
-    @Override
-    public String get(final Board board) {
-
-        return "ACT(1,6,1,4)";
-    }
+public enum Event {
+    WIN, WRONG_MOVE, GAME_OVER;
 }

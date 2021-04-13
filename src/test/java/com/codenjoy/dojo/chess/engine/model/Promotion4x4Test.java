@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.client.ai;
+package com.codenjoy.dojo.chess.engine.model;
 
 /*-
  * #%L
@@ -22,24 +22,8 @@ package com.codenjoy.dojo.chess.client.ai;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.client.Board;
-import com.codenjoy.dojo.chess.engine.service.Chess;
-import com.codenjoy.dojo.client.Solver;
-import com.codenjoy.dojo.services.Dice;
+import org.junit.Ignore;
 
-public class AISolver implements Solver<Board> {
-
-    private Dice dice;
-    private Chess chess;
-
-    public static int i;
-    public AISolver(Dice dice) {
-        this.dice = dice;
-    }
-
-    @Override
-    public String get(final Board board) {
-
-        return "ACT(1,6,1,4)";
-    }
+@Ignore
+public class Promotion4x4Test {
 }

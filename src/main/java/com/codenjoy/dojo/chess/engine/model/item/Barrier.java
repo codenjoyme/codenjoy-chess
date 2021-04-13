@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.client.ai;
+package com.codenjoy.dojo.chess.engine.model.item;
 
 /*-
  * #%L
@@ -22,24 +22,16 @@ package com.codenjoy.dojo.chess.client.ai;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.client.Board;
-import com.codenjoy.dojo.chess.engine.service.Chess;
-import com.codenjoy.dojo.client.Solver;
-import com.codenjoy.dojo.services.Dice;
+import com.codenjoy.dojo.services.Point;
 
-public class AISolver implements Solver<Board> {
+public class Barrier {
+    private final Point position;
 
-    private Dice dice;
-    private Chess chess;
-
-    public static int i;
-    public AISolver(Dice dice) {
-        this.dice = dice;
+    public Barrier(Point position) {
+        this.position = position;
     }
 
-    @Override
-    public String get(final Board board) {
-
-        return "ACT(1,6,1,4)";
+    public Point getPosition() {
+        return position;
     }
 }

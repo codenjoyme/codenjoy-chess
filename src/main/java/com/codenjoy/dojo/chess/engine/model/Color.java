@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.client.ai;
+package com.codenjoy.dojo.chess.engine.model;
 
 /*-
  * #%L
@@ -22,24 +22,27 @@ package com.codenjoy.dojo.chess.client.ai;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.client.Board;
-import com.codenjoy.dojo.chess.engine.service.Chess;
-import com.codenjoy.dojo.client.Solver;
-import com.codenjoy.dojo.services.Dice;
+import com.codenjoy.dojo.services.Direction;
 
-public class AISolver implements Solver<Board> {
+public enum Color {
+    WHITE   (0, Direction.UP),
+    BLACK   (2, Direction.DOWN),
+    RED     (1, Direction.RIGHT),
+    BLUE    (3, Direction.LEFT);
 
-    private Dice dice;
-    private Chess chess;
+    private final int priority;
+    private final Direction attackDirection;
 
-    public static int i;
-    public AISolver(Dice dice) {
-        this.dice = dice;
+    Color(int priority, Direction attackDirection) {
+        this.priority = priority;
+        this.attackDirection = attackDirection;
     }
 
-    @Override
-    public String get(final Board board) {
+    public int getPriority() {
+        return priority;
+    }
 
-        return "ACT(1,6,1,4)";
+    public Direction getAttackDirection() {
+        return attackDirection;
     }
 }

@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.services;
+package com.codenjoy.dojo.chess.engine.service;
 
 /*-
  * #%L
@@ -24,52 +24,44 @@ package com.codenjoy.dojo.chess.services;
 
 
 import com.codenjoy.dojo.chess.engine.model.Event;
-import com.codenjoy.dojo.chess.engine.service.GameSettings;
-import com.codenjoy.dojo.chess.engine.service.Scores;
 import com.codenjoy.dojo.services.PlayerScores;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.codenjoy.dojo.chess.engine.service.GameSettings.Keys.WIN_SCORE;
-import static org.junit.Assert.assertEquals;
 
-public class ScoresTest {
+public class Scores implements PlayerScores {
 
-    private PlayerScores scores;
-    private GameSettings settings;
+    private final static int DEFAULT_SCORE = 0;
 
-    public void win() {
-        scores.event(Event.WIN);
+    private final GameSettings settings;
+    private final AtomicInteger score;
+
+    public Scores(int startScore, GameSettings settings) {
+        this.settings = settings;
+        this.score = new AtomicInteger(startScore);
     }
 
-    @Before
-    public void setup() {
-        settings = new GameSettings();
-        scores = new Scores(0, settings);
+    @Override
+    public int clear() {
+        score.set(DEFAULT_SCORE);
+        return score.get();
     }
 
-    @Test
-    @Ignore
-    public void shouldCollectScores() {
-        scores = new Scores(140, settings);
-
-        win();
-        win();
-        win();
-        win();
-
-        assertEquals(140 + 4 * settings.integer(WIN_SCORE), scores.getScore());
+    @Override
+    public Integer getScore() {
+        return score.get();
     }
 
-    @Test
-    @Ignore
-    public void shouldClearScore() {
-        win();    // +30
-
-        scores.clear();
-
-        assertEquals(0, scores.getScore());
+    @Override
+    public void update(Object score) {
+        this.score.set(Integer.parseInt(score.toString()));
     }
 
+    @Override
+    public void event(Object event) {
+        if (event.equals(Event.WIN)) {
+            score.addAndGet(settings.integer(WIN_SCORE));
+        }
+    }
 }
