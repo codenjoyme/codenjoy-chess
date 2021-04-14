@@ -28,8 +28,14 @@ import com.codenjoy.dojo.chess.engine.service.GameBoard;
 import com.codenjoy.dojo.chess.engine.service.Move;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
+import com.google.common.collect.Lists;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.codenjoy.dojo.services.Direction.*;
 
 public abstract class Piece {
 
@@ -39,6 +45,7 @@ public abstract class Piece {
     protected Point position;
     protected boolean alive;
     protected boolean moved;
+    protected List<Move> committedMoves;
 
     public Piece(Type type, Color color, GameBoard board, Point position) {
         this.type = type;
@@ -46,6 +53,7 @@ public abstract class Piece {
         this.board = board;
         this.position = position;
         this.alive = true;
+        this.committedMoves = Lists.newArrayList();
     }
 
     public static Piece create(Type type, Color color, GameBoard board, Point position) {
@@ -67,6 +75,13 @@ public abstract class Piece {
         }
     }
 
+    protected static Point diagonal(Point position, Direction one, Direction two) {
+        if (one == two || one.inverted() == two) {
+            throw new IllegalArgumentException("Directions should be perpendicular for diagonal position calculation");
+        }
+        return one.change(two.change(position));
+    }
+
     public boolean isMoved() {
         return moved;
     }
@@ -75,13 +90,7 @@ public abstract class Piece {
         board.getPieceAt(move.getTo()).ifPresent(p -> p.setAlive(false));
         position = move.getTo();
         moved = true;
-    }
-
-    protected static Point diagonal(Point position, Direction one, Direction two) {
-        if (one == two || one.inverted() == two) {
-            throw new IllegalArgumentException("Directions should be perpendicular for diagonal position calculation");
-        }
-        return one.change(two.change(position));
+        committedMoves.add(move);
     }
 
     public Color getColor() {
@@ -96,6 +105,10 @@ public abstract class Piece {
         return alive;
     }
 
+    public void setAlive(boolean alive) {
+        this.alive = alive;
+    }
+
     public Type getType() {
         return type;
     }
@@ -104,10 +117,6 @@ public abstract class Piece {
 
     public Direction getAttackDirection() {
         return color.getAttackDirection();
-    }
-
-    public void setAlive(boolean alive) {
-        this.alive = alive;
     }
 
     @Override
@@ -137,14 +146,6 @@ public abstract class Piece {
             this.cost = cost;
         }
 
-        public int getId() {
-            return id;
-        }
-
-        public int getCost() {
-            return cost;
-        }
-
         public static Type byId(int id) {
             for (Type type : Type.values()) {
                 if (type.id == id) {
@@ -152,6 +153,14 @@ public abstract class Piece {
                 }
             }
             return null;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public int getCost() {
+            return cost;
         }
     }
 }

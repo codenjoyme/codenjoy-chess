@@ -23,8 +23,9 @@ package com.codenjoy.dojo.chess.engine.service;
  */
 
 
-import com.codenjoy.dojo.chess.engine.model.*;
 import com.codenjoy.dojo.chess.engine.level.Level;
+import com.codenjoy.dojo.chess.engine.model.Color;
+import com.codenjoy.dojo.chess.engine.model.Event;
 import com.codenjoy.dojo.chess.engine.model.item.piece.Piece;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Point;
@@ -35,7 +36,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Chess implements GameField<Player> {
@@ -47,17 +50,23 @@ public class Chess implements GameField<Player> {
     private final GameSettings settings;
     private final List<Player> players;
     private final GameBoard board;
+    private final GameHistory history;
+    private Color currentColor;
 
     public Chess(Level level, Dice dice, GameSettings settings) {
         this.board = new GameBoard(level);
         this.dice = dice;
         this.settings = settings;
         this.players = Lists.newLinkedList();
+        history = new GameHistory();
+        this.currentColor = getColors().stream()
+                .min(Comparator.comparingInt(Color::getPriority))
+                .orElseThrow(() -> new IllegalArgumentException("Level " + level + " is invalid"));
     }
 
     @Override
     public void tick() {
-        Player player = getPlayer(board.getCurrentColor());
+        Player player = getPlayer(currentColor);
         Move move = player.makeMove();
         if (move == null) {
             LOGGER.warn("Player {} did wrong move", player);
@@ -85,7 +94,7 @@ public class Chess implements GameField<Player> {
 
     @Override
     public void newGame(Player player) {
-        if (board.getAvailableColors().isEmpty()) {
+        if (players.size() == getColors().size()) {
             LOGGER.warn("Trying to add new player [{}], but the game is already full", player);
             return;
         }
@@ -139,7 +148,7 @@ public class Chess implements GameField<Player> {
     }
 
     public Color getCurrentColor() {
-        return board.getCurrentColor();
+        return currentColor;
     }
 
     public List<Color> getColors() {
@@ -147,7 +156,14 @@ public class Chess implements GameField<Player> {
     }
 
     public Color getAvailableColor() {
-       return board.getAvailableColors().get(0);
+        List<Color> usedColors = players.stream()
+                .map(Player::getColor)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        return board.getColors().stream()
+                .filter(c -> !usedColors.contains(c))
+                .findAny()
+                .orElse(null);
     }
 
     private Player getPlayer(Color color) {
@@ -159,5 +175,30 @@ public class Chess implements GameField<Player> {
 
     public GameBoard getBoard() {
         return board;
+    }
+
+    public void commitMove(Color color, Move move) {
+        history.add(color, move);
+        currentColor = nextColor();
+    }
+
+    private List<Player> getAlivePlayers() {
+        return players.stream()
+                .filter(Player::isAlive)
+                .collect(Collectors.toList());
+    }
+
+    private Color nextColor() {
+        List<Player> alivePlayers = getAlivePlayers();
+        alivePlayers.sort(Comparator.comparingInt(p -> p.getColor().getPriority()));
+        return alivePlayers.stream()
+                .map(Player::getColor)
+                .filter(color -> color.getPriority() > currentColor.getPriority())
+                .findAny()
+                .orElse(alivePlayers.get(0).getColor());
+    }
+
+    public Move lastMoveOf(Color color) {
+        return history.getLastMoveOf(color);
     }
 }

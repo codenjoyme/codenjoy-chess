@@ -31,7 +31,10 @@ import com.codenjoy.dojo.services.Point;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.codenjoy.dojo.services.Direction.*;
 
@@ -43,24 +46,23 @@ public class Bishop extends Piece {
 
     @Override
     public List<Move> getAvailableMoves() {
-        ArrayList<Move> moves = Lists.newArrayList();
-        moves.addAll(availableDiagonalMoves(LEFT, UP));
-        moves.addAll(availableDiagonalMoves(UP, RIGHT));
-        moves.addAll(availableDiagonalMoves(RIGHT, DOWN));
-        moves.addAll(availableDiagonalMoves(DOWN, LEFT));
-        return moves;
+        return availableMoves(board, position, color);
     }
 
-    private List<Move> availableDiagonalMoves(Direction one, Direction two) {
-        List<Move> result = Lists.newArrayList();
-        Point dest = diagonal(position, one, two);
-        while (board.isInBounds(dest) && board.getPieceAt(dest).isEmpty()) {
-            result.add(Move.from(position).to(dest));
-            dest = diagonal(dest, one, two);
-        }
-        if (board.isInBounds(dest) && board.getPieceAt(dest).isPresent() && board.getPieceAt(dest).get().getColor() != color) {
-            result.add(Move.from(position).to(dest));
-        }
-        return result;
+    public static List<Move> availableMoves(GameBoard board, Point position, Color color) {
+        return Stream.of(LEFT, UP, RIGHT, DOWN)
+                .map(direction -> {
+                    Point dest = diagonal(position, direction, direction.clockwise());
+                    List<Move> result = Lists.newArrayList();
+                    while (board.isInBounds(dest) && board.getPieceAt(dest).isEmpty()) {
+                        result.add(Move.from(position).to(dest));
+                        dest = diagonal(dest, direction, direction.clockwise());
+                    }
+                    if (board.isInBounds(dest) && board.getPieceAt(dest).isPresent() && board.getPieceAt(dest).get().getColor() != color) {
+                        result.add(Move.from(position).to(dest));
+                    }
+                    return result;
+                }).flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 }

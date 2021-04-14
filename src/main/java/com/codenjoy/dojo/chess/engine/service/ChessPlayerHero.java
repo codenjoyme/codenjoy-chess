@@ -50,7 +50,11 @@ public class ChessPlayerHero extends PlayerHero<Chess> implements NoDirectionsJo
     @Override
     public void tick() {
         clearBeforeTick();
+        if (color != field.getCurrentColor()) {
+            LOGGER.warn("{} player trying to make a move, but current player is {}", color, field.getCurrentColor());
+        }
         if (field.getBoard().tryMove(color, action)) {
+            field.commitMove(color, action);
             lastMove = action;
         } else {
             events.add(Event.WRONG_MOVE);

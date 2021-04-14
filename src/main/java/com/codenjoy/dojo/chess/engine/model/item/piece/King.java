@@ -49,7 +49,49 @@ public class King extends Piece {
 
     @Override
     public List<Move> getAvailableMoves() {
-        List<Move> moves = listOfAvailableMoves(
+        return availableMoves(board, position, color, moved);
+    }
+
+    private static Direction defineDirection(Point from, Point to) {
+        if (from.equals(to)) {
+            return null;
+        }
+        if (from.getX() == to.getX()) {
+            return from.getY() < to.getY() ? Direction.UP : Direction.DOWN;
+        }
+        if (from.getY() == to.getY()) {
+            return from.getX() < to.getX() ? Direction.RIGHT : Direction.LEFT;
+        }
+        return null;
+    }
+
+    private static List<Move> listOfAvailableMoves(GameBoard board, Point position, Color color, Point... destinations) {
+        List<Move> result = Lists.newArrayList();
+        for (Point dest : destinations) {
+            if (isAvailable(board, dest, color)) {
+                result.add(Move.from(position).to(dest));
+            }
+        }
+        return result;
+    }
+
+    private static boolean isAvailable(GameBoard board, Point dest, Color color) {
+        Optional<Piece> pieceAtDest = board.getPieceAt(dest);
+        return board.isInBounds(dest) && (pieceAtDest.isEmpty() || pieceAtDest.get().getColor() != color);
+    }
+
+    @Override
+    public void setAlive(boolean alive) {
+        if (this.alive && !alive) {
+            this.alive = false;
+            board.die(color);
+        } else {
+            this.alive = alive;
+        }
+    }
+
+    public static List<Move> availableMoves(GameBoard board, Point position, Color color, boolean moved) {
+        List<Move> moves = listOfAvailableMoves(board, position, color,
                 LEFT.change(position),
                 UP.change(position),
                 RIGHT.change(position),
@@ -62,7 +104,7 @@ public class King extends Piece {
         if (!moved) {
             Point point = position;
             do {
-                point = getAttackDirection().counterClockwise().change(point);
+                point = color.getAttackDirection().counterClockwise().change(point);
             } while (board.isInBounds(point) && (board.getPieceAt(point).isEmpty() || (board.getPieceAt(point).get().getType() != Type.ROOK && board.getPieceAt(point).get().getColor() != color)));
             if (board.getPieceAt(point).isPresent()) {
                 Piece rook = board.getPieceAt(point).get();
@@ -77,7 +119,7 @@ public class King extends Piece {
             }
             point = position;
             do {
-                point = getAttackDirection().clockwise().change(point);
+                point = color.getAttackDirection().clockwise().change(point);
             } while (board.isInBounds(point) && (board.getPieceAt(point).isEmpty() || (board.getPieceAt(point).get().getType() != Type.ROOK && board.getPieceAt(point).get().getColor() != color)));
             if (board.getPieceAt(point).isPresent()) {
                 Piece rook = board.getPieceAt(point).get();
@@ -87,43 +129,5 @@ public class King extends Piece {
             }
         }
         return moves;
-    }
-
-    private Direction defineDirection(Point from, Point to) {
-        if (from.equals(to)) {
-            return null;
-        }
-        if (from.getX() == to.getX()) {
-            return from.getY() < to.getY() ? Direction.UP : Direction.DOWN;
-        }
-        if (from.getY() == to.getY()) {
-            return from.getX() < to.getX() ? Direction.RIGHT : Direction.LEFT;
-        }
-        return null;
-    }
-
-    private List<Move> listOfAvailableMoves(Point... destinations) {
-        List<Move> result = Lists.newArrayList();
-        for (Point dest : destinations) {
-            if (isAvailable(dest)) {
-                result.add(Move.from(position).to(dest));
-            }
-        }
-        return result;
-    }
-
-    private boolean isAvailable(Point dest) {
-        Optional<Piece> pieceAtDest = board.getPieceAt(dest);
-        return board.isInBounds(dest) && (pieceAtDest.isEmpty() || pieceAtDest.get().getColor() != color);
-    }
-
-    @Override
-    public void setAlive(boolean alive) {
-        if (this.alive && !alive) {
-            this.alive = false;
-            board.die(color);
-        } else {
-            this.alive = alive;
-        }
     }
 }

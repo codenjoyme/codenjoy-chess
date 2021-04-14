@@ -41,19 +41,16 @@ public class Knight extends Piece {
 
     @Override
     public List<Move> getAvailableMoves() {
-        return moves().stream()
-                .filter(this::isAvailable)
-                .map(m -> Move.from(position).to(m))
-                .collect(Collectors.toList());
+        return availableMoves(board, position, color);
     }
 
-    private boolean isAvailable(Point position) {
+    private static boolean isAvailable(GameBoard board, Point position, Color color) {
         return board.getPieceAt(position)
                 .map(p -> p.getColor() != color)
                 .orElse(board.isInBounds(position));
     }
 
-    private List<Point> moves() {
+    private static List<Point> moves(Point position) {
         int x = position.getX();
         int y = position.getY();
         return Lists.newArrayList(
@@ -66,5 +63,12 @@ public class Knight extends Piece {
                 new PointImpl(x - 1, y - 2),
                 new PointImpl(x + 1, y - 2)
         );
+    }
+
+    public static List<Move> availableMoves(GameBoard board, Point position, Color color) {
+        return moves(position).stream()
+                .filter(p -> isAvailable(board, p, color))
+                .map(m -> Move.from(position).to(m))
+                .collect(Collectors.toList());
     }
 }

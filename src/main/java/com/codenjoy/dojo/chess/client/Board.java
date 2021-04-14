@@ -25,6 +25,7 @@ package com.codenjoy.dojo.chess.client;
 
 import com.codenjoy.dojo.chess.engine.model.Element;
 import com.codenjoy.dojo.client.AbstractBoard;
+import com.codenjoy.dojo.client.ClientBoard;
 
 /**
  * Класс, обрабатывающий строковое представление доски.
@@ -43,15 +44,15 @@ public class Board extends AbstractBoard<Element> {
         return Element.of(ch);
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s", boardAsString());
+    }
+
     public Element getAt(int x, int y) {
         if (isOutOfField(x, y)) {
             return null;
         }
         return super.getAt(x, y);
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s", boardAsString());
     }
 }

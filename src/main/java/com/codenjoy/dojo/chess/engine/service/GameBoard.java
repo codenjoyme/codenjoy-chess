@@ -15,22 +15,20 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class GameBoard {
-    private static final Logger LOGGER = LoggerFactory.getLogger(GameBoard.class);
     private final Level level;
-    private final GameHistory history;
     private final List<Square> squares;
     private final List<Barrier> barriers;
     private final List<GameSet> gameSets;
-    private final List<Color> used;
-    private Color currentColor;
+
+    public GameBoard(String map) {
+        this(new Level(map));
+    }
 
     public GameBoard(Level level) {
         this.level = level;
         this.squares = level.squares();
         this.barriers = level.barriers();
         this.gameSets = new ArrayList<>();
-        this.history = new GameHistory();
-        this.used = new ArrayList<>();
 
         for (Color color : level.presentedColors()) {
             List<Piece> pieces = Lists.newArrayList();
@@ -41,55 +39,16 @@ public class GameBoard {
             }
             gameSets.add(new GameSet(color, this, pieces));
         }
-
-        this.currentColor = gameSets.stream()
-                .map(GameSet::getColor)
-                .min(Comparator.comparingInt(Color::getPriority))
-                .orElse(null);
-
-        if (this.currentColor == null) {
-            throw new IllegalArgumentException("Level " + level + " is invalid");
-        }
     }
 
     public boolean tryMove(Color color, Move move) {
-        if (color != currentColor) {
-            LOGGER.warn("{} player trying to make a move, but current player is {}", color, currentColor);
-            return false;
-        }
-        boolean moveCommitted = getCurrentGameSet().makeMove(move);
-        currentColor = nextColor();
-        if (moveCommitted) {
-            history.add(color, move);
-        }
-        return moveCommitted;
-    }
-
-    private Color nextColor() {
-        List<GameSet> aliveSets = getAliveSets();
-        aliveSets.sort(Comparator.comparingInt(s -> s.getColor().getPriority()));
-        return aliveSets.stream()
-                .map(GameSet::getColor)
-                .filter(color -> color.getPriority() > currentColor.getPriority())
-                .findAny()
-                .orElse(aliveSets.get(0).getColor());
+        return getGameSet(color).makeMove(move);
     }
 
     private List<GameSet> getAliveSets() {
         return gameSets.stream()
                 .filter(GameSet::isKingAlive)
                 .collect(Collectors.toList());
-    }
-
-    private GameSet getCurrentGameSet() {
-        return gameSets.stream()
-                .filter(gameSet -> gameSet.getColor() == currentColor)
-                .findFirst()
-                .orElseThrow(IllegalStateException::new);
-    }
-
-    public Color getCurrentColor() {
-        return currentColor;
     }
 
     public Optional<Piece> getPieceAt(Point position) {
@@ -152,17 +111,6 @@ public class GameBoard {
                 .collect(Collectors.toList());
     }
 
-
-    public List<Color> getAvailableColors() {
-        return getColors().stream()
-                .filter(color -> !used.contains(color))
-                .collect(Collectors.toList());
-    }
-
-    public boolean setUsed(Color color) {
-        return used.add(color);
-    }
-
     public void die(Color color) {
         gameSets.stream()
                 .filter(gameSet -> gameSet.getColor() == color)
@@ -170,9 +118,6 @@ public class GameBoard {
                 .ifPresent(GameSet::die);
     }
 
-    public GameHistory getHistory() {
-        return history;
-    }
 
     public boolean isAlive(Color color) {
         GameSet gameSet = getGameSet(color);
@@ -192,5 +137,9 @@ public class GameBoard {
     public boolean isWinner(Color color) {
         List<GameSet> aliveSets = getAliveSets();
         return aliveSets.size() == 1 && aliveSets.get(0).getColor() == color;
+    }
+
+    public Move getLastMoveOf(Color color) {
+        return getGameSet(color).getLastMove();
     }
 }

@@ -40,6 +40,7 @@ public class GameSet {
     private final Color color;
     private final List<Piece> pieces;
     private final GameBoard board;
+    private Move lastMove;
 
     public GameSet(Color color, GameBoard board, List<Piece> pieces) {
         this.color = color;
@@ -81,13 +82,19 @@ public class GameSet {
         if (piece.getAvailableMoves().contains(command)) {
             if (isCastling(command)) {
                 // castling
-                return tryCastling((Rook) board.getPieceAt(command.getTo()).get());
+                if (tryCastling((Rook) board.getPieceAt(command.getTo()).get())) {
+                    lastMove = command;
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 piece.move(command);
                 if (command.withPromotion()) {
                     pieces.remove(piece);
                     pieces.add(Piece.create(command.getPromotion(), getColor(), board, piece.getPosition()));
                 }
+                lastMove = command;
                 return true;
             }
         }
@@ -157,5 +164,9 @@ public class GameSet {
 
     public void die() {
         pieces.forEach(p -> p.setAlive(false));
+    }
+
+    public Move getLastMove() {
+        return lastMove;
     }
 }

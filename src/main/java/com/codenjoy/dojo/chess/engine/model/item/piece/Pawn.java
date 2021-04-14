@@ -42,8 +42,7 @@ public class Pawn extends Piece {
        put(RED, BLUE);
        put(BLUE, RED);
     }};
-
-
+    
     private boolean moved;
 
     public Pawn(Color color, GameBoard board, Point position) {
@@ -53,15 +52,15 @@ public class Pawn extends Piece {
     @Override
     public void move(Move move) {
         Point p;
-        if ((p = getAttackDirection().clockwise().change(getAttackDirection().change(position))).equals(move.getTo())) {
+        if ((p = getAttackDirection().clockwise().change(color.getAttackDirection().change(position))).equals(move.getTo())) {
             if (board.getPieceAt(p).isEmpty()) {
-                Piece piece = board.getPieceAt(getAttackDirection().inverted().change(p)).orElse(null);
+                Piece piece = board.getPieceAt(color.getAttackDirection().inverted().change(p)).orElse(null);
                 piece.setAlive(false);
             }
         }
-        if ((p = getAttackDirection().counterClockwise().change(getAttackDirection().change(position))).equals(move.getTo())) {
+        if ((p = getAttackDirection().counterClockwise().change(color.getAttackDirection().change(position))).equals(move.getTo())) {
             if (board.getPieceAt(p).isEmpty()) {
-                Piece piece = board.getPieceAt(getAttackDirection().inverted().change(p)).orElse(null);
+                Piece piece = board.getPieceAt(color.getAttackDirection().inverted().change(p)).orElse(null);
                 piece.setAlive(false);
             }
         }
@@ -71,8 +70,12 @@ public class Pawn extends Piece {
 
     @Override
     public List<Move> getAvailableMoves() {
+        return availableMoves(board, position, color, moved);
+    }
+    
+    public static List<Move> availableMoves(GameBoard board, Point position, Color color, boolean moved) {
         List<Move> moves = Lists.newArrayList();
-        Point step = getAttackDirection().change(position);
+        Point step = color.getAttackDirection().change(position);
         if (board.getPieceAt(step).isEmpty()) {
             moves.add(Move.from(position).to(step));
             if (step.getY() == 0 || step.getY() == board.getSize() - 1) {
@@ -83,32 +86,32 @@ public class Pawn extends Piece {
                 }
             }
             if (!moved) {
-                step = getAttackDirection().change(step);
+                step = color.getAttackDirection().change(step);
                 if (board.getPieceAt(step).isEmpty()) {
                     moves.add(Move.from(position).to(step));
                 }
             }
         }
         // en passant
-        Move enPassantMove = board.getHistory().getLastMoveOf(enPassantOpponentColors.get(color));
+        Move enPassantMove = board.getLastMoveOf(enPassantOpponentColors.get(color));
         if (enPassantMove != null) {
             if (board.getPieceAt(enPassantMove.getTo()).get() instanceof Pawn
-                    && getAttackDirection().counterClockwise().change(position).equals(enPassantMove.getTo())
-                    && getAttackDirection().counterClockwise().change(getAttackDirection().change(getAttackDirection().change(position))).equals(enPassantMove.getFrom())) {
-                moves.add(Move.from(position).to(getAttackDirection().counterClockwise().change(getAttackDirection().change(position))));
+                    && color.getAttackDirection().counterClockwise().change(position).equals(enPassantMove.getTo())
+                    && color.getAttackDirection().counterClockwise().change(color.getAttackDirection().change(color.getAttackDirection().change(position))).equals(enPassantMove.getFrom())) {
+                moves.add(Move.from(position).to(color.getAttackDirection().counterClockwise().change(color.getAttackDirection().change(position))));
             }
             if (board.getPieceAt(enPassantMove.getTo()).get() instanceof Pawn
-                    && getAttackDirection().clockwise().change(position).equals(enPassantMove.getTo())
-                    && getAttackDirection().clockwise().change(getAttackDirection().change(getAttackDirection().change(position))).equals(enPassantMove.getFrom())) {
-                moves.add(Move.from(position).to(getAttackDirection().clockwise().change(getAttackDirection().change(position))));
+                    && color.getAttackDirection().clockwise().change(position).equals(enPassantMove.getTo())
+                    && color.getAttackDirection().clockwise().change(color.getAttackDirection().change(color.getAttackDirection().change(position))).equals(enPassantMove.getFrom())) {
+                moves.add(Move.from(position).to(color.getAttackDirection().clockwise().change(color.getAttackDirection().change(position))));
             }
         }
-        step = getAttackDirection().change(position);
-        if (board.getPieceAt(getAttackDirection().clockwise().change(step)).isPresent() && board.getPieceAt(getAttackDirection().clockwise().change(step)).get().getColor() != color) {
-            moves.add(Move.from(position).to(getAttackDirection().clockwise().change(step)));
+        step = color.getAttackDirection().change(position);
+        if (board.getPieceAt(color.getAttackDirection().clockwise().change(step)).isPresent() && board.getPieceAt(color.getAttackDirection().clockwise().change(step)).get().getColor() != color) {
+            moves.add(Move.from(position).to(color.getAttackDirection().clockwise().change(step)));
         }
-        if (board.getPieceAt(getAttackDirection().counterClockwise().change(step)).isPresent() && board.getPieceAt(getAttackDirection().counterClockwise().change(step)).get().getColor() != color) {
-            moves.add(Move.from(position).to(getAttackDirection().counterClockwise().change(step)));
+        if (board.getPieceAt(color.getAttackDirection().counterClockwise().change(step)).isPresent() && board.getPieceAt(color.getAttackDirection().counterClockwise().change(step)).get().getColor() != color) {
+            moves.add(Move.from(position).to(color.getAttackDirection().counterClockwise().change(step)));
         }
         return moves;
     }

@@ -44,7 +44,6 @@ public class Player extends GamePlayer<ChessPlayerHero, Chess> {
     public void newHero(Chess game) {
         Color color = game.getAvailableColor();
         this.hero = new ChessPlayerHero(color, game);
-        game.getBoard().setUsed(color);
     }
 
     @Override
@@ -69,7 +68,7 @@ public class Player extends GamePlayer<ChessPlayerHero, Chess> {
     }
 
     public Color getColor() {
-        return hero.getColor();
+        return hero == null ? null : hero.getColor();
     }
 
     public Move makeMove() {

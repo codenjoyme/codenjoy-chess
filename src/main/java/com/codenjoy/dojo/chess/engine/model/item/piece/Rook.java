@@ -26,12 +26,15 @@ package com.codenjoy.dojo.chess.engine.model.item.piece;
 import com.codenjoy.dojo.chess.engine.model.Color;
 import com.codenjoy.dojo.chess.engine.service.GameBoard;
 import com.codenjoy.dojo.chess.engine.service.Move;
-import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.google.common.collect.Lists;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.codenjoy.dojo.services.Direction.*;
 
 public class Rook extends Piece {
     public Rook(Color color, GameBoard board, Point position) {
@@ -52,26 +55,25 @@ public class Rook extends Piece {
 
     @Override
     public List<Move> getAvailableMoves() {
-        List<Move> result = Lists.newArrayList();
-        result.addAll(foo(Direction.UP));
-        result.addAll(foo(Direction.DOWN));
-        result.addAll(foo(Direction.LEFT));
-        result.addAll(foo(Direction.RIGHT));
-        return result;
+        return availableMoves(board, position, color);
     }
 
-    private List<Move> foo(Direction d) {
-        Point p = d.change(position);
-        List<Point> points = Lists.newArrayList();
-        while (board.isInBounds(p) && board.getPieceAt(p).isEmpty()) {
-            points.add(p);
-            p = d.change(p);
-        }
-        if (board.isInBounds(p) && board.getPieceAt(p).isPresent() && board.getPieceAt(p).get().getColor() != color) {
-            points.add(p);
-        }
-        return points.stream()
-                .map(pt -> Move.from(position).to(pt))
+    public static List<Move> availableMoves(GameBoard board, Point position, Color color) {
+        return Stream.of(LEFT, UP, RIGHT, DOWN)
+                .map(d -> {
+                    Point p = d.change(position);
+                    List<Point> points = Lists.newArrayList();
+                    while (board.isInBounds(p) && board.getPieceAt(p).isEmpty()) {
+                        points.add(p);
+                        p = d.change(p);
+                    }
+                    if (board.isInBounds(p) && board.getPieceAt(p).isPresent() && board.getPieceAt(p).get().getColor() != color) {
+                        points.add(p);
+                    }
+                    return points.stream()
+                            .map(pt -> Move.from(position).to(pt))
+                            .collect(Collectors.toList());
+                }).flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
 }
