@@ -28,14 +28,11 @@ import com.codenjoy.dojo.chess.engine.model.item.piece.Piece;
 import com.codenjoy.dojo.chess.engine.model.item.piece.Rook;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
 
 public class GameSet {
-    private final static Logger LOGGER = LoggerFactory.getLogger(GameSet.class);
 
     private final Color color;
     private final List<Piece> pieces;

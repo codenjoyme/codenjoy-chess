@@ -47,6 +47,10 @@ public class ReaderElement extends PointImpl implements State<Element, Player> {
         return new ReaderElement(barrier.getPosition(), Element.BARRIER);
     }
 
+    public ReaderElement copy() {
+        return new ReaderElement(new PointImpl(x, y), element);
+    }
+
     public ReaderElement(Point position, Element element) {
         super(position);
         this.element = element;

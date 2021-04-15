@@ -32,6 +32,7 @@ public class Move {
 
     private final Point from;
     private final Point to;
+    private Piece.Type promotion;
 
     @Override
     public String toString() {
@@ -44,8 +45,6 @@ public class Move {
     public Piece.Type getPromotion() {
         return promotion;
     }
-
-    private Piece.Type promotion;
 
     private Move(Point from, Point to) {
         this.from = from;
@@ -78,11 +77,11 @@ public class Move {
     }
 
     public Point getFrom() {
-        return from;
+        return from.copy();
     }
 
     public Point getTo() {
-        return to;
+        return to.copy();
     }
 
     public Move promotion(Piece.Type piece) {

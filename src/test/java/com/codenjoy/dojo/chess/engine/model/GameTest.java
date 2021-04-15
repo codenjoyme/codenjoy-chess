@@ -35,23 +35,51 @@ import static com.codenjoy.dojo.chess.engine.model.Event.*;
 public class GameTest extends AbstractGameTest {
 
     @Test
-    public void shouldDrawBoardProperlyForWhites() {
+    public void shouldDrowBoardForWhites_whitePiecesAtBottom() {
 
         // when
-        givenFl(classicBoard());
+        givenFl("rkbqwbkr" +
+                "pppppppp" +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "PPPPPPPP" +
+                "RKBQWBKR");
 
         // then
-        assertE(classicBoard(), WHITE);
+        assertE("rkbqwbkr" +
+                "pppppppp" +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "PPPPPPPP" +
+                "RKBQWBKR", WHITE);
     }
 
     @Test
-    public void shouldDrawBoardForBlacksSameAsForWhites() {
+    public void shouldDrawBoardForBlacks_blackPiecesAtBottom() {
 
         // when
-        givenFl(classicBoard());
+        givenFl("rkbqwbkr" +
+                "pppppppp" +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "PPPPPPPP" +
+                "RKBQWBKR");
 
         // then
-        assertE(classicBoard(), BLACK);
+        assertE("RKBWQBKR" +
+                "PPPPPPPP" +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "pppppppp" +
+                "rkbwqbkr", BLACK);
     }
 
     @Test

@@ -27,10 +27,18 @@ import com.codenjoy.dojo.chess.engine.level.Level;
 import com.codenjoy.dojo.chess.engine.level.Levels;
 import com.codenjoy.dojo.services.settings.SettingsImpl;
 import com.codenjoy.dojo.services.settings.SettingsReader;
+import com.google.common.collect.Lists;
+
+import java.util.List;
 
 import static com.codenjoy.dojo.chess.engine.service.GameSettings.Option.*;
 
 public final class GameSettings extends SettingsImpl implements SettingsReader<GameSettings> {
+
+    @Override
+    public List<Key> allKeys() {
+        return Lists.newArrayList(Option.values());
+    }
 
     public enum Option implements Key {
 

@@ -39,7 +39,10 @@ public class ChessPlayerHero extends PlayerHero<Chess> implements NoDirectionsJo
                     "Hero with color {} received invalid action parameters: {}",
                     getColor(), Arrays.toString(codes)
             );
+            return;
         }
+        action = field.getPositionMapper()
+                .mapMove(color, action);
     }
 
     private void clearBeforeTick() {

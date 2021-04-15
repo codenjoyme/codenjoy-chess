@@ -98,7 +98,7 @@ public abstract class Piece {
     }
 
     public Point getPosition() {
-        return position;
+        return position.copy();
     }
 
     public boolean isAlive() {

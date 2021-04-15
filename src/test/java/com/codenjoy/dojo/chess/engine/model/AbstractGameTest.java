@@ -22,12 +22,9 @@ package com.codenjoy.dojo.chess.engine.model;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.engine.service.Chess;
-import com.codenjoy.dojo.chess.engine.service.Player;
 import com.codenjoy.dojo.chess.engine.level.Level;
 import com.codenjoy.dojo.chess.engine.model.item.piece.Piece;
-import com.codenjoy.dojo.chess.engine.service.GameSettings;
-import com.codenjoy.dojo.chess.engine.service.Move;
+import com.codenjoy.dojo.chess.engine.service.*;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.Point;
@@ -38,8 +35,6 @@ import com.codenjoy.dojo.utils.TestUtils;
 import org.junit.Before;
 import org.mockito.ArgumentCaptor;
 import org.mockito.stubbing.OngoingStubbing;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -144,12 +139,24 @@ public abstract class AbstractGameTest {
     }
 
     protected void assertE(String expected, Color playerColor) {
-        assertEquals(TestUtils.injectN(expected), printerFactory.getPrinter(
-                game.reader(), players.get(playerColor)).print());
+        assertEquals(TestUtils.injectN(expected), getBoardState(playerColor));
     }
 
     protected void move(Color color, Move move) {
-        players.get(color).getHero().act(move.command());
+        move(color, move, true);
+    }
+
+    protected void move(Color color, final Move move, boolean notRotatedBoard) {
+        Move action = move;
+        if (notRotatedBoard) {
+            PositionMapper mapper = game.getPositionMapper();
+            Point from = move.getFrom();
+            Point to = move.getTo();
+            mapper.mapPosition(color, Color.WHITE, from);
+            mapper.mapPosition(color, Color.WHITE, to);
+            action = Move.from(from).to(to).promotion(move.getPromotion());
+        }
+        players.get(color).getHero().act(action.command());
         game.tick();
     }
 
@@ -166,5 +173,10 @@ public abstract class AbstractGameTest {
 
     protected int getBoardSize() {
         return game.getBoard().getSize();
+    }
+
+    protected String getBoardState(Color color) {
+        return (String) printerFactory.getPrinter(
+                game.reader(), players.get(color)).print();
     }
 }

@@ -53,15 +53,95 @@ public class FourPlayerChessGameTest extends AbstractGameTest {
     }
 
     @Test
-    public void shouldDrawBoardProperlyForAllPlayers() {
+    public void shouldDrawBoardForWhites_whitePiecesAtBottom() {
 
         // when
         givenFl(fourPlayersBoard());
 
         // then
-        for (Color color: game.getColors()) {
-            assertE(fourPlayersBoard(), color);
-        }
+        assertE("   rkbwqbkr   " +
+                "   pppppppp   " +
+                "   ........   " +
+                "IZ..........zi" +
+                "LZ..........zl" +
+                "GZ..........zg" +
+                "YZ..........zx" +
+                "XZ..........zy" +
+                "GZ..........zg" +
+                "LZ..........zl" +
+                "IZ..........zi" +
+                "   ........   " +
+                "   PPPPPPPP   " +
+                "   RKBQWBKR   ", WHITE);
+    }
+
+    @Test
+    public void shouldDrawBoardForReds_redsPiecesAtBottom() {
+
+        // when
+        givenFl(fourPlayersBoard());
+
+        // then
+        assertE("   ilgxygli   " +
+                "   zzzzzzzz   " +
+                "   ........   " +
+                "rp..........PR" +
+                "kp..........PK" +
+                "bp..........PB" +
+                "qp..........PW" +
+                "wp..........PQ" +
+                "bp..........PB" +
+                "kp..........PK" +
+                "rp..........PR" +
+                "   ........   " +
+                "   ZZZZZZZZ   " +
+                "   ILGYXGLI   ", RED);
+    }
+
+    @Test
+    public void shouldDrawBoardForBlacks_blackPiecesAtBottom() {
+
+        // when
+        givenFl(fourPlayersBoard());
+
+        // then
+        assertE("   RKBWQBKR   " +
+                "   PPPPPPPP   " +
+                "   ........   " +
+                "iz..........ZI" +
+                "lz..........ZL" +
+                "gz..........ZG" +
+                "yz..........ZX" +
+                "xz..........ZY" +
+                "gz..........ZG" +
+                "lz..........ZL" +
+                "iz..........ZI" +
+                "   ........   " +
+                "   pppppppp   " +
+                "   rkbqwbkr   ", BLACK);
+    }
+
+    @Test
+    public void shouldDrawBoardForBlues_bluesPiecesAtBottom() {
+
+        // when
+        givenFl(fourPlayersBoard());
+
+        // then
+        assertE("   ILGXYGLI   " +
+                "   ZZZZZZZZ   " +
+                "   ........   " +
+                "RP..........pr" +
+                "KP..........pk" +
+                "BP..........pb" +
+                "QP..........pw" +
+                "WP..........pq" +
+                "BP..........pb" +
+                "KP..........pk" +
+                "RP..........pr" +
+                "   ........   " +
+                "   zzzzzzzz   " +
+                "   ilgyxgli   ", BLUE);
     }
 
     @Test

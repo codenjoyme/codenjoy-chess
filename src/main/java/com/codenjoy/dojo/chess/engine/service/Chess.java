@@ -26,16 +26,13 @@ package com.codenjoy.dojo.chess.engine.service;
 import com.codenjoy.dojo.chess.engine.level.Level;
 import com.codenjoy.dojo.chess.engine.model.Color;
 import com.codenjoy.dojo.chess.engine.model.Event;
-import com.codenjoy.dojo.chess.engine.model.item.piece.Piece;
 import com.codenjoy.dojo.services.Dice;
-import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.multiplayer.GameField;
 import com.codenjoy.dojo.services.printer.BoardReader;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -47,18 +44,20 @@ public class Chess implements GameField<Player> {
     @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private final Dice dice;
 
+    private final PositionMapper positionMapper;
+    private final List<Player> players = Lists.newLinkedList();
+    private final GameHistory history = new GameHistory();
+
     private final GameSettings settings;
-    private final List<Player> players;
     private final GameBoard board;
-    private final GameHistory history;
+
     private Color currentColor;
 
     public Chess(Level level, Dice dice, GameSettings settings) {
-        this.board = new GameBoard(level);
         this.dice = dice;
         this.settings = settings;
-        this.players = Lists.newLinkedList();
-        history = new GameHistory();
+        this.board = new GameBoard(level);
+        this.positionMapper = new PositionMapper(board.getSize());
         this.currentColor = getColors().stream()
                 .min(Comparator.comparingInt(Color::getPriority))
                 .orElseThrow(() -> new IllegalArgumentException("Level " + level + " is invalid"));
@@ -81,7 +80,6 @@ public class Chess implements GameField<Player> {
                 .filter(p -> !p.isAlive())
                 .forEach(p -> p.event(Event.GAME_OVER));
     }
-
 
     private void checkWinner() {
         List<Player> alivePlayers = players.stream()
@@ -114,37 +112,8 @@ public class Chess implements GameField<Player> {
     }
 
     @Override
-    public BoardReader reader() {
-        return new BoardReader() {
-
-            @Override
-            public int size() {
-                return Chess.this.board.getSize();
-            }
-
-            @Override
-            public Iterable<? extends Point> elements() {
-                ArrayList<ReaderElement> result = Lists.newArrayList();
-
-                List<ReaderElement> squares = board.getSquares().stream()
-                        .map(ReaderElement::create)
-                        .collect(Collectors.toList());
-
-                List<ReaderElement> barriers = board.getBarriers().stream()
-                        .map(ReaderElement::create)
-                        .collect(Collectors.toList());
-
-                List<ReaderElement> pieces = board.getPieces().stream()
-                        .filter(Piece::isAlive)
-                        .map(ReaderElement::create)
-                        .collect(Collectors.toList());
-
-                result.addAll(barriers);
-                result.addAll(pieces);
-                result.addAll(squares);
-                return result;
-            }
-        };
+    public BoardReader<Player> reader() {
+        return new ChessBoardReader(this);
     }
 
     public Color getCurrentColor() {
@@ -198,7 +167,11 @@ public class Chess implements GameField<Player> {
                 .orElse(alivePlayers.get(0).getColor());
     }
 
-    public Move lastMoveOf(Color color) {
-        return history.getLastMoveOf(color);
+    public int getBoardSize() {
+        return board.getSize();
+    }
+
+    public PositionMapper getPositionMapper() {
+        return positionMapper;
     }
 }
