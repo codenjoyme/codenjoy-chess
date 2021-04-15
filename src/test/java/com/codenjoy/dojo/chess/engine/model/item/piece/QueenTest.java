@@ -23,6 +23,7 @@ package com.codenjoy.dojo.chess.engine.model.item.piece;
  */
 
 import com.codenjoy.dojo.chess.engine.model.Element;
+import com.codenjoy.dojo.chess.common.AbstractPieceTest;
 
 public class QueenTest extends AbstractPieceTest {
 

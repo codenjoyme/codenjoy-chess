@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.engine.model;
+package com.codenjoy.dojo.chess.common;
 
 /*-
  * #%L
@@ -23,6 +23,8 @@ package com.codenjoy.dojo.chess.engine.model;
  */
 
 import com.codenjoy.dojo.chess.engine.level.Level;
+import com.codenjoy.dojo.chess.engine.model.Color;
+import com.codenjoy.dojo.chess.engine.model.Event;
 import com.codenjoy.dojo.chess.engine.model.item.piece.Piece;
 import com.codenjoy.dojo.chess.engine.service.*;
 import com.codenjoy.dojo.services.Dice;
@@ -32,12 +34,14 @@ import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.printer.PrinterFactory;
 import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
 import com.codenjoy.dojo.utils.TestUtils;
+import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.mockito.ArgumentCaptor;
 import org.mockito.stubbing.OngoingStubbing;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -47,7 +51,6 @@ import static org.mockito.Mockito.*;
 @SuppressWarnings({"rawtypes", "unused", "unchecked", "SpellCheckingInspection"})
 public abstract class AbstractGameTest {
     private final Map<Color, Player> players = new HashMap<>();
-
     private final Map<Player, EventListener> listeners = new HashMap<>();
 
     private String board;
@@ -56,6 +59,8 @@ public abstract class AbstractGameTest {
     protected Dice dice;
     protected PrinterFactory printerFactory;
     protected GameSettings settings;
+    protected TestHistory history;
+
 
     protected static String classicBoard() {
         return "rkbqwbkr" +
@@ -73,6 +78,7 @@ public abstract class AbstractGameTest {
         dice = mock(Dice.class);
         printerFactory = new PrinterFactoryImpl();
         settings = new GameSettings();
+        history = new TestHistory();
     }
 
     protected void reset() {
@@ -87,32 +93,27 @@ public abstract class AbstractGameTest {
         }
     }
 
-    public void neverFired(Color color, Event event) {
+    protected void neverFired(Color color, Event event) {
         EventListener eventListener = listeners.get(players.get(color));
         verify(eventListener, never()).event(event);
     }
 
-    public void neverFired(Event event) {
-        for (Map.Entry<Player, EventListener> entry: listeners.entrySet()) {
-            try {
-                verify(entry.getValue(), never()).event(event);
-            } catch (Throwable ex) {
-                System.err.println("Color: " + entry.getKey().getColor());
-                throw ex;
-            }
+    protected void neverFired(Event event) {
+        for (Map.Entry<Player, EventListener> entry : listeners.entrySet()) {
+            verify(entry.getValue(), never()).event(event);
         }
     }
 
-    public void fired(Color color, int times, Event event) {
+    protected void fired(Color color, int times, Event event) {
         EventListener eventListener = listeners.get(players.get(color));
         verify(eventListener, times(times)).event(event);
     }
 
-    public void fired(Color color, Event event) {
+    protected void fired(Color color, Event event) {
         fired(color, 1, event);
     }
 
-    public void fired(Color color, Event... events) {
+    protected void fired(Color color, Event... events) {
         ArgumentCaptor<Event> captor = ArgumentCaptor.forClass(Event.class);
         EventListener eventListener = listeners.get(players.get(color));
         verify(eventListener, times(events.length)).event(captor.capture());
@@ -158,6 +159,22 @@ public abstract class AbstractGameTest {
         }
         players.get(color).getHero().act(action.command());
         game.tick();
+        history.add(color, move, getAllFiredEvents());
+    }
+
+    protected List<Event> getAllFiredEvents() {
+        ArgumentCaptor<Event> captor = ArgumentCaptor.forClass(Event.class);
+        List<Event> firedEvents = Lists.newArrayList();
+        listeners.forEach((plr, lstnr) -> {
+            try {
+                // TODO проверить, скорее всего будет тащить за собой все случившиеся прошлые ивенты
+                verify(lstnr).event(captor.capture());
+            } catch (AssertionError err) {
+                // just want to fill captor
+            }
+            firedEvents.addAll(captor.getAllValues());
+        });
+        return firedEvents;
     }
 
     protected Piece getPieceAt(int x, int y) {

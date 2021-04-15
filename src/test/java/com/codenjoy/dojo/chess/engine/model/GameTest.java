@@ -23,13 +23,14 @@ package com.codenjoy.dojo.chess.engine.model;
  */
 
 
+import com.codenjoy.dojo.chess.common.AbstractGameTest;
 import org.junit.Assert;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.engine.model.Color.BLACK;
 import static com.codenjoy.dojo.chess.engine.model.Color.WHITE;
-import static com.codenjoy.dojo.chess.engine.service.Move.from;
 import static com.codenjoy.dojo.chess.engine.model.Event.*;
+import static com.codenjoy.dojo.chess.engine.service.Move.from;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class GameTest extends AbstractGameTest {

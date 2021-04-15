@@ -22,6 +22,7 @@ package com.codenjoy.dojo.chess.engine.model;
  * #L%
  */
 
+import com.codenjoy.dojo.chess.common.AbstractGameTest;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.engine.model.Color.BLACK;

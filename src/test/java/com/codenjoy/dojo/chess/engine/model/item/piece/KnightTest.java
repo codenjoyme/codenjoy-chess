@@ -23,6 +23,7 @@ package com.codenjoy.dojo.chess.engine.model.item.piece;
  */
 
 import com.codenjoy.dojo.chess.engine.model.Element;
+import com.codenjoy.dojo.chess.common.AbstractPieceTest;
 import com.codenjoy.dojo.services.PointImpl;
 
 import static com.codenjoy.dojo.chess.engine.model.Color.WHITE;

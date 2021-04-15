@@ -27,7 +27,7 @@ public class ChessPlayerHero extends PlayerHero<Chess> implements NoDirectionsJo
     @Override
     public void act(int... codes) {
         if (field.getCurrentColor() != getColor()) {
-            LOGGER.warn(
+            LOGGER.debug(
                     "Player with color {} tried to send an act command when active color was {}",
                     getColor(), field.getCurrentColor()
             );
@@ -35,7 +35,7 @@ public class ChessPlayerHero extends PlayerHero<Chess> implements NoDirectionsJo
         }
         action = Move.decode(codes);
         if (action == null) {
-            LOGGER.warn(
+            LOGGER.debug(
                     "Hero with color {} received invalid action parameters: {}",
                     getColor(), Arrays.toString(codes)
             );
@@ -54,14 +54,19 @@ public class ChessPlayerHero extends PlayerHero<Chess> implements NoDirectionsJo
     public void tick() {
         clearBeforeTick();
         if (color != field.getCurrentColor()) {
-            LOGGER.warn("{} player trying to make a move, but current player is {}", color, field.getCurrentColor());
+            LOGGER.error("{} player trying to make a move, but current player is {}", color, field.getCurrentColor());
+            return;
+        }
+        if (action == null) {
+            LOGGER.debug("{} player didn't respond", color);
+            return;
         }
         if (field.getBoard().tryMove(color, action)) {
-            field.commitMove(color, action);
             lastMove = action;
         } else {
             events.add(Event.WRONG_MOVE);
         }
+        action = null;
     }
 
     public Color getColor() {

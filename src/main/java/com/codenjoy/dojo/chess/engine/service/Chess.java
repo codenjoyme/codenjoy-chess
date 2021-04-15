@@ -38,6 +38,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.codenjoy.dojo.chess.engine.service.GameSettings.Option.WAIT_UNTIL_MAKE_A_MOVE;
+
 public class Chess implements GameField<Player> {
     private static final Logger LOGGER = LoggerFactory.getLogger(Chess.class);
 
@@ -67,12 +69,18 @@ public class Chess implements GameField<Player> {
     public void tick() {
         Player player = getPlayer(currentColor);
         Move move = player.makeMove();
-        if (move == null) {
-            LOGGER.warn("Player {} did wrong move", player);
-            return;
-        }
         checkGameOvers();
         checkWinner();
+        if (move == null && settings.bool(WAIT_UNTIL_MAKE_A_MOVE)) {
+            LOGGER.debug(
+                    "{} player's move didn't committed; " +
+                            "Option {} set to true, so right to move is not transferred further",
+                    currentColor, WAIT_UNTIL_MAKE_A_MOVE
+            );
+            return;
+        }
+        currentColor = nextColor();
+        history.add(currentColor, move);
     }
 
     private void checkGameOvers() {
@@ -144,11 +152,6 @@ public class Chess implements GameField<Player> {
 
     public GameBoard getBoard() {
         return board;
-    }
-
-    public void commitMove(Color color, Move move) {
-        history.add(color, move);
-        currentColor = nextColor();
     }
 
     private List<Player> getAlivePlayers() {

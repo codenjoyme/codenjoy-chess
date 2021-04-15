@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.engine.model.item.piece;
+package com.codenjoy.dojo.chess.common;
 
 /*-
  * #%L
@@ -22,7 +22,7 @@ package com.codenjoy.dojo.chess.engine.model.item.piece;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.engine.model.AbstractGameTest;
+import com.codenjoy.dojo.chess.engine.model.item.piece.Piece;
 import com.codenjoy.dojo.chess.engine.model.Color;
 import com.codenjoy.dojo.chess.engine.model.Element;
 import com.codenjoy.dojo.chess.engine.service.Move;
@@ -86,8 +86,20 @@ public abstract class AbstractPieceTest extends AbstractGameTest {
                 Piece testPiece = getPieceAt(position);
                 if (preconditions != null) {
                     preconditions.run();
+                    try {
+                        neverFired(WRONG_MOVE);
+                    } catch (Throwable ex) {
+                        System.err.println("Preconditions are invalid:");
+                        System.err.println(history.toString());
+                        throw ex;
+                    }
                 }
-                assertEquals(color, game.getCurrentColor());
+                try {
+                    assertEquals(color, game.getCurrentColor());
+                } catch (AssertionError err) {
+                    System.err.println(history.toString());
+                    throw err;
+                }
                 PointImpl destination = new PointImpl(x, y);
                 Move move = from(testPiece.getPosition()).to(destination);
                 try {
@@ -98,7 +110,9 @@ public abstract class AbstractPieceTest extends AbstractGameTest {
                         fired(color, WRONG_MOVE);
                     }
                 } catch (Throwable ex) {
-                    System.err.println(color + ": " + move);
+                    System.err.println(history.toString());
+                    System.err.println("\nBoard: ");
+                    System.err.println(getBoardState(color));
                     throw ex;
                 }
             }

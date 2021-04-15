@@ -22,6 +22,7 @@ package com.codenjoy.dojo.chess.engine.model;
  * #L%
  */
 
+import com.codenjoy.dojo.chess.common.AbstractGameTest;
 import org.junit.Ignore;
 import org.junit.Test;
 
