@@ -144,10 +144,14 @@ public abstract class AbstractGameTest {
     }
 
     protected void move(Color color, Move move) {
-        move(color, move, true);
+        move(color, move, true, true);
     }
 
-    protected void move(Color color, final Move move, boolean notRotatedBoard) {
+    protected void move(Color color, Move move, boolean withTick) {
+        move(color, move, true, withTick);
+    }
+
+    protected void move(Color color, final Move move, boolean notRotatedBoard, boolean withTick) {
         Move action = move;
         if (notRotatedBoard) {
             PositionMapper mapper = game.getPositionMapper();
@@ -158,8 +162,10 @@ public abstract class AbstractGameTest {
             action = Move.from(from).to(to).promotion(move.getPromotion());
         }
         players.get(color).getHero().act(action.command());
-        game.tick();
         history.add(color, move, getAllFiredEvents());
+        if (withTick) {
+            game.tick();
+        }
     }
 
     protected List<Event> getAllFiredEvents() {

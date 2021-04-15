@@ -24,6 +24,8 @@ package com.codenjoy.dojo.chess.engine.model;
 
 
 import com.codenjoy.dojo.chess.common.AbstractGameTest;
+import com.codenjoy.dojo.chess.engine.service.GameSettings;
+import org.fest.assertions.Assertions;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -31,6 +33,8 @@ import static com.codenjoy.dojo.chess.engine.model.Color.BLACK;
 import static com.codenjoy.dojo.chess.engine.model.Color.WHITE;
 import static com.codenjoy.dojo.chess.engine.model.Event.*;
 import static com.codenjoy.dojo.chess.engine.service.Move.from;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class GameTest extends AbstractGameTest {
@@ -203,5 +207,89 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldBeThrownIllegalArgumentException_whenTryToMakeGameSetWithoutKing() {
         Assert.assertThrows(IllegalArgumentException.class, () -> givenFl("ppp....W."));
+    }
+
+    @Test
+    public void shouldNotFireWrongMoveEvent_whenPlayerDidntMakeAMoveAtHisTurn() {
+
+        givenFl(classicBoard());
+
+        // when whites didn't move
+        game.tick();
+
+        // then
+        neverFired(WRONG_MOVE);
+    }
+
+    @Test
+    public void shouldIgnoreMovesOfColor_whichWereSetWhenTheColorWasNotActive() {
+
+        givenFl(classicBoard());
+        move(WHITE, from(4, 1).to(4, 2));
+        move(BLACK, from(4, 6).to(4, 5));
+        move(BLACK, from(4, 5).to(4, 4), false);
+        move(WHITE, from(3, 1).to(3, 2));
+
+        // when
+        game.tick();
+
+        // then move of blacks from [4, 5] to [4, 4] should be ingored
+        neverFired(WRONG_MOVE);
+        assertE("rkbqwbkr" +
+                "pppp.ppp" +
+                "....p..." +
+                "........" +
+                "........" +
+                "...PP..." +
+                "PPP..PPP" +
+                "RKBQWBKR");
+    }
+
+    @Test
+    public void shouldWaitUntilPlayerMakeAMove_ifSuchOptionSetTrue() {
+
+        givenFl(classicBoard());
+        settings.bool(GameSettings.Option.WAIT_UNTIL_MAKE_A_MOVE, true);
+
+        // when
+        game.tick();
+
+        // then should not change active color
+        assertEquals(WHITE, game.getCurrentColor());
+    }
+
+    @Test
+    public void shouldNotWaitUntilPlayerMakeAMove_ifSuchOptionSetFalse() {
+
+        givenFl(classicBoard());
+        settings.bool(GameSettings.Option.WAIT_UNTIL_MAKE_A_MOVE, false);
+
+        // when
+        game.tick();
+
+        // then should change active color
+        assertEquals(BLACK, game.getCurrentColor());
+    }
+
+    @Test
+    public void shouldNotFireWrongMoveEvent_whenPlayerTryingToMakeAMoveNotAtHisTurn() {
+
+        givenFl(classicBoard());
+        move(WHITE, from(4, 1).to(4, 2));
+        move(BLACK, from(4, 6).to(4, 5));
+
+        // when
+        move(BLACK, from(4, 5).to(4, 4));
+
+        // then move of blacks from [4, 5] to [4, 4] should be ingored
+        neverFired(WRONG_MOVE);
+        assertE("rkbqwbkr" +
+                "pppp.ppp" +
+                "....p..." +
+                "........" +
+                "........" +
+                "....P..." +
+                "PPPP.PPP" +
+                "RKBQWBKR");
     }
 }
