@@ -70,7 +70,6 @@ public abstract class AbstractPieceTest extends AbstractGameTest {
     @Test
     public abstract void shouldNotBeAbleToTakeFriendlyPiece();
 
-
     protected void assertCanMoveOnlyTo(Piece piece, Point... positionsArray) {
         assertCanMoveOnlyTo(null, piece, positionsArray);
     }
@@ -78,25 +77,28 @@ public abstract class AbstractPieceTest extends AbstractGameTest {
     protected void assertCanMoveOnlyTo(Preconditions preconditions, Piece piece, Point... positionsArray) {
         List<Point> positions = Lists.newArrayList(positionsArray);
         Color color = piece.getColor();
+        Point position = piece.getPosition();
         for (int x = -1; x <= getBoardSize(); x++) {
             for (int y = -1; y <= getBoardSize(); y++) {
                 reset();
-                Piece p = getPieceAt(piece.getPosition());
+                // Should take new piece everytime and not use received one
+                // because preconditions can change it's state
+                Piece testPiece = getPieceAt(position);
                 if (preconditions != null) {
                     preconditions.run();
                 }
                 assertEquals(color, game.getCurrentColor());
-                PointImpl position = new PointImpl(x, y);
-                Move move = from(p.getPosition()).to(position);
+                PointImpl destination = new PointImpl(x, y);
+                Move move = from(testPiece.getPosition()).to(destination);
                 try {
                     move(color, move);
-                    if (positions.contains(position)) {
+                    if (positions.contains(destination)) {
                         neverFired(color, WRONG_MOVE);
                     } else {
                         fired(color, WRONG_MOVE);
                     }
                 } catch (Throwable ex) {
-                    System.err.println(move);
+                    System.err.println(color + ": " + move);
                     throw ex;
                 }
             }
