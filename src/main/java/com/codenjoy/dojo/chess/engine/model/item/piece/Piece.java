@@ -30,12 +30,7 @@ import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.google.common.collect.Lists;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static com.codenjoy.dojo.services.Direction.*;
 
 public abstract class Piece {
 
@@ -46,6 +41,7 @@ public abstract class Piece {
     protected boolean alive;
     protected boolean moved;
     protected List<Move> committedMoves;
+    protected Direction attackDirection;
 
     public Piece(Type type, Color color, GameBoard board, Point position) {
         this.type = type;
@@ -54,6 +50,7 @@ public abstract class Piece {
         this.position = position;
         this.alive = true;
         this.committedMoves = Lists.newArrayList();
+        this.attackDirection = color.getAttackDirection();
     }
 
     public static Piece create(Type type, Color color, GameBoard board, Point position) {
@@ -116,7 +113,7 @@ public abstract class Piece {
     public abstract List<Move> getAvailableMoves();
 
     public Direction getAttackDirection() {
-        return color.getAttackDirection();
+        return attackDirection;
     }
 
     @Override

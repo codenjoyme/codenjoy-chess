@@ -292,4 +292,47 @@ public class GameTest extends AbstractGameTest {
                 "PPPP.PPP" +
                 "RKBQWBKR");
     }
+
+    @Test
+    public void shouldDrawOnlyPlayerPieces_whenHeAsked() {
+
+        givenFl(classicBoard());
+
+        // when
+        act(WHITE);
+
+        // then
+        assertE("........" +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "PPPPPPPP" +
+                "RKBQWBKR", WHITE);
+        neverFired(WRONG_MOVE);
+    }
+
+    @Test
+    public void shouldNotChangeActiveColor_whenPlayerAsksHisColor() {
+
+        // given
+        shouldDrawOnlyPlayerPieces_whenHeAsked();
+
+        // then
+        assertEquals(WHITE, game.getCurrentColor());
+    }
+
+    @Test
+    public void shouldDrawBoardWithAllPieces_whenOneTickLastsAfterAskingColor() {
+
+        // given
+        shouldDrawOnlyPlayerPieces_whenHeAsked();
+
+        // when
+        game.tick();
+
+        // then
+        assertE(classicBoard(), WHITE);
+    }
 }

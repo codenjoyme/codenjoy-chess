@@ -396,4 +396,34 @@ public class CastlingTest extends AbstractGameTest {
                 "..WR...R");
         neverFired(WRONG_MOVE);
     }
+
+    @Test
+    public void shouldNotBeAbleToMakeCastling_withDeadPiece() {
+
+        givenFl("r...w..r" +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "....W..R");
+        move(WHITE, from(7, 0).to(7, 7));
+        move(BLACK, from(0, 7).to(0, 6));
+        move(WHITE, from(7, 7).to(7, 0));
+
+        // when
+        move(BLACK, from(4, 7).to(7, 7));
+
+        // then
+        assertE("....w..." +
+                "r......." +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "....W..R");
+        fired(BLACK, WRONG_MOVE);
+    }
 }

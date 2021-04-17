@@ -76,4 +76,12 @@ public class Player extends GamePlayer<ChessPlayerHero, Chess> {
         hero.getEvents().forEach(this::event);
         return hero.getLastMove();
     }
+
+    public boolean askedForColor() {
+        return hero.askedForColor();
+    }
+
+    public void answeredColor() {
+        hero.colorsAnswered();
+    }
 }

@@ -41,17 +41,6 @@ public class King extends Piece {
         super(Type.KING, color, board, position);
     }
 
-    public void move(Point position) {
-        board.getPieceAt(position).ifPresent(p -> p.setAlive(false));
-        this.position = position;
-        moved = true;
-    }
-
-    @Override
-    public List<Move> getAvailableMoves() {
-        return availableMoves(board, position, color, moved);
-    }
-
     private static Direction defineDirection(Point from, Point to) {
         if (from.equals(to)) {
             return null;
@@ -80,17 +69,13 @@ public class King extends Piece {
         return board.isInBounds(dest) && (pieceAtDest.isEmpty() || pieceAtDest.get().getColor() != color);
     }
 
-    @Override
-    public void setAlive(boolean alive) {
-        if (this.alive && !alive) {
-            this.alive = false;
-            board.die(color);
-        } else {
-            this.alive = alive;
-        }
-    }
-
-    public static List<Move> availableMoves(GameBoard board, Point position, Color color, boolean moved) {
+    public static List<Move> availableMoves(GameBoard board,
+                                            Point position,
+                                            Color color,
+                                            boolean moved,
+                                            boolean withCastling,
+                                            Direction attackDirection
+    ) {
         List<Move> moves = listOfAvailableMoves(board, position, color,
                 LEFT.change(position),
                 UP.change(position),
@@ -101,33 +86,61 @@ public class King extends Piece {
                 RIGHT.change(DOWN.change(position)),
                 DOWN.change(LEFT.change(position))
         );
-        if (!moved) {
+        if (withCastling && !moved) {
             Point point = position;
             do {
-                point = color.getAttackDirection().counterClockwise().change(point);
-            } while (board.isInBounds(point) && (board.getPieceAt(point).isEmpty() || (board.getPieceAt(point).get().getType() != Type.ROOK && board.getPieceAt(point).get().getColor() != color)));
+                point = attackDirection.counterClockwise().change(point);
+            } while (board.isInBounds(point) && board.getPieceAt(point).isEmpty());
             if (board.getPieceAt(point).isPresent()) {
                 Piece rook = board.getPieceAt(point).get();
-                Direction direction = defineDirection(position, rook.getPosition());
-                Point rookPosition = direction.change(position);
-                Point kingPosition = direction.change(rookPosition);
-                if (!board.isUnderAttack(rookPosition, color) && !board.isUnderAttack(kingPosition, color)) {
-                    if (rook.getColor() == color && !rook.isMoved()) {
+                if (rook.getType() == Type.ROOK && rook.getColor() == color && !rook.isMoved()) {
+                    Direction direction = defineDirection(position, rook.getPosition());
+                    Point rookPosition = direction.change(position);
+                    Point kingPosition = direction.change(rookPosition);
+                    if (!board.isUnderAttack(rookPosition, color) && !board.isUnderAttack(kingPosition, color)) {
                         moves.add(Move.from(position).to(point));
                     }
                 }
             }
             point = position;
             do {
-                point = color.getAttackDirection().clockwise().change(point);
-            } while (board.isInBounds(point) && (board.getPieceAt(point).isEmpty() || (board.getPieceAt(point).get().getType() != Type.ROOK && board.getPieceAt(point).get().getColor() != color)));
+                point = attackDirection.clockwise().change(point);
+            } while (board.isInBounds(point) && board.getPieceAt(point).isEmpty());
             if (board.getPieceAt(point).isPresent()) {
                 Piece rook = board.getPieceAt(point).get();
-                if (rook.getColor() == color && !rook.isMoved()) {
-                    moves.add(Move.from(position).to(point));
+                if (rook.getType() == Type.ROOK && rook.getColor() == color && !rook.isMoved()) {
+                    Direction direction = defineDirection(position, rook.getPosition());
+                    Point rookPosition = direction.change(position);
+                    Point kingPosition = direction.change(rookPosition);
+                    if (!board.isUnderAttack(rookPosition, color) && !board.isUnderAttack(kingPosition, color)) {
+                        moves.add(Move.from(position).to(point));
+                    }
                 }
             }
         }
         return moves;
     }
+
+    public void move(Point position) {
+        board.getPieceAt(position).ifPresent(p -> p.setAlive(false));
+        this.position = position;
+        moved = true;
+    }
+
+    @Override
+    public List<Move> getAvailableMoves() {
+        return availableMoves(board, position, color, moved, true, attackDirection);
+    }
+
+    @Override
+    public void setAlive(boolean alive) {
+        if (this.alive && !alive) {
+            this.alive = false;
+            board.die(color);
+        } else {
+            this.alive = alive;
+        }
+    }
 }
+
+// TODO BUG WITH CASTLING

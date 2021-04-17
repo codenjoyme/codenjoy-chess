@@ -26,14 +26,10 @@ package com.codenjoy.dojo.chess.engine.model.item.piece;
 import com.codenjoy.dojo.chess.engine.model.Color;
 import com.codenjoy.dojo.chess.engine.service.GameBoard;
 import com.codenjoy.dojo.chess.engine.service.Move;
-import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.google.common.collect.Lists;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.codenjoy.dojo.services.Direction.*;
 
 public class Queen extends Piece {
 

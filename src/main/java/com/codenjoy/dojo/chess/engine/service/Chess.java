@@ -32,6 +32,8 @@ import com.codenjoy.dojo.services.printer.BoardReader;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 import java.util.Comparator;
 import java.util.List;
@@ -46,7 +48,7 @@ public class Chess implements GameField<Player> {
     @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private final Dice dice;
 
-    private final PositionMapper positionMapper;
+    private final Rotator rotator;
     private final List<Player> players = Lists.newLinkedList();
     private final GameHistory history = new GameHistory();
 
@@ -55,11 +57,13 @@ public class Chess implements GameField<Player> {
 
     private Color currentColor;
 
+    private boolean playerAskedColor;
+
     public Chess(Level level, Dice dice, GameSettings settings) {
         this.dice = dice;
         this.settings = settings;
         this.board = new GameBoard(level);
-        this.positionMapper = new PositionMapper(board.getSize());
+        this.rotator = new Rotator(board.getSize());
         this.currentColor = getColors().stream()
                 .min(Comparator.comparingInt(Color::getPriority))
                 .orElseThrow(() -> new IllegalArgumentException("Level " + level + " is invalid"));
@@ -67,20 +71,36 @@ public class Chess implements GameField<Player> {
 
     @Override
     public void tick() {
+        Marker marker = MarkerFactory.getMarker("GAME__TICK");
+        LOGGER.debug(marker, "Start tick with color: {}", currentColor);
         Player player = getPlayer(currentColor);
-        Move move = player.makeMove();
-        checkGameOvers();
-        checkWinner();
-        if (move == null && settings.bool(WAIT_UNTIL_MAKE_A_MOVE)) {
-            LOGGER.debug(
-                    "{} player's move didn't committed; " +
-                            "Option {} set to true, so right to move is not transferred further",
-                    currentColor, WAIT_UNTIL_MAKE_A_MOVE
-            );
+        if ((playerAskedColor = player.askedForColor())) {
+            LOGGER.debug(marker, "{} player asked for his color", currentColor);
+            player.answeredColor();
+            LOGGER.debug(marker, "Tick ended up");
             return;
         }
+        Move move = player.makeMove();
+        if (move == null) {
+            LOGGER.debug(marker, "{} move was NOT committed", currentColor);
+            if (settings.bool(WAIT_UNTIL_MAKE_A_MOVE)) {
+                LOGGER.debug(marker,
+                        "{} player's move didn't committed; " +
+                                "Option {} set to true, so right to move is not transferred further",
+                        currentColor, WAIT_UNTIL_MAKE_A_MOVE
+                );
+                return;
+            }
+        } else {
+            LOGGER.debug(marker, "{} {} was SUCCESSFULLY committed", currentColor, move);
+            history.add(currentColor, move);
+        }
+
         currentColor = nextColor();
-        history.add(currentColor, move);
+        LOGGER.debug(marker, "Color changed to {}", currentColor);
+        checkGameOvers();
+        checkWinner();
+        LOGGER.debug(marker, "Tick ended up");
     }
 
     private void checkGameOvers() {
@@ -174,7 +194,11 @@ public class Chess implements GameField<Player> {
         return board.getSize();
     }
 
-    public PositionMapper getPositionMapper() {
-        return positionMapper;
+    public Rotator getRotator() {
+        return rotator;
+    }
+
+    public boolean isCurrentPlayerAskedColor() {
+        return playerAskedColor;
     }
 }

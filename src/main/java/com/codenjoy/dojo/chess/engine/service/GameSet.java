@@ -28,11 +28,16 @@ import com.codenjoy.dojo.chess.engine.model.item.piece.Piece;
 import com.codenjoy.dojo.chess.engine.model.item.piece.Rook;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 import java.util.List;
 import java.util.Optional;
 
 public class GameSet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(GameSet.class);
 
     private final Color color;
     private final List<Piece> pieces;
@@ -68,33 +73,44 @@ public class GameSet {
     }
 
     public boolean makeMove(final Move command) {
+        Marker marker = MarkerFactory.getMarker("GAME_SET__MAKE_MOVE");
+        LOGGER.debug(marker, "MakeMove started");
         if (command == null) {
+            LOGGER.debug(marker, "Trying to make a NULL move with {} game set", color);
             return false;
         }
         Piece piece = board.getPieceAt(command.getFrom())
                 .orElse(null);
         if (piece == null || piece.getColor() != getColor()) {
+            LOGGER.debug(marker, "Trying to move enemy's piece from {} game set", color);
             return false;
         }
         if (piece.getAvailableMoves().contains(command)) {
             if (isCastling(command)) {
+                LOGGER.debug(marker, "{} is castling", command);
                 // castling
                 if (tryCastling((Rook) board.getPieceAt(command.getTo()).get())) {
                     lastMove = command;
+                    LOGGER.debug(marker, "Castling has been committed");
                     return true;
                 } else {
+                    LOGGER.debug(marker, "Castling has not been committed");
                     return false;
                 }
             } else {
                 piece.move(command);
                 if (command.withPromotion()) {
+                    LOGGER.debug(marker, "{} is with promotion", command);
                     pieces.remove(piece);
                     pieces.add(Piece.create(command.getPromotion(), getColor(), board, piece.getPosition()));
                 }
+                LOGGER.debug(marker, "Piece successfully moved");
                 lastMove = command;
                 return true;
             }
         }
+        LOGGER.debug(marker, "{} is not available for {}", command, piece);
+        LOGGER.debug(marker, "MakeMove ended");
         return false;
     }
 

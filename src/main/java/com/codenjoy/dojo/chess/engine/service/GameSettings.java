@@ -66,7 +66,7 @@ public final class GameSettings extends SettingsImpl implements SettingsReader<G
 
     public GameSettings() {
         bool(GAME_OVER_IF_WRONG_MOVE, false);
-        bool(WAIT_UNTIL_MAKE_A_MOVE, false);
+        bool(WAIT_UNTIL_MAKE_A_MOVE, true);
         multiline(LEVEL_MAP, Levels.classicChessBoard());
     }
 

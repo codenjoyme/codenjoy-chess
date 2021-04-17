@@ -1,17 +1,41 @@
 package com.codenjoy.dojo.chess.engine.service;
 
-import com.codenjoy.dojo.chess.engine.model.item.Barrier;
-import com.codenjoy.dojo.chess.engine.model.Color;
-import com.codenjoy.dojo.chess.engine.model.item.Square;
+/*-
+ * #%L
+ * Codenjoy - it's a dojo-like platform from developers to developers.
+ * %%
+ * Copyright (C) 2018 - 2021 Codenjoy
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
+
 import com.codenjoy.dojo.chess.engine.level.Level;
+import com.codenjoy.dojo.chess.engine.model.Color;
+import com.codenjoy.dojo.chess.engine.model.item.Barrier;
+import com.codenjoy.dojo.chess.engine.model.item.Square;
+import com.codenjoy.dojo.chess.engine.model.item.piece.King;
 import com.codenjoy.dojo.chess.engine.model.item.piece.Piece;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.google.common.collect.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class GameBoard {
@@ -21,7 +45,7 @@ public class GameBoard {
     private final List<GameSet> gameSets;
 
     public GameBoard(String map) {
-        this(new Level(map));
+        this(new Level(map.replaceAll("[\\n\\t ]", "")));
     }
 
     public GameBoard(Level level) {
@@ -66,9 +90,17 @@ public class GameBoard {
                 .filter(gameSet -> gameSet.getColor() != color)
                 .map(GameSet::getPieces)
                 .flatMap(Collection::stream)
+                .filter(p -> p.getType() != Piece.Type.KING)
                 .map(Piece::getAvailableMoves)
                 .flatMap(Collection::stream)
                 .anyMatch(m -> m.getTo().equals(point));
+        boolean kingAttack = gameSets.stream()
+                .map(GameSet::getPieces)
+                .flatMap(Collection::stream)
+                .filter(p -> p.getType() == Piece.Type.KING && p.getColor() != color)
+                .anyMatch(king -> King.availableMoves(this, point, color, king.isMoved(), false, Color.WHITE.getAttackDirection()).stream()
+                        .map(Move::getTo)
+                        .anyMatch(p -> p.equals(point)));
         boolean pawnAttack = gameSets.stream()
                 .map(GameSet::getPieces)
                 .flatMap(Collection::stream)
@@ -79,7 +111,7 @@ public class GameBoard {
                     Direction attack2 = direction.counterClockwise();
                     return attack1.change(direction.change(pawn.getPosition())).equals(point) || attack2.change(direction.change(pawn.getPosition())).equals(point);
                 });
-        return result || pawnAttack;
+        return result || pawnAttack || kingAttack;
     }
 
     public int getSize() {

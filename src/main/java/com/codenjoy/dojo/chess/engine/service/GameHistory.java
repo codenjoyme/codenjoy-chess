@@ -62,6 +62,10 @@ public class GameHistory {
         return records.isEmpty() ? null : records.get(records.size() - 1);
     }
 
+    @Override
+    public String toString() {
+        return "GameHistory{" + records + '}';
+    }
 
     public static class Record {
 
@@ -79,6 +83,11 @@ public class GameHistory {
 
         public Move getMove() {
             return Move.decode(move.command());
+        }
+
+        @Override
+        public String toString() {
+            return color + ": " + move;
         }
     }
 }

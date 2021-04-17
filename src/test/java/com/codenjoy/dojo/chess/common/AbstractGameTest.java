@@ -62,7 +62,7 @@ public abstract class AbstractGameTest {
     protected TestHistory history;
 
 
-    protected static String classicBoard() {
+    public static String classicBoard() {
         return "rkbqwbkr" +
                 "pppppppp" +
                 "........" +
@@ -143,6 +143,17 @@ public abstract class AbstractGameTest {
         assertEquals(TestUtils.injectN(expected), getBoardState(playerColor));
     }
 
+    protected void act(Color color, int... codes) {
+        act(color, true, codes);
+    }
+
+    protected void act(Color color,  boolean withTick, int... codes) {
+        players.get(color).getHero().act(codes);
+        if (withTick) {
+            game.tick();
+        }
+    }
+
     protected void move(Color color, Move move) {
         move(color, move, true, true);
     }
@@ -154,11 +165,11 @@ public abstract class AbstractGameTest {
     protected void move(Color color, final Move move, boolean notRotatedBoard, boolean withTick) {
         Move action = move;
         if (notRotatedBoard) {
-            PositionMapper mapper = game.getPositionMapper();
+            Rotator rotator = game.getRotator();
             Point from = move.getFrom();
             Point to = move.getTo();
-            mapper.mapPosition(color, Color.WHITE, from);
-            mapper.mapPosition(color, Color.WHITE, to);
+            rotator.mapPosition(color, Color.WHITE, from);
+            rotator.mapPosition(color, Color.WHITE, to);
             action = Move.from(from).to(to).promotion(move.getPromotion());
         }
         players.get(color).getHero().act(action.command());

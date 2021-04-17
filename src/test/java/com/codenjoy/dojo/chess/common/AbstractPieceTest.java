@@ -70,6 +70,9 @@ public abstract class AbstractPieceTest extends AbstractGameTest {
     @Test
     public abstract void shouldNotBeAbleToTakeFriendlyPiece();
 
+//    @Test TODO
+//    public abstract void shouldNotMoveOutOfBounds();
+
     protected void assertCanMoveOnlyTo(Piece piece, Point... positionsArray) {
         assertCanMoveOnlyTo(null, piece, positionsArray);
     }
