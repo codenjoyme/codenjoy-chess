@@ -24,5 +24,15 @@ package com.codenjoy.dojo.chess.model;
 
 
 public enum Events {
-    WIN, WRONG_MOVE, GAME_OVER;
+    WIN,
+    WRONG_MOVE,
+    GAME_OVER,
+
+    KING_TAKEN,
+    QUEEN_TAKEN,
+    BISHOP_TAKEN,
+    ROOK_TAKEN,
+    KNIGHT_TAKEN,
+    PAWN_TAKEN
+    ;
 }

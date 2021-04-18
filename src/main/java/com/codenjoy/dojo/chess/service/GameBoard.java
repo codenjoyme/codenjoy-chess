@@ -163,6 +163,12 @@ public class GameBoard {
         return getGameSet(color).getLastMove();
     }
 
+    public List<Piece> getAlivePieces() {
+        return getPieces().stream()
+                .filter(Piece::isAlive)
+                .collect(Collectors.toList());
+    }
+
     private List<GameSet> getAliveSets() {
         return gameSets.stream()
                 .filter(GameSet::isKingAlive)

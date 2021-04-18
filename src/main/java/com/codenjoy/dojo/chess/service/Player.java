@@ -60,12 +60,6 @@ public class Player extends GamePlayer<ChessPlayerHero, Chess> {
     @Override
     public void event(Object eventObj) {
         super.event(eventObj);
-        Events event = (Events) eventObj;
-        switch (event) {
-            case WIN:
-            case GAME_OVER:
-                break;
-        }
     }
 
     public Color getColor() {

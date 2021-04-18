@@ -10,12 +10,12 @@ package com.codenjoy.dojo.chess.service;
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -25,8 +25,10 @@ package com.codenjoy.dojo.chess.service;
 import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Events;
 import com.codenjoy.dojo.chess.model.Move;
+import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import com.codenjoy.dojo.services.joystick.NoDirectionJoystick;
 import com.codenjoy.dojo.services.multiplayer.PlayerHero;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,13 +83,41 @@ public class ChessPlayerHero extends PlayerHero<Chess> implements NoDirectionJoy
         if (askedForColor || color != field.getCurrentColor() || action == null) {
             return;
         }
+        List<Piece> piecesBeforeMove = field.getBoard().getAlivePieces();
         if (field.getBoard().tryMove(color, action)) {
             lastMove = action;
+            CollectionUtils.subtract(piecesBeforeMove, field.getBoard().getAlivePieces()).stream()
+                    .map(this::eventOfTaken)
+                    .forEach(events::add);
         } else {
             events.add(Events.WRONG_MOVE);
         }
         action = null;
     }
+
+    private Events eventOfTaken(Piece piece) {
+        if (piece.isAlive()) {
+            throw new IllegalArgumentException("Piece should be taken");
+        }
+        Piece.Type type = piece.getType();
+        switch (type) {
+            case KING:
+                return Events.KING_TAKEN;
+            case QUEEN:
+                return Events.QUEEN_TAKEN;
+            case KNIGHT:
+                return Events.KNIGHT_TAKEN;
+            case BISHOP:
+                return Events.BISHOP_TAKEN;
+            case ROOK:
+                return Events.ROOK_TAKEN;
+            case PAWN:
+                return Events.PAWN_TAKEN;
+            default:
+                throw new IllegalArgumentException("Unknown piece type");
+        }
+    }
+
 
     public Color getColor() {
         return color;

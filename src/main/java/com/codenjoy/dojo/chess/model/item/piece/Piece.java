@@ -128,19 +128,17 @@ public abstract class Piece {
     }
 
     public enum Type {
-        KING(0, 20),
-        QUEEN(1, 9),
-        KNIGHT(2, 3),
-        BISHOP(3, 5),
-        ROOK(4, 5),
-        PAWN(5, 1);
+        KING(0),
+        QUEEN(1),
+        KNIGHT(2),
+        BISHOP(3),
+        ROOK(4),
+        PAWN(5);
 
         private final int id;
-        private final int cost;
 
-        Type(int id, int cost) {
+        Type(int id) {
             this.id = id;
-            this.cost = cost;
         }
 
         public static Type byId(int id) {
@@ -154,10 +152,6 @@ public abstract class Piece {
 
         public int getId() {
             return id;
-        }
-
-        public int getCost() {
-            return cost;
         }
     }
 }

@@ -26,18 +26,35 @@ package com.codenjoy.dojo.chess.service;
 import com.codenjoy.dojo.chess.model.Events;
 import com.codenjoy.dojo.services.PlayerScores;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.codenjoy.dojo.chess.model.Events.*;
+import static com.codenjoy.dojo.chess.service.GameSettings.Option.*;
 
 public class Scores implements PlayerScores {
 
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
+    private final Map<Events, Integer> eventsToRewards;
     private final static int DEFAULT_SCORE = 0;
 
-    private final GameSettings settings;
     private final AtomicInteger score;
 
     public Scores(int startScore, GameSettings settings) {
-        this.settings = settings;
         this.score = new AtomicInteger(startScore);
+        this.eventsToRewards = new HashMap<>() {{
+           put(WIN, settings.integer(WIN_REWARD));
+           put(WRONG_MOVE, settings.integer(WRONG_MOVE_PENALTY) * -1);
+           put(GAME_OVER, settings.integer(GAME_OVER_PENALTY) * -1);
+
+           put(KING_TAKEN, settings.integer(KING_WORTH));
+           put(QUEEN_TAKEN, settings.integer(QUEEN_WORTH));
+           put(BISHOP_TAKEN, settings.integer(BISHOP_WORTH));
+           put(ROOK_TAKEN, settings.integer(ROOK_WORTH));
+           put(KNIGHT_TAKEN, settings.integer(KNIGHT_WORTH));
+           put(PAWN_TAKEN, settings.integer(PAWN_WORTH));
+        }};
     }
 
     @Override
@@ -57,10 +74,8 @@ public class Scores implements PlayerScores {
     }
 
     @Override
-    public void event(Object event) {
-        if (event.equals(Events.WIN)) {
-//            score.addAndGet(settings.integer(WIN_SCORE));
-        }
-
+    public void event(Object eventObj) {
+        Events event = (Events) eventObj;
+        score.addAndGet(eventsToRewards.get(event));
     }
 }

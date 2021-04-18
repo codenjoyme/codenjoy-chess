@@ -142,5 +142,3 @@ public class King extends Piece {
         }
     }
 }
-
-// TODO BUG WITH CASTLING
