@@ -48,16 +48,6 @@ public class GameHistory {
         records.add(record);
     }
 
-    public Move getLastMoveOf(Color color) {
-        for (int i = records.size() - 1; i >= 0; i--) {
-            Record record = records.get(i);
-            if (record.color == color) {
-                return record.move;
-            }
-        }
-        return null;
-    }
-
     @SuppressWarnings("unused")
     public Record getLastRecord() {
         return records.isEmpty() ? null : records.get(records.size() - 1);

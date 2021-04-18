@@ -25,26 +25,24 @@ package com.codenjoy.dojo.chess.service;
 import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Events;
 import com.codenjoy.dojo.chess.model.Move;
+import com.codenjoy.dojo.services.joystick.NoDirectionJoystick;
 import com.codenjoy.dojo.services.multiplayer.PlayerHero;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ChessPlayerHero extends PlayerHero<Chess> implements NoDirectionsJoystick {
+public class ChessPlayerHero extends PlayerHero<Chess> implements NoDirectionJoystick {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChessPlayerHero.class);
 
     private final Color color;
 
     private final List<Events> events = new ArrayList<>();
+    private boolean askedForColor = false;
     private Move lastMove;
     private Move action;
-
-    private boolean askedForColor = false;
 
     public ChessPlayerHero(Color color, Chess field) {
         this.color = color;
@@ -53,33 +51,23 @@ public class ChessPlayerHero extends PlayerHero<Chess> implements NoDirectionsJo
 
     @Override
     public void act(int... codes) {
-        Marker marker = MarkerFactory.getMarker("CHESS_PLAYER_HERO__ACT");
-        LOGGER.debug(marker, "Act started with codes {}", Arrays.toString(codes));
         if (field.getCurrentColor() != getColor()) {
-            LOGGER.debug(marker,
-                    "Player with color {} tried to send an act command when active color was {}",
-                    getColor(), field.getCurrentColor()
-            );
             return;
         }
         if (codes.length == 0) {
-            LOGGER.debug(marker, "{} player is asking for color", color);
             askedForColor = true;
             return;
         }
         action = Move.decode(codes);
         if (action == null) {
-            LOGGER.debug(marker,
+            LOGGER.debug(
                     "Hero with color {} received invalid action parameters: {}",
                     getColor(), Arrays.toString(codes)
             );
             return;
         }
-        LOGGER.debug(marker, "{} received; preparing for mapping...", action);
         action = field.getRotator()
                 .mapMove(color, action);
-        LOGGER.debug(marker, "Action after mapping: {}", action);
-        LOGGER.debug(marker, "Act ended");
     }
 
     private void clearBeforeTick() {
@@ -89,30 +77,16 @@ public class ChessPlayerHero extends PlayerHero<Chess> implements NoDirectionsJo
 
     @Override
     public void tick() {
-        Marker marker = MarkerFactory.getMarker("CHESS_PLAYER_HERO__TICK");
-        LOGGER.debug(marker, "Tick started for player with {} color", color);
-        if (askedForColor) {
-            LOGGER.debug(marker, "Player asked for color");
-            return;
-        }
         clearBeforeTick();
-        if (color != field.getCurrentColor()) {
-            LOGGER.debug(marker, "{} player trying to make a move, but current player is {}", color, field.getCurrentColor());
-            return;
-        }
-        if (action == null) {
-            LOGGER.debug(marker, "{} player didn't respond", color);
+        if (askedForColor || color != field.getCurrentColor() || action == null) {
             return;
         }
         if (field.getBoard().tryMove(color, action)) {
             lastMove = action;
-            LOGGER.debug(marker, "{} successful", action);
         } else {
-            LOGGER.debug(marker, "{} unsuccessful", action);
             events.add(Events.WRONG_MOVE);
         }
         action = null;
-        LOGGER.debug(marker, "Tick ended");
     }
 
     public Color getColor() {

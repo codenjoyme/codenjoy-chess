@@ -23,19 +23,19 @@ package com.codenjoy.dojo.chess.service;
  */
 
 
-import com.codenjoy.dojo.chess.model.Move;
-import com.codenjoy.dojo.chess.model.level.Level;
 import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Events;
+import com.codenjoy.dojo.chess.model.Move;
+import com.codenjoy.dojo.chess.model.level.Level;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.multiplayer.GameField;
 import com.codenjoy.dojo.services.printer.BoardReader;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -49,16 +49,14 @@ public class Chess implements GameField<Player> {
     @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private final Dice dice;
 
-    private final Rotator rotator;
     private final List<Player> players = Lists.newLinkedList();
     private final GameHistory history = new GameHistory();
-
     private final GameSettings settings;
+    private final Rotator rotator;
     private final GameBoard board;
 
-    private Color currentColor;
-
     private boolean playerAskedColor;
+    private Color currentColor;
 
     public Chess(Level level, Dice dice, GameSettings settings) {
         this.dice = dice;
@@ -72,51 +70,28 @@ public class Chess implements GameField<Player> {
 
     @Override
     public void tick() {
-        Marker marker = MarkerFactory.getMarker("GAME__TICK");
-        LOGGER.debug(marker, "Start tick with color: {}", currentColor);
         Player player = getPlayer(currentColor);
-        if ((playerAskedColor = player.askedForColor())) {
-            LOGGER.debug(marker, "{} player asked for his color", currentColor);
+
+        playerAskedColor = player.askedForColor();
+        if (playerAskedColor) {
             player.answeredColor();
-            LOGGER.debug(marker, "Tick ended up");
             return;
         }
+
         Move move = player.makeMove();
-        if (move == null) {
-            LOGGER.debug(marker, "{} move was NOT committed", currentColor);
-            if (settings.bool(WAIT_UNTIL_MAKE_A_MOVE)) {
-                LOGGER.debug(marker,
-                        "{} player's move didn't committed; " +
-                                "Option {} set to true, so right to move is not transferred further",
-                        currentColor, WAIT_UNTIL_MAKE_A_MOVE
-                );
-                return;
-            }
-        } else {
-            LOGGER.debug(marker, "{} {} was SUCCESSFULLY committed", currentColor, move);
-            history.add(currentColor, move);
+        if (move == null && settings.bool(WAIT_UNTIL_MAKE_A_MOVE)) {
+            LOGGER.debug(
+                    "{} player's move didn't committed; " +
+                            "Option {} set to true, so right to move is not transferred further",
+                    currentColor, WAIT_UNTIL_MAKE_A_MOVE
+            );
+            return;
         }
 
+        history.add(currentColor, move);
         currentColor = nextColor();
-        LOGGER.debug(marker, "Color changed to {}", currentColor);
         checkGameOvers();
-        checkWinner();
-        LOGGER.debug(marker, "Tick ended up");
-    }
-
-    private void checkGameOvers() {
-        players.stream()
-                .filter(p -> !p.isAlive())
-                .forEach(p -> p.event(Events.GAME_OVER));
-    }
-
-    private void checkWinner() {
-        List<Player> alivePlayers = players.stream()
-                .filter(Player::isAlive)
-                .collect(Collectors.toList());
-        if (alivePlayers.size() == 1) {
-            alivePlayers.get(0).event(Events.WIN);
-        }
+        checkVictory();
     }
 
     @Override
@@ -145,52 +120,6 @@ public class Chess implements GameField<Player> {
         return new ChessBoardReader(this);
     }
 
-    public Color getCurrentColor() {
-        return currentColor;
-    }
-
-    public List<Color> getColors() {
-        return board.getColors();
-    }
-
-    public Color getAvailableColor() {
-        List<Color> usedColors = players.stream()
-                .map(Player::getColor)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        return board.getColors().stream()
-                .filter(c -> !usedColors.contains(c))
-                .findAny()
-                .orElse(null);
-    }
-
-    private Player getPlayer(Color color) {
-        return players.stream()
-                .filter(p -> p.getColor() == color)
-                .findAny()
-                .orElse(null);
-    }
-
-    public GameBoard getBoard() {
-        return board;
-    }
-
-    private List<Player> getAlivePlayers() {
-        return players.stream()
-                .filter(Player::isAlive)
-                .collect(Collectors.toList());
-    }
-
-    private Color nextColor() {
-        List<Player> alivePlayers = getAlivePlayers();
-        alivePlayers.sort(Comparator.comparingInt(p -> p.getColor().getPriority()));
-        return alivePlayers.stream()
-                .map(Player::getColor)
-                .filter(color -> color.getPriority() > currentColor.getPriority())
-                .findAny()
-                .orElse(alivePlayers.get(0).getColor());
-    }
-
     public int getBoardSize() {
         return board.getSize();
     }
@@ -201,5 +130,65 @@ public class Chess implements GameField<Player> {
 
     public boolean isCurrentPlayerAskedColor() {
         return playerAskedColor;
+    }
+
+    public List<Player> getAlivePlayers() {
+        return players.stream()
+                .filter(Player::isAlive)
+                .collect(Collectors.toList());
+    }
+
+    public Color getCurrentColor() {
+        return currentColor;
+    }
+
+    public List<Color> getColors() {
+        return board.getColors();
+    }
+
+    public Color getAvailableColor() {
+        Collection<Color> unusedColors = CollectionUtils.subtract(board.getColors(), getUsedColors());
+        return unusedColors.size() > 0 ? unusedColors.iterator().next() : null;
+    }
+
+    public GameBoard getBoard() {
+        return board;
+    }
+
+    private void checkGameOvers() {
+        players.stream()
+                .filter(p -> !p.isAlive())
+                .forEach(p -> p.event(Events.GAME_OVER));
+    }
+
+    private void checkVictory() {
+        List<Player> alivePlayers = getAlivePlayers();
+        if (alivePlayers.size() == 1) {
+            alivePlayers.get(0).event(Events.WIN);
+        }
+    }
+
+    private List<Color> getUsedColors() {
+        return players.stream()
+                .map(Player::getColor)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    private Player getPlayer(Color color) {
+        return players.stream()
+                .filter(p -> p.getColor() == color)
+                .findAny()
+                .orElse(null);
+    }
+
+    private Color nextColor() {
+        List<Player> alivePlayers = getAlivePlayers();
+        alivePlayers.sort(Comparator.comparingInt(p -> p.getColor().getPriority()));
+        return alivePlayers.stream()
+                .map(Player::getColor)
+                .filter(color -> color.getPriority() > currentColor.getPriority())
+                .findAny()
+                .orElse(alivePlayers.get(0).getColor());
     }
 }

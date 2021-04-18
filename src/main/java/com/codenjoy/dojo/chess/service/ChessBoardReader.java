@@ -66,8 +66,8 @@ public class ChessBoardReader implements BoardReader<Player> {
         elements.addAll(barriers);
         elements.addAll(squares);
 
-        game.getRotator()
-                .mapPosition(player.getColor(), elements);
+        // rotate board towards the player by his side
+        game.getRotator().mapPosition(player.getColor(), elements);
 
         return elements;
     }

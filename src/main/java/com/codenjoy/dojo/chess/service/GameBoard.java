@@ -40,6 +40,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class GameBoard {
+
     private final Level level;
     private final List<Square> squares;
     private final List<Barrier> barriers;
@@ -66,14 +67,16 @@ public class GameBoard {
         }
     }
 
-    public boolean tryMove(Color color, Move move) {
-        return getGameSet(color).makeMove(move);
+    public boolean isAlive(Color color) {
+        GameSet gameSet = getGameSet(color);
+        if (gameSet == null) {
+            throw new IllegalArgumentException("Game set with color " + color + " not exists");
+        }
+        return gameSet.isKingAlive();
     }
 
-    private List<GameSet> getAliveSets() {
-        return gameSets.stream()
-                .filter(GameSet::isKingAlive)
-                .collect(Collectors.toList());
+    public boolean tryMove(Color color, Move move) {
+        return getGameSet(color).makeMove(move);
     }
 
     public Optional<Piece> getPieceAt(Point position) {
@@ -115,6 +118,17 @@ public class GameBoard {
         return result || pawnAttack || kingAttack;
     }
 
+    public boolean isInBounds(Point point) {
+        return !point.isOutOf(getSize());
+    }
+
+    public void die(Color color) {
+        gameSets.stream()
+                .filter(gameSet -> gameSet.getColor() == color)
+                .findAny()
+                .ifPresent(GameSet::die);
+    }
+
     public int getSize() {
         return level.getSize();
     }
@@ -125,18 +139,6 @@ public class GameBoard {
                 .collect(Collectors.toList());
     }
 
-    public boolean isInBounds(Point point) {
-        return !point.isOutOf(getSize());
-    }
-
-    public List<Square> getSquares() {
-        return squares;
-    }
-
-    public List<Barrier> getBarriers() {
-        return barriers;
-    }
-
     public List<Piece> getPieces() {
         return gameSets.stream()
                 .map(GameSet::getPieces)
@@ -144,27 +146,12 @@ public class GameBoard {
                 .collect(Collectors.toList());
     }
 
-    public void die(Color color) {
-        gameSets.stream()
-                .filter(gameSet -> gameSet.getColor() == color)
-                .findAny()
-                .ifPresent(GameSet::die);
+    public List<Barrier> getBarriers() {
+        return barriers;
     }
 
-
-    public boolean isAlive(Color color) {
-        GameSet gameSet = getGameSet(color);
-        if (gameSet == null) {
-            throw new IllegalArgumentException("Game set with color " + color + " not exists");
-        }
-        return gameSet.isKingAlive();
-    }
-
-    private GameSet getGameSet(Color color) {
-        return gameSets.stream()
-                .filter(gameSet -> gameSet.getColor() == color)
-                .findAny()
-                .orElse(null);
+    public List<Square> getSquares() {
+        return squares;
     }
 
     public boolean isWinner(Color color) {
@@ -174,5 +161,18 @@ public class GameBoard {
 
     public Move getLastMoveOf(Color color) {
         return getGameSet(color).getLastMove();
+    }
+
+    private List<GameSet> getAliveSets() {
+        return gameSets.stream()
+                .filter(GameSet::isKingAlive)
+                .collect(Collectors.toList());
+    }
+
+    private GameSet getGameSet(Color color) {
+        return gameSets.stream()
+                .filter(gameSet -> gameSet.getColor() == color)
+                .findAny()
+                .orElse(null);
     }
 }
