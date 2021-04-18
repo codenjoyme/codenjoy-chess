@@ -22,11 +22,12 @@ package com.codenjoy.dojo.chess.common;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.engine.level.Level;
-import com.codenjoy.dojo.chess.engine.model.Color;
-import com.codenjoy.dojo.chess.engine.model.Event;
-import com.codenjoy.dojo.chess.engine.model.item.piece.Piece;
-import com.codenjoy.dojo.chess.engine.service.*;
+import com.codenjoy.dojo.chess.model.Move;
+import com.codenjoy.dojo.chess.model.level.Level;
+import com.codenjoy.dojo.chess.model.Color;
+import com.codenjoy.dojo.chess.model.Events;
+import com.codenjoy.dojo.chess.model.item.piece.Piece;
+import com.codenjoy.dojo.chess.service.*;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.Point;
@@ -93,28 +94,28 @@ public abstract class AbstractGameTest {
         }
     }
 
-    protected void neverFired(Color color, Event event) {
+    protected void neverFired(Color color, Events event) {
         EventListener eventListener = listeners.get(players.get(color));
         verify(eventListener, never()).event(event);
     }
 
-    protected void neverFired(Event event) {
+    protected void neverFired(Events event) {
         for (Map.Entry<Player, EventListener> entry : listeners.entrySet()) {
             verify(entry.getValue(), never()).event(event);
         }
     }
 
-    protected void fired(Color color, int times, Event event) {
+    protected void fired(Color color, int times, Events event) {
         EventListener eventListener = listeners.get(players.get(color));
         verify(eventListener, times(times)).event(event);
     }
 
-    protected void fired(Color color, Event event) {
+    protected void fired(Color color, Events event) {
         fired(color, 1, event);
     }
 
-    protected void fired(Color color, Event... events) {
-        ArgumentCaptor<Event> captor = ArgumentCaptor.forClass(Event.class);
+    protected void fired(Color color, Events... events) {
+        ArgumentCaptor<Events> captor = ArgumentCaptor.forClass(Events.class);
         EventListener eventListener = listeners.get(players.get(color));
         verify(eventListener, times(events.length)).event(captor.capture());
         assertEquals(Arrays.asList(events), captor.getAllValues());
@@ -179,9 +180,9 @@ public abstract class AbstractGameTest {
         }
     }
 
-    protected List<Event> getAllFiredEvents() {
-        ArgumentCaptor<Event> captor = ArgumentCaptor.forClass(Event.class);
-        List<Event> firedEvents = Lists.newArrayList();
+    protected List<Events> getAllFiredEvents() {
+        ArgumentCaptor<Events> captor = ArgumentCaptor.forClass(Events.class);
+        List<Events> firedEvents = Lists.newArrayList();
         listeners.forEach((plr, lstnr) -> {
             try {
                 // TODO проверить, скорее всего будет тащить за собой все случившиеся прошлые ивенты

@@ -23,11 +23,11 @@ package com.codenjoy.dojo.chess.client.ai;
  */
 
 import com.codenjoy.dojo.chess.client.Board;
-import com.codenjoy.dojo.chess.engine.model.Color;
-import com.codenjoy.dojo.chess.engine.model.item.piece.Piece;
-import com.codenjoy.dojo.chess.engine.service.GameBoard;
-import com.codenjoy.dojo.chess.engine.service.Move;
-import com.codenjoy.dojo.chess.engine.service.Rotator;
+import com.codenjoy.dojo.chess.model.Color;
+import com.codenjoy.dojo.chess.model.item.piece.Piece;
+import com.codenjoy.dojo.chess.service.GameBoard;
+import com.codenjoy.dojo.chess.model.Move;
+import com.codenjoy.dojo.chess.service.Rotator;
 import com.codenjoy.dojo.client.Solver;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Direction;

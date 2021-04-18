@@ -23,16 +23,15 @@ package com.codenjoy.dojo.chess.client;
  */
 
 
-import com.codenjoy.dojo.chess.engine.model.Element;
+import com.codenjoy.dojo.chess.model.Elements;
 import com.codenjoy.dojo.client.AbstractBoard;
-import com.codenjoy.dojo.client.ClientBoard;
 
 /**
  * Класс, обрабатывающий строковое представление доски.
  * Содержит ряд унаследованных методов {@see AbstractBoard},
  * но ты можешь добавить сюда любые свои методы на их основе.
  */
-public class Board extends AbstractBoard<Element> {
+public class Board extends AbstractBoard<Elements> {
 
     @Override
     protected int inversionY(int y) {
@@ -40,8 +39,8 @@ public class Board extends AbstractBoard<Element> {
     }
 
     @Override
-    public Element valueOf(char ch) {
-        return Element.of(ch);
+    public Elements valueOf(char ch) {
+        return Elements.of(ch);
     }
 
     @Override
@@ -49,7 +48,7 @@ public class Board extends AbstractBoard<Element> {
         return String.format("%s", boardAsString());
     }
 
-    public Element getAt(int x, int y) {
+    public Elements getAt(int x, int y) {
         if (isOutOfField(x, y)) {
             return null;
         }

@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.common;
+package com.codenjoy.dojo.chess.service;
 
 /*-
  * #%L
@@ -23,59 +23,59 @@ package com.codenjoy.dojo.chess.common;
  */
 
 import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.model.Events;
 import com.codenjoy.dojo.chess.model.Move;
-import com.google.common.collect.Lists;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class TestHistory {
+public class GameHistory {
+
     private final List<Record> records;
 
-    public TestHistory() {
-        this(Lists.newArrayList());
+    public GameHistory() {
+        this(new ArrayList<>());
     }
 
-    public TestHistory(List<Record> records) {
+    public GameHistory(List<Record> records) {
         this.records = records;
     }
 
-    public Record getFirstWithEvent(Events event) {
-        return records.stream()
-                .filter(r -> r.getEvents().contains(event))
-                .findFirst()
-                .orElse(null);
+    public void add(Color color, Move move) {
+        add(new Record(color, move));
     }
 
-    public void add(Color color, Move move, List<Events> events) {
-        if (events == null || events.size() == 0) {
-            records.add(new Record(color, move));
-        } else {
-            records.add(new Record(color, move, events.toArray(Events[]::new)));
+    public void add(Record record) {
+        records.add(record);
+    }
+
+    public Move getLastMoveOf(Color color) {
+        for (int i = records.size() - 1; i >= 0; i--) {
+            Record record = records.get(i);
+            if (record.color == color) {
+                return record.move;
+            }
         }
+        return null;
     }
 
-    public void add(Color color, Move move, Events... events) {
-        records.add(new Record(color, move, events));
+    @SuppressWarnings("unused")
+    public Record getLastRecord() {
+        return records.isEmpty() ? null : records.get(records.size() - 1);
     }
 
     @Override
     public String toString() {
-        return records.stream()
-                .map(Record::toString)
-                .collect(Collectors.joining("\n"));
+        return "GameHistory{" + records + '}';
     }
 
     public static class Record {
+
         private final Color color;
         private final Move move;
-        private final List<Events> events;
 
-        private Record(Color color, Move move, Events... events) {
+        public Record(Color color, Move move) {
             this.color = color;
             this.move = move;
-            this.events = Lists.newArrayList(events);
         }
 
         public Color getColor() {
@@ -86,18 +86,9 @@ public class TestHistory {
             return Move.decode(move.command());
         }
 
-        public List<Events> getEvents() {
-            return events;
-        }
-
-        @SuppressWarnings("unused")
-        public boolean hasEvents() {
-            return events.size() > 0;
-        }
-
         @Override
         public String toString() {
-            return color + ": " + move + "; Events: " + events.toString();
+            return color + ": " + move;
         }
     }
 }

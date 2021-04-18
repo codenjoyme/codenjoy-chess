@@ -22,10 +22,10 @@ package com.codenjoy.dojo.chess.common;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.engine.model.item.piece.Piece;
-import com.codenjoy.dojo.chess.engine.model.Color;
-import com.codenjoy.dojo.chess.engine.model.Element;
-import com.codenjoy.dojo.chess.engine.service.Move;
+import com.codenjoy.dojo.chess.model.item.piece.Piece;
+import com.codenjoy.dojo.chess.model.Color;
+import com.codenjoy.dojo.chess.model.Elements;
+import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.google.common.collect.Lists;
@@ -34,15 +34,15 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static com.codenjoy.dojo.chess.engine.service.Move.from;
-import static com.codenjoy.dojo.chess.engine.model.Event.WRONG_MOVE;
+import static com.codenjoy.dojo.chess.model.Move.from;
+import static com.codenjoy.dojo.chess.model.Events.WRONG_MOVE;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractPieceTest extends AbstractGameTest {
 
-    private final Element testingElement;
+    private final Elements testingElement;
 
-    protected AbstractPieceTest(Element testingElement) {
+    protected AbstractPieceTest(Elements testingElement) {
         this.testingElement = testingElement;
     }
 
@@ -50,7 +50,7 @@ public abstract class AbstractPieceTest extends AbstractGameTest {
     public void shouldNotBeAbleToMoveOutOfSquaresOnBoard() {
 
         // when given
-        if (testingElement == Element.WHITE_KING) {
+        if (testingElement == Elements.WHITE_KING) {
             givenFl("W");
         } else {
             givenFl("W " + testingElement.ch());

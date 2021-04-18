@@ -23,9 +23,9 @@ package com.codenjoy.dojo.chess.services;
  */
 
 
-import com.codenjoy.dojo.chess.engine.model.Event;
-import com.codenjoy.dojo.chess.engine.service.GameSettings;
-import com.codenjoy.dojo.chess.engine.service.Scores;
+import com.codenjoy.dojo.chess.model.Events;
+import com.codenjoy.dojo.chess.service.GameSettings;
+import com.codenjoy.dojo.chess.service.Scores;
 import com.codenjoy.dojo.services.PlayerScores;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -39,7 +39,7 @@ public class ScoresTest {
     private GameSettings settings;
 
     public void win() {
-        scores.event(Event.WIN);
+        scores.event(Events.WIN);
     }
 
     @Before
