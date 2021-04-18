@@ -29,6 +29,8 @@ import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 
+import static com.codenjoy.dojo.chess.service.GameSettings.Option.*;
+
 public class Player extends GamePlayer<ChessPlayerHero, Chess> {
     private ChessPlayerHero hero;
 
@@ -78,5 +80,10 @@ public class Player extends GamePlayer<ChessPlayerHero, Chess> {
 
     public void answeredColor() {
         hero.colorsAnswered();
+    }
+
+    @Override
+    public boolean wantToStay() {
+        return settings.bool(LAST_PLAYER_STAYS);
     }
 }

@@ -44,7 +44,7 @@ public class Scores implements PlayerScores {
     public Scores(int startScore, GameSettings settings) {
         this.score = new AtomicInteger(startScore);
         this.eventsToRewards = new HashMap<>() {{
-           put(WIN, settings.integer(WIN_REWARD));
+           put(WIN, settings.integer(VICTORY_REWARD));
            put(WRONG_MOVE, settings.integer(WRONG_MOVE_PENALTY) * -1);
            put(GAME_OVER, settings.integer(GAME_OVER_PENALTY) * -1);
 

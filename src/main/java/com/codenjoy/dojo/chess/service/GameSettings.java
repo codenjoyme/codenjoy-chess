@@ -43,25 +43,19 @@ public final class GameSettings extends SettingsImpl implements SettingsReader<G
     public enum Option implements Key {
 
         LEVEL_MAP("Level map"),
-        GAME_OVER_IF_WRONG_MOVE(
-                "If set TRUE and player making wrong move then he immediately loses, " +
-                        "if set FALSE the player skips move"
-        ),
-        WAIT_UNTIL_MAKE_A_MOVE(
-                "If set TRUE and player has not responded in right time then game waits him, " +
-                        "if set FALSE the player skips move"
-        ),
-        WIN_REWARD("How much point will player get if he wins"),
-        WRONG_MOVE_PENALTY("How much point will player lose if he tries to make wrong move"),
-        GAME_OVER_PENALTY("How mush point will player lose if he loses the game"),
+        GAME_OVER_IF_WRONG_MOVE("Game over if tried to make wrong move"),
+        WAIT_UNTIL_MAKE_A_MOVE("Wait a player's move if not responds in time"),
+        VICTORY_REWARD("Victory reward"),
+        WRONG_MOVE_PENALTY("Wrong move penalty"),
+        GAME_OVER_PENALTY("Game over penalty"),
+        LAST_PLAYER_STAYS("Last alive player continues to play"),
 
         KING_WORTH("The worth of king piece"),
         QUEEN_WORTH("The worth of queen piece"),
         BISHOP_WORTH("The worth of bishop piece"),
         ROOK_WORTH("The worth of rook piece"),
         KNIGHT_WORTH("The worth of knight piece"),
-        PAWN_WORTH("The worth of pawn piece")
-        ;
+        PAWN_WORTH("The worth of pawn piece");
 
         private final String key;
 
@@ -78,8 +72,9 @@ public final class GameSettings extends SettingsImpl implements SettingsReader<G
     public GameSettings() {
         bool(GAME_OVER_IF_WRONG_MOVE, false);
         bool(WAIT_UNTIL_MAKE_A_MOVE, true);
+        bool(LAST_PLAYER_STAYS, true);
 
-        integer(WIN_REWARD, 100);
+        integer(VICTORY_REWARD, 100);
         integer(WRONG_MOVE_PENALTY, 0);
         integer(GAME_OVER_PENALTY, 10);
 
