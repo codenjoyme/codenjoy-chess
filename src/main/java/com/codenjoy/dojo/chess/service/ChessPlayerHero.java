@@ -87,6 +87,7 @@ public class ChessPlayerHero extends PlayerHero<Chess> implements NoDirectionJoy
         if (field.getBoard().tryMove(color, action)) {
             lastMove = action;
             CollectionUtils.subtract(piecesBeforeMove, field.getBoard().getAlivePieces()).stream()
+                    .filter(p -> p.getColor() != color) // exclude pawn's disappearance in case of promotion
                     .map(this::eventOfTaken)
                     .forEach(events::add);
         } else {

@@ -22,12 +22,15 @@ package com.codenjoy.dojo.chess.common;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.model.Move;
-import com.codenjoy.dojo.chess.model.level.Level;
 import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Events;
+import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
-import com.codenjoy.dojo.chess.service.*;
+import com.codenjoy.dojo.chess.model.level.Level;
+import com.codenjoy.dojo.chess.service.Chess;
+import com.codenjoy.dojo.chess.service.GameSettings;
+import com.codenjoy.dojo.chess.service.Player;
+import com.codenjoy.dojo.chess.service.Rotator;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.Point;

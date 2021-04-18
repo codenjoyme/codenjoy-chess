@@ -96,7 +96,7 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public void move(Move move) {
+    public boolean move(Move move) {
         Point p;
         if ((p = attackDirection.clockwise().change(attackDirection.change(position))).equals(move.getTo())) {
             if (board.getPieceAt(p).isEmpty()) {
@@ -112,6 +112,7 @@ public class Pawn extends Piece {
         }
         super.move(move);
         moved = true;
+        return true;
     }
 
     @Override

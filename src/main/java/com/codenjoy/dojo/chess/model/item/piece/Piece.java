@@ -83,11 +83,19 @@ public abstract class Piece {
         return moved;
     }
 
-    public void move(Move move) {
-        board.getPieceAt(move.getTo()).ifPresent(p -> p.setAlive(false));
-        position = move.getTo();
+    public boolean move(Point position) {
+        board.getPieceAt(position).ifPresent(p -> p.setAlive(false));
+        committedMoves.add(Move.from(this.position).to(position));
         moved = true;
-        committedMoves.add(move);
+        this.position = position;
+        return true;
+    }
+
+    public boolean move(Move move) {
+        if (!move.getFrom().equals(position)) {
+            return false;
+        }
+        return move(move.getTo());
     }
 
     public Color getColor() {

@@ -41,18 +41,6 @@ public class Rook extends Piece {
         super(Type.ROOK, color, board, position);
     }
 
-    public void move(Point position) {
-        board.getPieceAt(position).ifPresent(p -> p.setAlive(false));
-        this.position = position;
-        moved = true;
-    }
-
-    @Override
-    public void move(Move move) {
-        super.move(move);
-        moved = true;
-    }
-
     @Override
     public List<Move> getAvailableMoves() {
         return availableMoves(board, position, color);
