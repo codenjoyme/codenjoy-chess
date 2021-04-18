@@ -85,7 +85,12 @@ public final class GameSettings extends SettingsImpl implements SettingsReader<G
         integer(KNIGHT_WORTH, 3);
         integer(PAWN_WORTH, 1);
 
-        multiline(LEVEL_MAP, Levels.classicChessBoard());
+        multiline(LEVEL_MAP, makeMultilineMap(Levels.classicChessBoard()));
+    }
+
+    private static String makeMultilineMap(String map) {
+        int size = (int) Math.sqrt(map.length());
+        return map.replaceAll("(.{" + size + "})", "$1\n");
     }
 
     public Level level() {

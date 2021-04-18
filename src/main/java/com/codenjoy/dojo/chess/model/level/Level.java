@@ -50,7 +50,7 @@ public class Level {
     private final String map;
 
     public Level(String map) {
-        this.map = map;
+        this.map = LevelUtils.clear(map);
         xy = new LengthToXY(getSize());
     }
 
