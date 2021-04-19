@@ -216,4 +216,22 @@ public class PawnTest extends AbstractPieceTest {
         // then
         assertCanMoveOnlyTo(whitePawn);
     }
+
+    @Test
+    public void pawnShouldNotBeAbleToMoveOutOfBounds_whenMoves2SquaresForward() {
+
+        // when
+        givenFl("w......." +
+                ".......P" +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                ".......W");
+        Piece whitePawn = getPieceAt(7, 6);
+
+        // then
+        assertCanMoveOnlyTo(whitePawn, new PointImpl(7, 7));
+    }
 }
