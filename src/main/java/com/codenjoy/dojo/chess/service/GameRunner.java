@@ -84,7 +84,17 @@ public class GameRunner extends AbstractGameType<GameSettings> {
 
     @Override
     public MultiplayerType getMultiplayerType(GameSettings settings) {
-        return MultiplayerType.TOURNAMENT;
+        int playersCount = settings.level().presentedColors().size();
+        switch (playersCount) {
+            case 2:
+                return MultiplayerType.TOURNAMENT;
+            case 3:
+                return MultiplayerType.TRIPLE;
+            case 4:
+                return MultiplayerType.QUADRO;
+            default:
+                throw new IllegalStateException("Players count should be in range [2; 4]");
+        }
     }
 
     @Override
