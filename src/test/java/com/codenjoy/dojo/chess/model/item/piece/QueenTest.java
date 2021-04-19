@@ -27,6 +27,12 @@ import com.codenjoy.dojo.chess.model.Elements;
 import com.codenjoy.dojo.services.PointImpl;
 import org.junit.Test;
 
+import static com.codenjoy.dojo.chess.model.Color.WHITE;
+import static com.codenjoy.dojo.chess.model.Events.WRONG_MOVE;
+import static com.codenjoy.dojo.chess.model.Move.from;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 public class QueenTest extends AbstractPieceTest {
 
     public QueenTest() {
@@ -36,16 +42,104 @@ public class QueenTest extends AbstractPieceTest {
     @Override
     public void shouldMoveInAccordanceWithClassicChessRules() {
 
+        givenFl("w......." +
+                "........" +
+                "........" +
+                "........" +
+                "...Q...." +
+                "........" +
+                "........" +
+                ".......W");
+        Piece whiteQueen = getPieceAt(3, 3);
+
+        assertCanMoveOnlyTo(whiteQueen,
+                new PointImpl(0, 3),
+                new PointImpl(1, 3),
+                new PointImpl(2, 3),
+                new PointImpl(0, 3),
+                new PointImpl(4, 3),
+                new PointImpl(5, 3),
+                new PointImpl(6, 3),
+                new PointImpl(7, 3),
+                new PointImpl(3, 0),
+                new PointImpl(3, 1),
+                new PointImpl(3, 2),
+                new PointImpl(3, 4),
+                new PointImpl(3, 5),
+                new PointImpl(3, 6),
+                new PointImpl(3, 7),
+                new PointImpl(0, 0),
+                new PointImpl(1, 1),
+                new PointImpl(2, 2),
+                new PointImpl(4, 4),
+                new PointImpl(5, 5),
+                new PointImpl(6, 6),
+                new PointImpl(7, 7),
+                new PointImpl(6, 0),
+                new PointImpl(5, 1),
+                new PointImpl(4, 2),
+                new PointImpl(2, 4),
+                new PointImpl(1, 5),
+                new PointImpl(0, 6)
+        );
     }
 
     @Override
     public void shouldBeAbleToTakeEnemyPiece() {
 
+        givenFl("w......." +
+                "........" +
+                "........" +
+                "........" +
+                "...Q...." +
+                "........" +
+                "........" +
+                "q......W");
+        Piece blackQueen = getPieceAt(0, 0);
+
+        // when
+        move(WHITE, from(3, 3).to(0, 0));
+
+        // then
+        assertE("w......." +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "........" +
+                "Q......W");
+        neverFired(WHITE, WRONG_MOVE);
+        assertFalse(blackQueen.isAlive());
     }
 
     @Override
     public void shouldNotBeAbleToTakeFriendlyPiece() {
 
+        givenFl("w......." +
+                "........" +
+                "........" +
+                "........" +
+                "...Q...." +
+                "........" +
+                "........" +
+                "B......W");
+        Piece whiteBishop = getPieceAt(0, 0);
+
+        // when
+        move(WHITE, from(3, 3).to(0, 0));
+
+        // then
+        assertE("w......." +
+                "........" +
+                "........" +
+                "........" +
+                "...Q...." +
+                "........" +
+                "........" +
+                "B......W");
+        fired(WHITE, WRONG_MOVE);
+        assertTrue(whiteBishop.isAlive());
     }
 
     @Test
