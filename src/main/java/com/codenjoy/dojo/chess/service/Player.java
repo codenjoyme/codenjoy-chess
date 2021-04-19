@@ -78,10 +78,6 @@ public class Player extends GamePlayer<ChessPlayerHero, Chess> {
         return hero.askedForColor();
     }
 
-    public void answeredColor() {
-        hero.colorsAnswered();
-    }
-
     @Override
     public boolean wantToStay() {
         return settings.bool(LAST_PLAYER_STAYS);

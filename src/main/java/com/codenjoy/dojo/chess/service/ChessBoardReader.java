@@ -49,9 +49,11 @@ public class ChessBoardReader implements BoardReader<Player> {
 
         List<ReaderElement> pieces = board.getPieces().stream()
                     .filter(Piece::isAlive)
-                    .filter(piece -> !game.isCurrentPlayerAskedColor() || piece.getColor() == player.getColor())
+                    .filter(piece -> !game.isPlayerAskedForColor(player) || piece.getColor() == player.getColor())
                     .map(ReaderElement::create)
                     .collect(Collectors.toList());
+
+        game.colorAnswered(player.getColor());
 
         List<ReaderElement> barriers = board.getBarriers().stream()
                 .map(ReaderElement::create)

@@ -35,10 +35,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.codenjoy.dojo.chess.service.GameSettings.Option.WAIT_UNTIL_MAKE_A_MOVE;
@@ -51,11 +48,12 @@ public class Chess implements GameField<Player> {
 
     private final List<Player> players = Lists.newLinkedList();
     private final GameHistory history = new GameHistory();
+    private final Set<Color> askedColors = new HashSet<>();
     private final GameSettings settings;
     private final Rotator rotator;
     private final GameBoard board;
 
-    private boolean playerAskedColor;
+
     private Color currentColor;
 
     public Chess(Level level, Dice dice, GameSettings settings) {
@@ -68,6 +66,14 @@ public class Chess implements GameField<Player> {
                 .orElseThrow(() -> new IllegalArgumentException("Level " + level + " is invalid"));
     }
 
+    public boolean isPlayerAskedForColor(Player player) {
+        return askedColors.contains(player.getColor());
+    }
+
+    public void colorAnswered(Color color) {
+        askedColors.remove(color);
+    }
+
     @Override
     public void tick() {
         List<Color> aliveBeforeTick = getAlivePlayers().stream()
@@ -75,9 +81,8 @@ public class Chess implements GameField<Player> {
                 .collect(Collectors.toList());
         Player player = getPlayer(currentColor);
 
-        playerAskedColor = player.askedForColor();
-        if (playerAskedColor) {
-            player.answeredColor();
+        if (player.askedForColor()) {
+            askedColors.add(player.getColor());
             return;
         }
 
@@ -129,10 +134,6 @@ public class Chess implements GameField<Player> {
 
     public Rotator getRotator() {
         return rotator;
-    }
-
-    public boolean isCurrentPlayerAskedColor() {
-        return playerAskedColor;
     }
 
     public List<Player> getAlivePlayers() {

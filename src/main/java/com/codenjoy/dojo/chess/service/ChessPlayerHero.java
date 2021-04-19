@@ -75,6 +75,7 @@ public class ChessPlayerHero extends PlayerHero<Chess> implements NoDirectionJoy
     private void clearBeforeTick() {
         events.clear();
         lastMove = null;
+        askedForColor = false;
     }
 
     @Override
@@ -119,7 +120,6 @@ public class ChessPlayerHero extends PlayerHero<Chess> implements NoDirectionJoy
         }
     }
 
-
     public Color getColor() {
         return color;
     }
@@ -141,10 +141,10 @@ public class ChessPlayerHero extends PlayerHero<Chess> implements NoDirectionJoy
     }
 
     public boolean askedForColor() {
-        return askedForColor;
-    }
-
-    public void colorsAnswered() {
+        if (!askedForColor) {
+            return false;
+        }
         askedForColor = false;
+        return true;
     }
 }
