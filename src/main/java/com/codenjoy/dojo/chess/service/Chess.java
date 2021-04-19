@@ -70,6 +70,9 @@ public class Chess implements GameField<Player> {
 
     @Override
     public void tick() {
+        List<Color> aliveBeforeTick = getAlivePlayers().stream()
+                .map(Player::getColor)
+                .collect(Collectors.toList());
         Player player = getPlayer(currentColor);
 
         playerAskedColor = player.askedForColor();
@@ -90,7 +93,7 @@ public class Chess implements GameField<Player> {
 
         history.add(currentColor, move);
         currentColor = nextColor();
-        checkGameOvers();
+        checkGameOvers(aliveBeforeTick);
         checkVictory();
     }
 
@@ -155,10 +158,12 @@ public class Chess implements GameField<Player> {
         return board;
     }
 
-    private void checkGameOvers() {
-        players.stream()
-                .filter(p -> !p.isAlive())
-                .forEach(p -> p.event(Events.GAME_OVER));
+    private void checkGameOvers(List<Color> aliveBeforeTick) {
+        List<Color> alive = getAlivePlayers().stream()
+                .map(Player::getColor)
+                .collect(Collectors.toList());
+        Collection<Color> died = CollectionUtils.subtract(aliveBeforeTick, alive);
+        died.forEach(color -> getPlayer(color).event(Events.GAME_OVER));
     }
 
     private void checkVictory() {

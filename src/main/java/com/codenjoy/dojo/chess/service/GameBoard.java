@@ -47,7 +47,7 @@ public class GameBoard {
     private final List<GameSet> gameSets;
 
     public GameBoard(String map) {
-        this(new Level(map.replaceAll("[\\n\\t ]", "")));
+        this(new Level(map));
     }
 
     public GameBoard(Level level) {
@@ -118,8 +118,10 @@ public class GameBoard {
         return result || pawnAttack || kingAttack;
     }
 
-    public boolean isInBounds(Point point) {
-        return !point.isOutOf(getSize());
+    public boolean isInBounds(Point position) {
+        boolean outOfBounds = position.isOutOf(getSize());
+        outOfBounds |= barriers.stream().anyMatch(b -> b.getPosition().equals(position));
+        return !outOfBounds;
     }
 
     public void die(Color color) {
@@ -160,7 +162,11 @@ public class GameBoard {
     }
 
     public Move getLastMoveOf(Color color) {
-        return getGameSet(color).getLastMove();
+        GameSet gameSet = getGameSet(color);
+        if (gameSet == null) {
+            return null;
+        }
+        return gameSet.getLastMove();
     }
 
     public List<Piece> getAlivePieces() {

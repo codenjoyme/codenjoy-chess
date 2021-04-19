@@ -183,7 +183,7 @@ public class CastlingTest extends AbstractGameTest {
                 "........\n" +
                 "........\n" +
                 "........\n" +
-                "..b.....\n" +
+                "....r...\n" +
                 "........\n" +
                 "R...W..R\n");
 

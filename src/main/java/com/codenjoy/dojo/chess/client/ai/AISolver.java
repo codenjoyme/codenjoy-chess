@@ -24,15 +24,16 @@ package com.codenjoy.dojo.chess.client.ai;
 
 import com.codenjoy.dojo.chess.client.Board;
 import com.codenjoy.dojo.chess.model.Color;
+import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import com.codenjoy.dojo.chess.service.GameBoard;
-import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.chess.service.Rotator;
 import com.codenjoy.dojo.client.Solver;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.LengthToXY;
 import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.utils.LevelUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -65,7 +66,7 @@ public class AISolver implements Solver<Board> {
     @SuppressWarnings("SuspiciousNameCombination")
     private static String rotate(Color color, String board) {
         int times = Rotator.countRotationTimes(color.getAttackDirection(), ATTACK_DIRECTION);
-        String map = board.replaceAll("[\\n\\t ]", "");
+        String map = LevelUtils.clear(board);
         if (times == 0) {
             return map;
         }
@@ -92,7 +93,7 @@ public class AISolver implements Solver<Board> {
     }
 
     private static String retrieveMap(Board board) {
-        return board.boardAsString().replaceAll("[\\n\\t ]", "");
+        return LevelUtils.clear(board.boardAsString());
     }
 
     @Override

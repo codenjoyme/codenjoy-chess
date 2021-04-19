@@ -59,7 +59,7 @@ public class King extends Piece {
                 RIGHT.change(DOWN.change(position)),
                 DOWN.change(LEFT.change(position))
         );
-        if (withCastling && !moved) {
+        if (withCastling && !moved && !board.isUnderAttack(position, color)) {
             moves.addAll(castlingMoves(board, position, color, attackDirection));
         }
         return moves;
