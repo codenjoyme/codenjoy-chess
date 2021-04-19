@@ -44,7 +44,7 @@ public class Bishop extends Piece {
     }
 
     /**
-     * The method calculates all available moves
+     * The method calculates all available moves of bishop
      * in accordance with described circumstances
      * including those where enemy's piece can be taken.
      *
@@ -55,35 +55,9 @@ public class Bishop extends Piece {
      */
     public static List<Move> availableMoves(GameBoard board, Point position, Color color) {
         return Stream.of(LEFT_DOWN, LEFT_UP, RIGHT_DOWN, RIGHT_UP)
-                .map(direction -> diagonalMoves(board, position, direction, color))
+                .map(direction -> movesInQDirection(board, position, color, direction))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
-    }
-
-    /**
-     * The method calculates all available moves just like
-     * {@link Bishop#availableMoves(GameBoard, Point, Color)}
-     * does, but exactly in specific direction.
-     *
-     * @param board     a chess board
-     * @param position  a position of a bishop
-     * @param direction a direction of attack of the bishop
-     * @param color     a color of the bishop
-     * @return all available moves in specific direction
-     */
-    private static List<Move> diagonalMoves(GameBoard board, Point position, QDirection direction, Color color) {
-        List<Move> moves = Lists.newArrayList();
-        Point destination = direction.change(position);
-        while (board.isInBounds(destination) && board.getPieceAt(destination).isEmpty()) {
-            moves.add(Move.from(position).to(destination));
-            destination = direction.change(destination);
-        }
-        // checks attack move
-        if (board.getPieceAt(destination).isPresent())
-            if (board.getPieceAt(destination).get().getColor() != color) {
-                moves.add(Move.from(position).to(destination));
-            }
-        return moves;
     }
 
     @Override

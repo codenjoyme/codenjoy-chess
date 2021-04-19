@@ -10,12 +10,12 @@ package com.codenjoy.dojo.chess.model.item.piece;
  * it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
@@ -24,10 +24,11 @@ package com.codenjoy.dojo.chess.model.item.piece;
 
 
 import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.service.GameBoard;
 import com.codenjoy.dojo.chess.model.Move;
+import com.codenjoy.dojo.chess.service.GameBoard;
+import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
-import com.google.common.collect.Lists;
+import com.codenjoy.dojo.services.QDirection;
 
 import java.util.Collection;
 import java.util.List;
@@ -41,27 +42,40 @@ public class Rook extends Piece {
         super(Type.ROOK, color, board, position);
     }
 
+    /**
+     * The method calculates all available moves of rook
+     * in accordance with described circumstances,
+     * including those where enemy's piece can be taken.
+     *
+     * @param board    a chess board
+     * @param position a position of a bishop
+     * @param color    a color of the bishop
+     * @return all available moves
+     */
+    public static List<Move> availableMoves(GameBoard board, Point position, Color color) {
+        return Stream.of(LEFT, UP, RIGHT, DOWN)
+                .map(direction -> movesInQDirection(board, position, color, toQDirection(direction)))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+    }
+
+    private static QDirection toQDirection(Direction direction) {
+        switch (direction) {
+            case LEFT:
+                return QDirection.LEFT;
+            case RIGHT:
+                return QDirection.RIGHT;
+            case UP:
+                return QDirection.UP;
+            case DOWN:
+                return QDirection.DOWN;
+            default:
+                throw new IllegalArgumentException("Direction " + direction + " not supported");
+        }
+    }
+
     @Override
     public List<Move> getAvailableMoves() {
         return availableMoves(board, position, color);
-    }
-
-    public static List<Move> availableMoves(GameBoard board, Point position, Color color) {
-        return Stream.of(LEFT, UP, RIGHT, DOWN)
-                .map(d -> {
-                    Point p = d.change(position);
-                    List<Point> points = Lists.newArrayList();
-                    while (board.isInBounds(p) && board.getPieceAt(p).isEmpty()) {
-                        points.add(p);
-                        p = d.change(p);
-                    }
-                    if (board.isInBounds(p) && board.getPieceAt(p).isPresent() && board.getPieceAt(p).get().getColor() != color) {
-                        points.add(p);
-                    }
-                    return points.stream()
-                            .map(pt -> Move.from(position).to(pt))
-                            .collect(Collectors.toList());
-                }).flatMap(Collection::stream)
-                .collect(Collectors.toList());
     }
 }

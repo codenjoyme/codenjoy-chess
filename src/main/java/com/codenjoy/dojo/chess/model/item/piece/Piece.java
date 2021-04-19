@@ -24,10 +24,11 @@ package com.codenjoy.dojo.chess.model.item.piece;
 
 
 import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.service.GameBoard;
 import com.codenjoy.dojo.chess.model.Move;
+import com.codenjoy.dojo.chess.service.GameBoard;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.QDirection;
 import com.google.common.collect.Lists;
 
 import java.util.List;
@@ -77,6 +78,33 @@ public abstract class Piece {
             throw new IllegalArgumentException("Directions should be perpendicular for diagonal position calculation");
         }
         return one.change(two.change(position));
+    }
+
+    /**
+     * The method calculates all available moves in specific direction
+     * for pieces, which moves diagonally, vertically or horizontally,
+     * can not move throughout another pieces
+     * and can take enemy's piece.
+     *
+     * @param board     a chess board
+     * @param position  a position of a bishop
+     * @param color     a color of the bishop
+     * @param direction a direction of attack of the bishop
+     * @return all available moves in specific direction
+     */
+    protected static List<Move> movesInQDirection(GameBoard board, Point position, Color color, QDirection direction) {
+        List<Move> moves = Lists.newArrayList();
+        Point destination = direction.change(position);
+        while (board.isInBounds(destination) && board.getPieceAt(destination).isEmpty()) {
+            moves.add(Move.from(position).to(destination));
+            destination = direction.change(destination);
+        }
+        // checks attack move
+        if (board.getPieceAt(destination).isPresent())
+            if (board.getPieceAt(destination).get().getColor() != color) {
+                moves.add(Move.from(position).to(destination));
+            }
+        return moves;
     }
 
     public boolean isMoved() {
