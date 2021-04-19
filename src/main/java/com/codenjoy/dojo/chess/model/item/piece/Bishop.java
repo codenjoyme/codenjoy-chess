@@ -46,7 +46,7 @@ public class Bishop extends Piece {
     /**
      * The method calculates all available moves
      * in accordance with described circumstances
-     * including those, where enemy's piece can be taken.
+     * including those where enemy's piece can be taken.
      *
      * @param board    a chess board
      * @param position a position of a bishop

@@ -24,14 +24,14 @@ package com.codenjoy.dojo.chess.model.item.piece;
 
 
 import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.service.GameBoard;
 import com.codenjoy.dojo.chess.model.Move;
+import com.codenjoy.dojo.chess.service.GameBoard;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
-import com.google.common.collect.Lists;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Knight extends Piece {
 
@@ -39,21 +39,36 @@ public class Knight extends Piece {
         super(Type.KNIGHT, color, board, position);
     }
 
-    @Override
-    public List<Move> getAvailableMoves() {
-        return availableMoves(board, position, color);
-    }
-
-    private static boolean isAvailable(GameBoard board, Point position, Color color) {
-        return board.getPieceAt(position)
+    /**
+     * Checks if destination is available to move to or not,
+     * including a cases when there is enemy's piece at destination square,
+     * or destination point is out of bounds of chess board.
+     *
+     * @param board       a chess board
+     * @param destination the destination point
+     * @param color       a color of a knight
+     * @return true, if destination is available to move to, false otherwise
+     */
+    private static boolean isAvailable(GameBoard board, Point destination, Color color) {
+        return board.getPieceAt(destination)
                 .map(p -> p.getColor() != color)
-                .orElse(board.isInBounds(position));
+                .orElse(board.isInBounds(destination));
     }
 
-    private static List<Point> moves(Point position) {
+    /**
+     * The method calculates all available moves of knight piece
+     * in described circumstances, including those
+     * where enemy's piece can be taken.
+     *
+     * @param board    a chess board
+     * @param position a position of a knight
+     * @param color    a color of the knight
+     * @return all available moves
+     */
+    private static List<Move> availableMoves(GameBoard board, Point position, Color color) {
         int x = position.getX();
         int y = position.getY();
-        return Lists.newArrayList(
+        return Stream.of(
                 new PointImpl(x - 2, y - 1),
                 new PointImpl(x - 2, y + 1),
                 new PointImpl(x + 2, y - 1),
@@ -62,13 +77,13 @@ public class Knight extends Piece {
                 new PointImpl(x + 1, y + 2),
                 new PointImpl(x - 1, y - 2),
                 new PointImpl(x + 1, y - 2)
-        );
+        ).filter(destination -> isAvailable(board, destination, color))
+                .map(destination -> Move.from(position).to(destination))
+                .collect(Collectors.toList());
     }
 
-    public static List<Move> availableMoves(GameBoard board, Point position, Color color) {
-        return moves(position).stream()
-                .filter(p -> isAvailable(board, p, color))
-                .map(m -> Move.from(position).to(m))
-                .collect(Collectors.toList());
+    @Override
+    public List<Move> getAvailableMoves() {
+        return availableMoves(board, position, color);
     }
 }
