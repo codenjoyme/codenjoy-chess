@@ -38,14 +38,14 @@ public class EnPassant4x4Test extends AbstractGameTest {
     @Test
     public void shouldBeAllowed_whenBlueAttacksRed() {
 
-        givenFl("rkbqwbkr" +
-                "pppppppp" +
-                "........" +
-                "Y..z...y" +
-                ".Z......" +
-                "........" +
-                "PPPPPPPP" +
-                "RKBQWBKR");
+        givenFl("rkbqwbkr\n" +
+                "pppppppp\n" +
+                "........\n" +
+                "Y..z...y\n" +
+                ".Z......\n" +
+                "........\n" +
+                "PPPPPPPP\n" +
+                "RKBQWBKR\n");
         Piece redPawn = getPieceAt(1, 3);
         move(WHITE, from(4, 1).to(4, 2));
         move(BLACK, from(0, 6).to(0, 5));
@@ -55,14 +55,14 @@ public class EnPassant4x4Test extends AbstractGameTest {
         move(BLUE, from(3, 4).to(2, 3));
 
         // then
-        assertE("rkbqwbkr" +
-                ".ppppppp" +
-                "p......." +
-                "Y......y" +
-                "..z....." +
-                "....P..." +
-                "PPPP.PPP" +
-                "RKBQWBKR");
+        assertE("rkbqwbkr\n" +
+                ".ppppppp\n" +
+                "p.......\n" +
+                "Y......y\n" +
+                "..z.....\n" +
+                "....P...\n" +
+                "PPPP.PPP\n" +
+                "RKBQWBKR\n");
         neverFired(BLUE, WRONG_MOVE);
         assertFalse(redPawn.isAlive());
     }
@@ -70,14 +70,14 @@ public class EnPassant4x4Test extends AbstractGameTest {
     @Test
     public void shouldBeAllowed_whenRedAttacksBlue() {
 
-        givenFl("rkbqwbkr" +
-                "pppppppp" +
-                "........" +
-                "Y.....zy" +
-                "...Z...." +
-                "........" +
-                "PPPPPPPP" +
-                "RKBQWBKR");
+        givenFl("rkbqwbkr\n" +
+                "pppppppp\n" +
+                "........\n" +
+                "Y.....zy\n" +
+                "...Z....\n" +
+                "........\n" +
+                "PPPPPPPP\n" +
+                "RKBQWBKR\n");
         Piece bluePawn = getPieceAt(6, 4);
         move(WHITE, from(4, 1).to(4, 2));
         move(BLACK, from(0, 6).to(0, 5));
@@ -90,28 +90,28 @@ public class EnPassant4x4Test extends AbstractGameTest {
         move(RED, from(4, 3).to(5, 4));
 
         // then
-        assertE("rkbqwbkr" +
-                ".pppppp." +
-                "p......p" +
-                "Y....Z.y" +
-                "........" +
-                "P...P..." +
-                ".PPP.PPP" +
-                "RKBQWBKR");
+        assertE("rkbqwbkr\n" +
+                ".pppppp.\n" +
+                "p......p\n" +
+                "Y....Z.y\n" +
+                "........\n" +
+                "P...P...\n" +
+                ".PPP.PPP\n" +
+                "RKBQWBKR\n");
         neverFired(BLUE, WRONG_MOVE);
         assertFalse(bluePawn.isAlive());
     }
 
     @Test
     public void shouldNotBeAllowedFromSide() {
-        givenFl("rkbqwbkr" +
-                "pppppppp" +
-                "........" +
-                "Y......y" +
-                "...Z...." +
-                "........" +
-                "PPPPPPPP" +
-                "RKBQWBKR");
+        givenFl("rkbqwbkr\n" +
+                "pppppppp\n" +
+                "........\n" +
+                "Y......y\n" +
+                "...Z....\n" +
+                "........\n" +
+                "PPPPPPPP\n" +
+                "RKBQWBKR\n");
         move(WHITE, from(4, 1).to(4, 3));
         move(BLACK, from(0, 6).to(0, 5));
 
@@ -119,14 +119,14 @@ public class EnPassant4x4Test extends AbstractGameTest {
         move(RED, from(3, 3).to(4, 2));
 
         // then
-        assertE("rkbqwbkr" +
-                ".ppppppp" +
-                "p......." +
-                "Y......y" +
-                "...ZP..." +
-                "........" +
-                "PPPP.PPP" +
-                "RKBQWBKR");
+        assertE("rkbqwbkr\n" +
+                ".ppppppp\n" +
+                "p.......\n" +
+                "Y......y\n" +
+                "...ZP...\n" +
+                "........\n" +
+                "PPPP.PPP\n" +
+                "RKBQWBKR\n");
         fired(RED, WRONG_MOVE);
     }
 }

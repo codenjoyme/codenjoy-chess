@@ -22,125 +22,123 @@ package com.codenjoy.dojo.chess.model;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import com.codenjoy.dojo.chess.common.AbstractGameTest;
+import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.Color.WHITE;
-import static com.codenjoy.dojo.chess.model.Move.from;
 import static com.codenjoy.dojo.chess.model.Events.WRONG_MOVE;
+import static com.codenjoy.dojo.chess.model.Move.from;
 
-/**
- * Wiki: https://en.wikipedia.org/wiki/Promotion_(chess)
- */
+// Wiki: https://en.wikipedia.org/wiki/Promotion_(chess)
 @SuppressWarnings("SpellCheckingInspection")
 public class PromotionTest extends AbstractGameTest {
 
     @Test
     public void shouldBeFiredWrongMove_whenTryingToPromoteKing() {
 
-        givenFl("w......." +
-                ".......P" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "RKBQWBKR");
+        givenFl("w.......\n" +
+                ".......P\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "RKBQWBKR\n");
 
         // when
         move(WHITE, from(7, 6).to(7, 7).promotion(Piece.Type.KING));
 
         // then
-        assertE("w......." +
-                ".......P" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "RKBQWBKR");
+        assertE("w.......\n" +
+                ".......P\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "RKBQWBKR\n");
         fired(WHITE, WRONG_MOVE);
     }
 
     @Test
     public void shouldNotBeAllowed_whenTryingToPromoteIfPawnNotAtLastLine() {
 
-        givenFl("w......." +
-                "........" +
-                ".......P" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "RKBQWBKR");
+        givenFl("w.......\n" +
+                "........\n" +
+                ".......P\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "RKBQWBKR\n");
 
         // when
         move(WHITE, from(7, 5).to(7, 6).promotion(Piece.Type.QUEEN));
 
         // then
-        assertE("w......." +
-                "........" +
-                ".......P" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "RKBQWBKR");
+        assertE("w.......\n" +
+                "........\n" +
+                ".......P\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "RKBQWBKR\n");
         fired(WHITE, WRONG_MOVE);
     }
 
     @Test
     public void shouldNotBeAllowed_whenTryingToMakePromotionByNotAPawn() {
 
-        givenFl("w......." +
-                ".......Q" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "RKB.WBKR");
+        givenFl("w.......\n" +
+                ".......Q\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "RKB.WBKR\n");
 
         // when
         move(WHITE, from(7, 6).to(7, 5).promotion(Piece.Type.PAWN));
 
         // then
-        assertE("w......." +
-                ".......Q" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "RKB.WBKR");
+        assertE("w.......\n" +
+                ".......Q\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "RKB.WBKR\n");
         fired(WHITE, WRONG_MOVE);
     }
 
     @Test
     public void shouldBeAllowed_whenTryingToPromoteAPieceExceptKing() {
 
-        givenFl("w......." +
-                ".......P" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "RKBQWBKR");
+        givenFl("w.......\n" +
+                ".......P\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "RKBQWBKR\n");
 
         // when
         move(WHITE, from(7, 6).to(7, 7).promotion(Piece.Type.QUEEN));
 
         // then
-        assertE("w......Q" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "RKBQWBKR");
+        assertE("w......Q\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "RKBQWBKR\n");
         neverFired(WHITE, WRONG_MOVE);
     }
 }

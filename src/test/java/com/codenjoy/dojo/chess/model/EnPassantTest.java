@@ -39,81 +39,81 @@ public class EnPassantTest extends AbstractGameTest {
     @Test
     public void shouldBeAllowed_whenEnemyPawnSteps2SquaresForwardAndOurPawnCanImmediatelyAttackMiddleCellOfTheMove() {
 
-        givenFl("rkbqwbkr" +
-                "pppp.ppp" +
-                "........" +
-                "........" +
-                "....p..." +
-                "........" +
-                "PPPPPPPP" +
-                "RKBQWBKR");
+        givenFl("rkbqwbkr\n" +
+                "pppp.ppp\n" +
+                "........\n" +
+                "........\n" +
+                "....p...\n" +
+                "........\n" +
+                "PPPPPPPP\n" +
+                "RKBQWBKR\n");
         move(WHITE, from(5, 1).to(5, 3));
 
         // when
         move(BLACK, from(4, 3).to(5, 2));
 
         // then
-        assertE("rkbqwbkr" +
-                "pppp.ppp" +
-                "........" +
-                "........" +
-                "........" +
-                ".....p.." +
-                "PPPPP.PP" +
-                "RKBQWBKR");
+        assertE("rkbqwbkr\n" +
+                "pppp.ppp\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                ".....p..\n" +
+                "PPPPP.PP\n" +
+                "RKBQWBKR\n");
         neverFired(BLACK, WRONG_MOVE);
     }
 
     @Test
     public void shouldWorkOnlyWithPawns() {
 
-        givenFl("rkb.wbkr" +
-                "pppppppp" +
-                "........" +
-                "........" +
-                "....q..." +
-                "........" +
-                "PPPPPPPP" +
-                "RKBQWBKR");
+        givenFl("rkb.wbkr\n" +
+                "pppppppp\n" +
+                "........\n" +
+                "........\n" +
+                "....q...\n" +
+                "........\n" +
+                "PPPPPPPP\n" +
+                "RKBQWBKR\n");
         move(WHITE, from(5, 1).to(5, 3));
 
         // when
         move(BLACK, from(4, 3).to(5, 2));
 
         // then
-        assertE("rkb.wbkr" +
-                "pppppppp" +
-                "........" +
-                "........" +
-                ".....P.." +
-                ".....q.." +
-                "PPPPP.PP" +
-                "RKBQWBKR");
+        assertE("rkb.wbkr\n" +
+                "pppppppp\n" +
+                "........\n" +
+                "........\n" +
+                ".....P..\n" +
+                ".....q..\n" +
+                "PPPPP.PP\n" +
+                "RKBQWBKR\n");
     }
 
     @Test
     public void shouldNotBeAllowed_ifHasNotDoneImmediately() {
 
-        givenFl("rkbqwbkr" +
-                "pppp.ppp" +
-                "........" +
-                "........" +
-                "....p..." +
-                "........" +
-                "PPPPPPPP" +
-                "RKBQWBKR");
+        givenFl("rkbqwbkr\n" +
+                "pppp.ppp\n" +
+                "........\n" +
+                "........\n" +
+                "....p...\n" +
+                "........\n" +
+                "PPPPPPPP\n" +
+                "RKBQWBKR\n");
         move(WHITE, from(5, 1).to(5, 3));
         move(BLACK, from(0, 6).to(0, 5));
         move(WHITE, from(7, 1).to(7, 2));
 
-        assertE("rkbqwbkr" +
-                ".ppp.ppp" +
-                "p......." +
-                "........" +
-                "....pP.." +
-                ".......P" +
-                "PPPPP.P." +
-                "RKBQWBKR");
+        assertE("rkbqwbkr\n" +
+                ".ppp.ppp\n" +
+                "p.......\n" +
+                "........\n" +
+                "....pP..\n" +
+                ".......P\n" +
+                "PPPPP.P.\n" +
+                "RKBQWBKR\n");
 
         // when trying to make "en passant"
         move(BLACK, from(4, 3).to(5, 2));

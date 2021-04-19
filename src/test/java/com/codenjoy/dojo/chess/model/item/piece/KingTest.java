@@ -44,14 +44,14 @@ public class KingTest extends AbstractPieceTest {
     public void shouldMoveInAccordanceWithClassicChessRules() {
 
         // when
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...W...." +
-                "........" +
-                "........" +
-                "........");
+        givenFl("w.......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "...W....\n" +
+                "........\n" +
+                "........\n" +
+                "........\n");
         Piece whiteKing = getPieceAt(3, 3);
 
         // then
@@ -71,28 +71,28 @@ public class KingTest extends AbstractPieceTest {
     public void shouldBeAbleToTakeEnemyPiece() {
 
         // when
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "....p..." +
-                "...W...." +
-                "........" +
-                "........" +
-                "........");
+        givenFl("w.......\n" +
+                "........\n" +
+                "........\n" +
+                "....p...\n" +
+                "...W....\n" +
+                "........\n" +
+                "........\n" +
+                "........\n");
         Piece blackPawn = getPieceAt(4, 4);
 
         // when
         move(WHITE, from(3, 3).to(4, 4));
 
         // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "....W..." +
-                "........" +
-                "........" +
-                "........" +
-                "........");
+        assertE("w.......\n" +
+                "........\n" +
+                "........\n" +
+                "....W...\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n");
         neverFired(WHITE, WRONG_MOVE);
         assertFalse(blackPawn.isAlive());
     }
@@ -101,28 +101,28 @@ public class KingTest extends AbstractPieceTest {
     public void shouldNotBeAbleToTakeFriendlyPiece() {
 
         // when
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "....Q..." +
-                "...W...." +
-                "........" +
-                "........" +
-                "........");
+        givenFl("w.......\n" +
+                "........\n" +
+                "........\n" +
+                "....Q...\n" +
+                "...W....\n" +
+                "........\n" +
+                "........\n" +
+                "........\n");
         Piece whiteQueen = getPieceAt(4, 4);
 
         // when
         move(WHITE, from(3, 3).to(4, 4));
 
         // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "....Q..." +
-                "...W...." +
-                "........" +
-                "........" +
-                "........");
+        assertE("w.......\n" +
+                "........\n" +
+                "........\n" +
+                "....Q...\n" +
+                "...W....\n" +
+                "........\n" +
+                "........\n" +
+                "........\n");
         fired(WHITE, WRONG_MOVE);
         assertTrue(whiteQueen.isAlive());
     }

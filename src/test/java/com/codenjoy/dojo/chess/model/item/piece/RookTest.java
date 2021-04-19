@@ -41,14 +41,14 @@ public class RookTest extends AbstractPieceTest {
 
     @Override
     public void shouldMoveInAccordanceWithClassicChessRules() {
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...R...." +
-                "........" +
-                "........" +
-                ".......W");
+        givenFl("w.......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "...R....\n" +
+                "........\n" +
+                "........\n" +
+                ".......W\n");
         Piece whiteRook = getPieceAt(3, 3);
 
         assertCanMoveOnlyTo(whiteRook,
@@ -73,28 +73,28 @@ public class RookTest extends AbstractPieceTest {
     @Override
     public void shouldBeAbleToTakeEnemyPiece() {
 
-        givenFl("w......." +
-                "...q...." +
-                "........" +
-                "........" +
-                "...R...." +
-                "........" +
-                "........" +
-                ".......W");
+        givenFl("w.......\n" +
+                "...q....\n" +
+                "........\n" +
+                "........\n" +
+                "...R....\n" +
+                "........\n" +
+                "........\n" +
+                ".......W\n");
         Piece enemyQueen = getPieceAt(3, 6);
 
         // when
         move(WHITE, from(3, 3).to(3, 6));
 
         // then
-        assertE("w......." +
-                "...R...." +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                ".......W");
+        assertE("w.......\n" +
+                "...R....\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                ".......W\n");
         neverFired(WHITE, WRONG_MOVE);
         assertFalse(enemyQueen.isAlive());
     }
@@ -102,81 +102,81 @@ public class RookTest extends AbstractPieceTest {
     @Override
     public void shouldNotBeAbleToTakeFriendlyPiece() {
 
-        givenFl("w......." +
-                "...Q...." +
-                "........" +
-                "........" +
-                "...R...." +
-                "........" +
-                "........" +
-                ".......W");
+        givenFl("w.......\n" +
+                "...Q....\n" +
+                "........\n" +
+                "........\n" +
+                "...R....\n" +
+                "........\n" +
+                "........\n" +
+                ".......W\n");
         Piece friendlyQueen = getPieceAt(3, 6);
 
         // when
         move(WHITE, from(3, 3).to(3, 6));
 
         // then
-        assertE("w......." +
-                "...Q...." +
-                "........" +
-                "........" +
-                "...R...." +
-                "........" +
-                "........" +
-                ".......W");
+        assertE("w.......\n" +
+                "...Q....\n" +
+                "........\n" +
+                "........\n" +
+                "...R....\n" +
+                "........\n" +
+                "........\n" +
+                ".......W\n");
         fired(WHITE, WRONG_MOVE);
         assertTrue(friendlyQueen.isAlive());
     }
 
     @Test
     public void shouldNotBeAbleToMoveThroughEnemyPiece() {
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...R..q." +
-                "........" +
-                "........" +
-                ".......W");
+        givenFl("w.......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "...R..q.\n" +
+                "........\n" +
+                "........\n" +
+                ".......W\n");
 
         // when
         move(WHITE, from(3, 3).to(7, 3));
 
         // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...R..q." +
-                "........" +
-                "........" +
-                ".......W");
+        assertE("w.......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "...R..q.\n" +
+                "........\n" +
+                "........\n" +
+                ".......W\n");
         fired(WHITE, WRONG_MOVE);
     }
 
     @Test
     public void shouldNotBeAbleToMoveThroughFriendlyPiece() {
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...R..Q." +
-                "........" +
-                "........" +
-                ".......W");
+        givenFl("w.......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "...R..Q.\n" +
+                "........\n" +
+                "........\n" +
+                ".......W\n");
 
         // when
         move(WHITE, from(3, 3).to(7, 3));
 
         // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...R..Q." +
-                "........" +
-                "........" +
-                ".......W");
+        assertE("w.......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "...R..Q.\n" +
+                "........\n" +
+                "........\n" +
+                ".......W\n");
         fired(WHITE, WRONG_MOVE);
     }
 }

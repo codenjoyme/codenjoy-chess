@@ -42,48 +42,48 @@ public class GameTest extends AbstractGameTest {
     public void shouldDrowBoardForWhites_whitePiecesAtBottom() {
 
         // when
-        givenFl("rkbqwbkr" +
-                "pppppppp" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "PPPPPPPP" +
-                "RKBQWBKR");
+        givenFl("rkbqwbkr\n" +
+                "pppppppp\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "PPPPPPPP\n" +
+                "RKBQWBKR\n");
 
         // then
-        assertE("rkbqwbkr" +
-                "pppppppp" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "PPPPPPPP" +
-                "RKBQWBKR", WHITE);
+        assertE("rkbqwbkr\n" +
+                "pppppppp\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "PPPPPPPP\n" +
+                "RKBQWBKR\n", WHITE);
     }
 
     @Test
     public void shouldDrawBoardForBlacks_blackPiecesAtBottom() {
 
         // when
-        givenFl("rkbqwbkr" +
-                "pppppppp" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "PPPPPPPP" +
-                "RKBQWBKR");
+        givenFl("rkbqwbkr\n" +
+                "pppppppp\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "PPPPPPPP\n" +
+                "RKBQWBKR\n");
 
         // then
-        assertE("RKBWQBKR" +
-                "PPPPPPPP" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "pppppppp" +
-                "rkbwqbkr", BLACK);
+        assertE("RKBWQBKR\n" +
+                "PPPPPPPP\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "pppppppp\n" +
+                "rkbwqbkr\n", BLACK);
     }
 
     @Test
@@ -127,14 +127,14 @@ public class GameTest extends AbstractGameTest {
     @Test
     public void shouldNotRenderDeadPieces() {
 
-        givenFl("rkbqwbkr" +
-                "pppp.ppp" +
-                "........" +
-                "........" +
-                "........" +
-                "....p..." +
-                "PPPPPPPP" +
-                "RKBQWBKR");
+        givenFl("rkbqwbkr\n" +
+                "pppp.ppp\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "....p...\n" +
+                "PPPPPPPP\n" +
+                "RKBQWBKR\n");
 
         // when
         move(WHITE, from(5, 1).to(4, 2));
@@ -142,65 +142,65 @@ public class GameTest extends AbstractGameTest {
         move(WHITE, from(4, 2).to(4, 3));
 
         // then
-        assertE("rkbqwbkr" +
-                ".ppp.ppp" +
-                "p......." +
-                "........" +
-                "....P..." +
-                "........" +
-                "PPPPP.PP" +
-                "RKBQWBKR");
+        assertE("rkbqwbkr\n" +
+                ".ppp.ppp\n" +
+                "p.......\n" +
+                "........\n" +
+                "....P...\n" +
+                "........\n" +
+                "PPPPP.PP\n" +
+                "RKBQWBKR\n");
         neverFired(WRONG_MOVE);
     }
 
     @Test
     public void shouldBeFiredGameOverEvent_whenKingDies() {
 
-        givenFl("w.." +
-                "W.." +
-                "...");
+        givenFl("w..\n" +
+                "W..\n" +
+                "...\n");
 
         // when
         move(WHITE, from(0, 1).to(0, 2));
 
         // then
-        assertE("W.." +
-                "..." +
-                "...");
+        assertE("W..\n" +
+                "...\n" +
+                "...\n");
         fired(BLACK, GAME_OVER);
     }
 
     @Test
     public void shouldBeFiredWinEventForPlayer_whichKingLastsAlone() {
 
-        givenFl("w.." +
-                "W.." +
-                "...");
+        givenFl("w..\n" +
+                "W..\n" +
+                "...\n");
 
         // when
         move(WHITE, from(0, 1).to(0, 2));
 
         // then
-        assertE("W.." +
-                "..." +
-                "...");
+        assertE("W..\n" +
+                "...\n" +
+                "...\n");
         fired(WHITE, WIN);
     }
 
     @Test
     public void allPiecesShouldDieWithTheirKing() {
 
-        givenFl("wpp" +
-                "W.." +
-                "...");
+        givenFl("wpp\n" +
+                "W..\n" +
+                "...\n");
 
         // when
         move(WHITE, from(0, 1).to(0, 2));
 
         // then
-        assertE("W.." +
-                "..." +
-                "...");
+        assertE("W..\n" +
+                "...\n" +
+                "...\n");
     }
 
     @Test
@@ -234,14 +234,14 @@ public class GameTest extends AbstractGameTest {
 
         // then move of blacks from [4, 5] to [4, 4] should be ingored
         neverFired(WRONG_MOVE);
-        assertE("rkbqwbkr" +
-                "pppp.ppp" +
-                "....p..." +
-                "........" +
-                "........" +
-                "...PP..." +
-                "PPP..PPP" +
-                "RKBQWBKR");
+        assertE("rkbqwbkr\n" +
+                "pppp.ppp\n" +
+                "....p...\n" +
+                "........\n" +
+                "........\n" +
+                "...PP...\n" +
+                "PPP..PPP\n" +
+                "RKBQWBKR\n");
     }
 
     @Test
@@ -282,14 +282,14 @@ public class GameTest extends AbstractGameTest {
 
         // then move of blacks from [4, 5] to [4, 4] should be ingored
         neverFired(WRONG_MOVE);
-        assertE("rkbqwbkr" +
-                "pppp.ppp" +
-                "....p..." +
-                "........" +
-                "........" +
-                "....P..." +
-                "PPPP.PPP" +
-                "RKBQWBKR");
+        assertE("rkbqwbkr\n" +
+                "pppp.ppp\n" +
+                "....p...\n" +
+                "........\n" +
+                "........\n" +
+                "....P...\n" +
+                "PPPP.PPP\n" +
+                "RKBQWBKR\n");
     }
 
     @Test
@@ -301,14 +301,14 @@ public class GameTest extends AbstractGameTest {
         act(WHITE);
 
         // then
-        assertE("........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "PPPPPPPP" +
-                "RKBQWBKR", WHITE);
+        assertE("........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "PPPPPPPP\n" +
+                "RKBQWBKR\n", WHITE);
         neverFired(WRONG_MOVE);
     }
 

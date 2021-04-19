@@ -42,14 +42,14 @@ public class BishopTest extends AbstractPieceTest {
     @Override
     public void shouldMoveInAccordanceWithClassicChessRules() {
 
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...B...." +
-                "........" +
-                "........" +
-                ".......W");
+        givenFl("w.......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "...B....\n" +
+                "........\n" +
+                "........\n" +
+                ".......W\n");
         Piece whiteBishop = getPieceAt(3, 3);
 
         assertCanMoveOnlyTo(whiteBishop,
@@ -72,28 +72,28 @@ public class BishopTest extends AbstractPieceTest {
     @Override
     public void shouldBeAbleToTakeEnemyPiece() {
 
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...B...." +
-                "........" +
-                "........" +
-                "q......W");
+        givenFl("w.......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "...B....\n" +
+                "........\n" +
+                "........\n" +
+                "q......W\n");
         Piece blackQueen = getPieceAt(0, 0);
 
         // when
         move(WHITE, from(3, 3).to(0, 0));
 
         // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "B......W");
+        assertE("w.......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "B......W\n");
         neverFired(WHITE, WRONG_MOVE);
         assertFalse(blackQueen.isAlive());
     }
@@ -101,28 +101,28 @@ public class BishopTest extends AbstractPieceTest {
     @Override
     public void shouldNotBeAbleToTakeFriendlyPiece() {
 
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...B...." +
-                "........" +
-                "........" +
-                "Q......W");
+        givenFl("w.......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "...B....\n" +
+                "........\n" +
+                "........\n" +
+                "Q......W\n");
         Piece whiteQueen = getPieceAt(0, 0);
 
         // when
         move(WHITE, from(3, 3).to(0, 0));
 
         // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...B...." +
-                "........" +
-                "........" +
-                "Q......W");
+        assertE("w.......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "...B....\n" +
+                "........\n" +
+                "........\n" +
+                "Q......W\n");
         fired(WHITE, WRONG_MOVE);
         assertTrue(whiteQueen.isAlive());
     }
@@ -130,54 +130,54 @@ public class BishopTest extends AbstractPieceTest {
     @Test
     public void shouldNotBeAbleToMoveThroughEnemyPiece() {
 
-        givenFl("w......." +
-                "........" +
-                ".....q.." +
-                "........" +
-                "...B...." +
-                "........" +
-                "........" +
-                ".......W");
+        givenFl("w.......\n" +
+                "........\n" +
+                ".....q..\n" +
+                "........\n" +
+                "...B....\n" +
+                "........\n" +
+                "........\n" +
+                ".......W\n");
 
         // when
         move(WHITE, from(3, 3).to(7, 7));
 
         // then
-        assertE("w......." +
-                "........" +
-                ".....q.." +
-                "........" +
-                "...B...." +
-                "........" +
-                "........" +
-                ".......W");
+        assertE("w.......\n" +
+                "........\n" +
+                ".....q..\n" +
+                "........\n" +
+                "...B....\n" +
+                "........\n" +
+                "........\n" +
+                ".......W\n");
         fired(WHITE, WRONG_MOVE);
     }
 
     @Test
     public void shouldNotBeAbleToWalkThroughFriendlyPiece() {
 
-        givenFl("w......." +
-                "........" +
-                ".....Q.." +
-                "........" +
-                "...B...." +
-                "........" +
-                "........" +
-                ".......W");
+        givenFl("w.......\n" +
+                "........\n" +
+                ".....Q..\n" +
+                "........\n" +
+                "...B....\n" +
+                "........\n" +
+                "........\n" +
+                ".......W\n");
 
         // when
         move(WHITE, from(3, 3).to(7, 7));
 
         // then
-        assertE("w......." +
-                "........" +
-                ".....Q.." +
-                "........" +
-                "...B...." +
-                "........" +
-                "........" +
-                ".......W");
+        assertE("w.......\n" +
+                "........\n" +
+                ".....Q..\n" +
+                "........\n" +
+                "...B....\n" +
+                "........\n" +
+                "........\n" +
+                ".......W\n");
         fired(WHITE, WRONG_MOVE);
     }
 

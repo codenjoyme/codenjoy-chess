@@ -39,14 +39,14 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeCastling_ifKingAlreadyMoved() {
 
-        givenFl(".w......" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "R...W..R");
+        givenFl(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "R...W..R\n");
         move(WHITE, from(4, 0).to(4, 1));
         move(BLACK, from(1, 7).to(1, 6));
         move(WHITE, from(4, 1).to(4, 0)); // King returns to it's default place
@@ -62,23 +62,23 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeCastling_ifCastlingAlreadyDoneOnce() {
 
-        givenFl(".w......" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "R...W..R");
+        givenFl(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "R...W..R\n");
         move(WHITE, from(4, 0).to(0, 0)); // make a castling
-        assertE(".w......" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "..WR...R");
+        assertE(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "..WR...R\n");
         move(BLACK, from(1, 7).to(1, 6));
         move(WHITE, from(2, 0).to(2, 1));
         move(BLACK, from(1, 6).to(1, 7));
@@ -90,14 +90,14 @@ public class CastlingTest extends AbstractGameTest {
         move(BLACK, from(1, 7).to(1, 6));
         move(WHITE, from(3, 0).to(0, 0)); // Rook returns on it's default place
         move(BLACK, from(1, 6).to(1, 7));
-        assertE(".w......" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "R...W..R");
+        assertE(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "R...W..R\n");
 
         // when try to make one more castling
         move(WHITE, from(4, 0).to(0, 0));
@@ -109,14 +109,14 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeCastlingWithRook_ifTheRookAlreadyMoved() {
 
-        givenFl(".w......" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "R...W..R");
+        givenFl(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "R...W..R\n");
         move(WHITE, from(0, 0).to(0, 1));
         move(BLACK, from(1, 7).to(1, 6));
         move(WHITE, from(0, 1).to(0, 0)); // Rook returns on it's default position
@@ -132,14 +132,14 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeCastling_ifThereIsFriendlyPieceBetweenKingAndRook() {
 
-        givenFl(".w......" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "R.B.W..R");
+        givenFl(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "R.B.W..R\n");
 
         // when
         move(WHITE, from(4, 0).to(0, 0));
@@ -151,41 +151,41 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeCastling_ifThereIsEnemyPieceBetweenKingAndRook() {
 
-        givenFl(".w......" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "R.b.W..R");
+        givenFl(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "R.b.W..R\n");
 
         // when
         move(WHITE, from(4, 0).to(0, 0));
 
         // then
-        assertE(".w......" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "R.b.W..R");
+        assertE(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "R.b.W..R\n");
         fired(WHITE, WRONG_MOVE);
     }
 
     @Test
     public void shouldNotBeAbleToMakeCastling_ifKingIsUnderCheck() {
 
-        givenFl(".w......" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "..b....." +
-                "........" +
-                "R...W..R");
+        givenFl(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "..b.....\n" +
+                "........\n" +
+                "R...W..R\n");
 
         // when
         move(WHITE, from(4, 0).to(0, 0));
@@ -197,14 +197,14 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeCastling_whenPawnAttacksRookDestinationSquare() {
 
-        givenFl(".w......" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "....p..." +
-                "R...W..R");
+        givenFl(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "....p...\n" +
+                "R...W..R\n");
 
         // when
         move(WHITE, from(4, 0).to(0, 0));
@@ -216,14 +216,14 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeLongCastling_ifKingShouldPassThroughSquareWhichAttackedByEnemy() {
 
-        givenFl(".w......" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "...r...." +
-                "........" +
-                "R...W..R");
+        givenFl(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "...r....\n" +
+                "........\n" +
+                "R...W..R\n");
 
         // when
         move(WHITE, from(4, 0).to(0, 0));
@@ -235,14 +235,14 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeShortCastling_ifKingShouldPassThroughSquareWhichAttackedByEnemy() {
 
-        givenFl(".w......" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                ".....r.." +
-                "........" +
-                "R...W..R");
+        givenFl(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                ".....r..\n" +
+                "........\n" +
+                "R...W..R\n");
 
         // when
         move(WHITE, from(4, 0).to(7, 0));
@@ -254,14 +254,14 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeLongCastling_ifAfterThatKingWillBeUnderCheck() {
 
-        givenFl(".w......" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "..r....." +
-                "........" +
-                "R...W..R");
+        givenFl(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "..r.....\n" +
+                "........\n" +
+                "R...W..R\n");
 
         // when
         move(WHITE, from(4, 0).to(0, 0));
@@ -273,14 +273,14 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeShortCastling_ifAfterThatKingWillBeUnderCheck() {
 
-        givenFl(".w......" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "......r." +
-                "........" +
-                "R...W..R");
+        givenFl(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "......r.\n" +
+                "........\n" +
+                "R...W..R\n");
 
         // when
         move(WHITE, from(4, 0).to(7, 0));
@@ -292,14 +292,14 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldNotBeAbleToMakeCastling_ifRookAndKingIsUnderAttackOfOnePiece() {
 
-        givenFl(".w......" +
-                "........" +
-                "........" +
-                "q......." +
-                "........" +
-                "........" +
-                "........" +
-                "R...W..R");
+        givenFl(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "q.......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "R...W..R\n");
 
         // when
         move(WHITE, from(4, 0).to(0, 0));
@@ -316,41 +316,41 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldBeAbleToMakeCastling_ifThereIsNoPieceBetweenKingAndRook() {
 
-        givenFl(".w......" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "R.B.W..R");
+        givenFl(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "R.B.W..R\n");
 
         // when
         move(WHITE, from(4, 0).to(7, 0));
 
         // then
-        assertE(".w......" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "R.B..RW.");
+        assertE(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "R.B..RW.\n");
         neverFired(WRONG_MOVE);
     }
 
     @Test
     public void shouldBeAbleToMakeCastlingWithRook_evenIfAnotherRookAlreadyMoved() {
 
-        givenFl(".w......" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "R...W..R");
+        givenFl(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "R...W..R\n");
         move(WHITE, from(0, 0).to(0, 1));
         move(BLACK, from(1, 7).to(1, 6));
 
@@ -358,14 +358,14 @@ public class CastlingTest extends AbstractGameTest {
         move(WHITE, from(4, 0).to(7, 0));
 
         // then
-        assertE("........" +
-                ".w......" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "R......." +
-                ".....RW.");
+        assertE("........\n" +
+                ".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "R.......\n" +
+                ".....RW.\n");
 
         neverFired(WRONG_MOVE);
     }
@@ -373,41 +373,41 @@ public class CastlingTest extends AbstractGameTest {
     @Test
     public void shouldBeAbleToMakeCastling_ifRookIsUnderAttack() {
 
-        givenFl(".w......" +
-                "........" +
-                "........" +
-                "........" +
-                "r......." +
-                "........" +
-                "........" +
-                "R...W..R");
+        givenFl(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "r.......\n" +
+                "........\n" +
+                "........\n" +
+                "R...W..R\n");
 
         // when
         move(WHITE, from(4, 0).to(0, 0));
 
         // then
-        assertE(".w......" +
-                "........" +
-                "........" +
-                "........" +
-                "r......." +
-                "........" +
-                "........" +
-                "..WR...R");
+        assertE(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "r.......\n" +
+                "........\n" +
+                "........\n" +
+                "..WR...R\n");
         neverFired(WRONG_MOVE);
     }
 
     @Test
     public void shouldNotBeAbleToMakeCastling_withDeadPiece() {
 
-        givenFl("r...w..r" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "....W..R");
+        givenFl("r...w..r\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "....W..R\n");
         move(WHITE, from(7, 0).to(7, 7));
         move(BLACK, from(0, 7).to(0, 6));
         move(WHITE, from(7, 7).to(7, 0));
@@ -416,14 +416,14 @@ public class CastlingTest extends AbstractGameTest {
         move(BLACK, from(4, 7).to(7, 7));
 
         // then
-        assertE("....w..." +
-                "r......." +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "....W..R");
+        assertE("....w...\n" +
+                "r.......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "....W..R\n");
         fired(BLACK, WRONG_MOVE);
     }
 }

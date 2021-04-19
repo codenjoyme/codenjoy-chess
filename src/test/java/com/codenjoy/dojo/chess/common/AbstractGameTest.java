@@ -67,14 +67,14 @@ public abstract class AbstractGameTest {
 
 
     public static String classicBoard() {
-        return "rkbqwbkr" +
-                "pppppppp" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "PPPPPPPP" +
-                "RKBQWBKR";
+        return "rkbqwbkr\n" +
+                "pppppppp\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "PPPPPPPP\n" +
+                "RKBQWBKR\n";
     }
 
     @Before
@@ -144,7 +144,7 @@ public abstract class AbstractGameTest {
     }
 
     protected void assertE(String expected, Color playerColor) {
-        assertEquals(TestUtils.injectN(expected), getBoardState(playerColor));
+        assertEquals(expected, getBoardState(playerColor));
     }
 
     protected void act(Color color, int... codes) {

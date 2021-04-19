@@ -87,28 +87,28 @@ public class QueenTest extends AbstractPieceTest {
     @Override
     public void shouldBeAbleToTakeEnemyPiece() {
 
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...Q...." +
-                "........" +
-                "........" +
-                "q......W");
+        givenFl("w.......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "...Q....\n" +
+                "........\n" +
+                "........\n" +
+                "q......W\n");
         Piece blackQueen = getPieceAt(0, 0);
 
         // when
         move(WHITE, from(3, 3).to(0, 0));
 
         // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "Q......W");
+        assertE("w.......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "Q......W\n");
         neverFired(WHITE, WRONG_MOVE);
         assertFalse(blackQueen.isAlive());
     }
@@ -116,28 +116,28 @@ public class QueenTest extends AbstractPieceTest {
     @Override
     public void shouldNotBeAbleToTakeFriendlyPiece() {
 
-        givenFl("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...Q...." +
-                "........" +
-                "........" +
-                "B......W");
+        givenFl("w.......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "...Q....\n" +
+                "........\n" +
+                "........\n" +
+                "B......W\n");
         Piece whiteBishop = getPieceAt(0, 0);
 
         // when
         move(WHITE, from(3, 3).to(0, 0));
 
         // then
-        assertE("w......." +
-                "........" +
-                "........" +
-                "........" +
-                "...Q...." +
-                "........" +
-                "........" +
-                "B......W");
+        assertE("w.......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "...Q....\n" +
+                "........\n" +
+                "........\n" +
+                "B......W\n");
         fired(WHITE, WRONG_MOVE);
         assertTrue(whiteBishop.isAlive());
     }
@@ -146,14 +146,14 @@ public class QueenTest extends AbstractPieceTest {
     public void shouldNotMoveOutOfBounds() {
 
         // when
-        givenFl("w......Q" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "...W....");
+        givenFl("w......Q\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "...W....\n");
         Piece whiteQueen = getPieceAt(7, 7);
 
         // then

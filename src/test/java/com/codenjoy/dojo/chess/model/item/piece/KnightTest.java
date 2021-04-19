@@ -42,14 +42,14 @@ public class KnightTest extends AbstractPieceTest {
     public void shouldMoveInAccordanceWithClassicChessRules() {
 
         // when
-        givenFl("w......." +
-                "........" +
-                "...b...." +
-                "..pp...." +
-                ".qpKp..." +
-                "..ppp..." +
-                "........" +
-                ".......W");
+        givenFl("w.......\n" +
+                "........\n" +
+                "...b....\n" +
+                "..pp....\n" +
+                ".qpKp...\n" +
+                "..ppp...\n" +
+                "........\n" +
+                ".......W\n");
         Piece whiteKnight = getPieceAt(3, 3);
 
         // then
@@ -68,28 +68,28 @@ public class KnightTest extends AbstractPieceTest {
     @Override
     public void shouldBeAbleToTakeEnemyPiece() {
 
-        givenFl("w......." +
-                "........" +
-                "....q..." +
-                "........" +
-                "...K...." +
-                "........" +
-                "........" +
-                ".......W");
+        givenFl("w.......\n" +
+                "........\n" +
+                "....q...\n" +
+                "........\n" +
+                "...K....\n" +
+                "........\n" +
+                "........\n" +
+                ".......W\n");
         Piece enemyQueen = getPieceAt(4, 5);
 
         // when
         move(WHITE, from(3, 3).to(4, 5));
 
         // then
-        assertE("w......." +
-                "........" +
-                "....K..." +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                ".......W");
+        assertE("w.......\n" +
+                "........\n" +
+                "....K...\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                ".......W\n");
         neverFired(WHITE, WRONG_MOVE);
         assertFalse(enemyQueen.isAlive());
     }
@@ -97,28 +97,28 @@ public class KnightTest extends AbstractPieceTest {
     @Override
     public void shouldNotBeAbleToTakeFriendlyPiece() {
 
-        givenFl("w......." +
-                "........" +
-                "....Q..." +
-                "........" +
-                "...K...." +
-                "........" +
-                "........" +
-                ".......W");
+        givenFl("w.......\n" +
+                "........\n" +
+                "....Q...\n" +
+                "........\n" +
+                "...K....\n" +
+                "........\n" +
+                "........\n" +
+                ".......W\n");
         Piece friendlyQueen = getPieceAt(4, 5);
 
         // when
         move(WHITE, from(3, 3).to(4, 5));
 
         // then
-        assertE("w......." +
-                "........" +
-                "....Q..." +
-                "........" +
-                "...K...." +
-                "........" +
-                "........" +
-                ".......W");
+        assertE("w.......\n" +
+                "........\n" +
+                "....Q...\n" +
+                "........\n" +
+                "...K....\n" +
+                "........\n" +
+                "........\n" +
+                ".......W\n");
         fired(WHITE, WRONG_MOVE);
         assertTrue(friendlyQueen.isAlive());
     }

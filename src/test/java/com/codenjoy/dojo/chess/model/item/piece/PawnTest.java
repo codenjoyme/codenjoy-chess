@@ -57,28 +57,28 @@ public class PawnTest extends AbstractPieceTest {
     public void shouldBeAbleToTakeEnemyPiece() {
 
         // given
-        givenFl("rkbqwbkr" +
-                "pppp.ppp" +
-                "........" +
-                "........" +
-                "........" +
-                "....p..." +
-                ".....P.." +
-                "RKBQWBKR");
+        givenFl("rkbqwbkr\n" +
+                "pppp.ppp\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "....p...\n" +
+                ".....P..\n" +
+                "RKBQWBKR\n");
         Piece blackPawn = getPieceAt(4, 2);
 
         // when
         move(WHITE, from(5, 1).to(4, 2));
 
         // then
-        assertE("rkbqwbkr" +
-                "pppp.ppp" +
-                "........" +
-                "........" +
-                "........" +
-                "....P..." +
-                "........" +
-                "RKBQWBKR");
+        assertE("rkbqwbkr\n" +
+                "pppp.ppp\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "....P...\n" +
+                "........\n" +
+                "RKBQWBKR\n");
         assertFalse(blackPawn.isAlive());
         neverFired(WHITE, WRONG_MOVE);
     }
@@ -87,28 +87,28 @@ public class PawnTest extends AbstractPieceTest {
     public void shouldNotBeAbleToTakeFriendlyPiece() {
 
         // given
-        givenFl("rkbqwbkr" +
-                "pppp.ppp" +
-                "........" +
-                "........" +
-                "........" +
-                "....Q..." +
-                ".....P.." +
-                "RKB.WBKR");
+        givenFl("rkbqwbkr\n" +
+                "pppp.ppp\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "....Q...\n" +
+                ".....P..\n" +
+                "RKB.WBKR\n");
         Piece whiteQueen = getPieceAt(4, 2);
 
         // when
         move(WHITE, from(5, 1).to(4, 2));
 
         // then
-        assertE("rkbqwbkr" +
-                "pppp.ppp" +
-                "........" +
-                "........" +
-                "........" +
-                "....Q..." +
-                ".....P.." +
-                "RKB.WBKR");
+        assertE("rkbqwbkr\n" +
+                "pppp.ppp\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "....Q...\n" +
+                ".....P..\n" +
+                "RKB.WBKR\n");
         assertTrue(whiteQueen.isAlive());
         fired(WHITE, WRONG_MOVE);
     }
@@ -117,14 +117,14 @@ public class PawnTest extends AbstractPieceTest {
     public void shouldNotBeAbleToMoveSomewhere_ifThereIsEnemyPieceOnTheWay() {
 
         // when given
-        givenFl("rkbqwbkr" +
-                "pppp.ppp" +
-                "........" +
-                "........" +
-                "........" +
-                "....p..." +
-                "PPPPPPPP" +
-                "RKBQWBKR");
+        givenFl("rkbqwbkr\n" +
+                "pppp.ppp\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "....p...\n" +
+                "PPPPPPPP\n" +
+                "RKBQWBKR\n");
         Piece whitePawn = getPieceAt(4, 1);
 
         // then
@@ -135,14 +135,14 @@ public class PawnTest extends AbstractPieceTest {
     public void shouldNotBeAbleToMoveSomewhere_ifThereIsFriendlyPieceOnTheWay() {
 
         // when given
-        givenFl("rkbqwbkr" +
-                "pppp.ppp" +
-                "........" +
-                "........" +
-                "........" +
-                "....Q..." +
-                "PPPPPPPP" +
-                "RKB.WBKR");
+        givenFl("rkbqwbkr\n" +
+                "pppp.ppp\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "....Q...\n" +
+                "PPPPPPPP\n" +
+                "RKB.WBKR\n");
         Piece whitePawn = getPieceAt(4, 1);
 
         // then
@@ -153,14 +153,14 @@ public class PawnTest extends AbstractPieceTest {
     public void shouldNotBeAbleToMoveTwoStepsForward_ifThereIsAnotherPieceAtTheTargetPosition() {
 
         // when given
-        givenFl("rkbqwbkr" +
-                "pppp.ppp" +
-                "........" +
-                "........" +
-                "....p..." +
-                "........" +
-                "PPPPPPPP" +
-                "RKBQWBKR");
+        givenFl("rkbqwbkr\n" +
+                "pppp.ppp\n" +
+                "........\n" +
+                "........\n" +
+                "....p...\n" +
+                "........\n" +
+                "PPPPPPPP\n" +
+                "RKBQWBKR\n");
         Piece whitePawn = getPieceAt(4, 1);
 
         // then
@@ -203,14 +203,14 @@ public class PawnTest extends AbstractPieceTest {
     public void pawnShouldNotBeAbleToMoveOutOfBounds() {
 
         // when
-        givenFl("w......P" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                ".......W");
+        givenFl("w......P\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                ".......W\n");
         Piece whitePawn = getPieceAt(7, 7);
 
         // then
@@ -221,14 +221,14 @@ public class PawnTest extends AbstractPieceTest {
     public void pawnShouldNotBeAbleToMoveOutOfBounds_whenMoves2SquaresForward() {
 
         // when
-        givenFl("w......." +
-                ".......P" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                ".......W");
+        givenFl("w.......\n" +
+                ".......P\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                ".......W\n");
         Piece whitePawn = getPieceAt(7, 6);
 
         // then
