@@ -26,13 +26,13 @@ package com.codenjoy.dojo.chess.model.level;
 public class Levels {
 
     public static String classicChessBoard() {
-        return "rkbqwbkr" +
-                "pppppppp" +
-                "........" +
-                "........" +
-                "........" +
-                "........" +
-                "PPPPPPPP" +
-                "RKBQWBKR";
+        return "rkbqwbkr\n" +
+                "pppppppp\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "PPPPPPPP\n" +
+                "RKBQWBKR\n";
     }
 }
