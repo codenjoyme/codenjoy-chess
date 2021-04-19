@@ -35,6 +35,7 @@ import java.util.Optional;
 
 import static com.codenjoy.dojo.services.Direction.*;
 
+// https://en.wikipedia.org/wiki/King_(chess)
 public class King extends Piece {
 
     public King(Color color, GameBoard board, Point position) {

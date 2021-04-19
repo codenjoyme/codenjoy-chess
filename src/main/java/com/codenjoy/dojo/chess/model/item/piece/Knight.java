@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+// https://en.wikipedia.org/wiki/Knight_(chess)
 public class Knight extends Piece {
 
     public Knight(Color color, GameBoard board, Point position) {

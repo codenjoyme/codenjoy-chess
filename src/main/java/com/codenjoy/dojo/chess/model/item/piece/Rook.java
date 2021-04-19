@@ -37,13 +37,14 @@ import java.util.stream.Stream;
 
 import static com.codenjoy.dojo.services.Direction.*;
 
+// https://en.wikipedia.org/wiki/Rook_(chess)
 public class Rook extends Piece {
     public Rook(Color color, GameBoard board, Point position) {
         super(Type.ROOK, color, board, position);
     }
 
     /**
-     * The method calculates all available moves of rook
+     * The method calculates all available moves of a rook
      * in accordance with described circumstances,
      * including those where enemy's piece can be taken.
      *

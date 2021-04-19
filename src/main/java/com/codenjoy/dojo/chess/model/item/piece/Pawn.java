@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 
 import static com.codenjoy.dojo.chess.model.Color.*;
 
+// https://en.wikipedia.org/wiki/Pawn_(chess)
 public class Pawn extends Piece {
     private static final int LINE_OF_PROMOTION = 7;
     private static final Map<Color, Color> enPassantOpponentColors = new HashMap<>() {{
