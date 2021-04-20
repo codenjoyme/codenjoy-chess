@@ -99,14 +99,20 @@ public class Chess implements GameField<Player> {
         history.add(currentColor, move);
         currentColor = nextColor();
         checkGameOvers(aliveBeforeTick);
-        checkVictory();
+        if (aliveBeforeTick.size() > 1) {
+            checkVictory();
+        }
         checkStalemate();
     }
 
     @Override
     public void newGame(Player player) {
+        if (players.contains(player)) {
+            LOGGER.warn("Trying to add player who is already in game");
+            return;
+        }
         if (players.size() == getColors().size()) {
-            LOGGER.warn("Trying to add new player [{}], but the game is already full", player);
+            LOGGER.warn("Trying to add new player, but the game is already full");
             return;
         }
 

@@ -280,4 +280,8 @@ public class Pawn extends Piece {
         Point counterclockwiseAttack = attackDirection.counterClockwise().change(stepForward);
         return position.equals(clockwiseAttack) || position.equals(counterclockwiseAttack);
     }
+
+    public boolean isEnPassant(Move move) {
+        return enPassants(board, position, attackDirection, color).contains(move);
+    }
 }

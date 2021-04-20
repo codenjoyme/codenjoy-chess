@@ -129,14 +129,4 @@ public class King extends Piece {
                 .map(Move::getTo)
                 .anyMatch(p -> p.equals(position));
     }
-
-    @Override
-    public void setAlive(boolean alive) {
-        if (this.alive && !alive) {
-            this.alive = false;
-            board.die(color);
-        } else {
-            this.alive = alive;
-        }
-    }
 }

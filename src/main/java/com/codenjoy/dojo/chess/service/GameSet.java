@@ -52,9 +52,6 @@ public class GameSet {
         if (pieces.stream().anyMatch(p -> p.getColor() != color)) {
             throw new IllegalArgumentException("All pieces should be " + color);
         }
-        if (pieces.stream().filter(p -> p.getType() == Piece.Type.KING).count() != 1) {
-            throw new IllegalArgumentException("Should be exactly one king in game set");
-        }
         this.pieces = pieces;
     }
 
