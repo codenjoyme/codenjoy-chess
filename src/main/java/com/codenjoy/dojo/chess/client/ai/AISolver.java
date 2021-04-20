@@ -25,6 +25,7 @@ package com.codenjoy.dojo.chess.client.ai;
 import com.codenjoy.dojo.chess.client.Board;
 import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Move;
+import com.codenjoy.dojo.chess.model.item.piece.Pawn;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import com.codenjoy.dojo.chess.service.GameBoard;
 import com.codenjoy.dojo.chess.service.Rotator;
@@ -65,7 +66,7 @@ public class AISolver implements Solver<Board> {
      */
     @SuppressWarnings("SuspiciousNameCombination")
     private static String rotate(Color color, String board) {
-        int times = Rotator.countRotationTimes(color.getAttackDirection(), ATTACK_DIRECTION);
+        int times = Rotator.countRotationTimes(ATTACK_DIRECTION, color.getAttackDirection());
         String map = LevelUtils.clear(board);
         if (times == 0) {
             return map;
@@ -133,6 +134,10 @@ public class AISolver implements Solver<Board> {
                 .filter(this::withoutPromotion)
                 .collect(Collectors.toList());
 
+        if (availableMoves.isEmpty()) {
+            return "";
+        }
+
         // check, whether are attacking enemy's pieces moves among the available moves
         List<Move> attackMoves = availableMoves.stream()
                 .filter(m -> this.board.getPieceAt(m.getTo()).isPresent())
@@ -147,7 +152,7 @@ public class AISolver implements Solver<Board> {
         // so we need to make move's coordinates look like they was for received board
         // in accordance with player's color
         decision = new Rotator(this.board.getSize())
-                .mapMove(decision, ATTACK_DIRECTION, color.getAttackDirection());
+                .mapMove(decision, color.getAttackDirection(), ATTACK_DIRECTION);
 
         return String.format(
                 "ACT(%d,%d,%d,%d)",
@@ -171,10 +176,10 @@ public class AISolver implements Solver<Board> {
 
     private boolean notEnPassant(Move move) {
         Piece piece = board.getPieceAt(move.getFrom()).orElse(null);
-        return piece == null
-                || piece.getType() != Piece.Type.PAWN
-                || piece.getPosition().getX() == move.getTo().getX()
-                || board.getPieceAt(move.getTo()).isPresent();
+        if (piece == null || piece.getType() != Piece.Type.PAWN || board.getPieceAt(move.getTo()).isPresent()) {
+            return true;
+        }
+        return !((Pawn) piece).isEnPassant(move);
     }
 
     private boolean withoutPromotion(Move move) {
