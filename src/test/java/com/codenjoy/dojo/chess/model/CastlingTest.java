@@ -210,6 +210,14 @@ public class CastlingTest extends AbstractGameTest {
         move(WHITE, from(4, 0).to(0, 0));
 
         // then
+        assertE(".w......\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "....p...\n" +
+                "R...W..R\n");
         fired(WHITE, WRONG_MOVE);
     }
 

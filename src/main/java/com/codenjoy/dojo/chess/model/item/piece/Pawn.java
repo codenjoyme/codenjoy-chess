@@ -82,7 +82,7 @@ public class Pawn extends Piece {
      * @param attackDirection the direction of attack of the pawn
      * @return all available promotion moves
      */
-    private static List<Move> getPromotions(GameBoard board, Point position, Direction attackDirection) {
+    private static List<Move> promotionMoves(GameBoard board, Point position, Direction attackDirection) {
         Point destination = attackDirection.change(position);
         if (!isPromotionAble(attackDirection, destination, board.getSize())) {
             return Lists.newArrayList();
@@ -111,7 +111,7 @@ public class Pawn extends Piece {
                                             Direction attackDirection) {
         List<Move> moves = Lists.newArrayList();
         moves.addAll(basicMoves(board, position, attackDirection, moved));
-        moves.addAll(getPromotions(board, position, attackDirection));
+        moves.addAll(promotionMoves(board, position, attackDirection));
         moves.addAll(enPassants(board, position, attackDirection, color));
         moves.addAll(attackMoves(board, position, attackDirection, color));
         return moves;
@@ -263,5 +263,13 @@ public class Pawn extends Piece {
     @Override
     public List<Move> getAvailableMoves() {
         return availableMoves(board, position, color, moved, attackDirection);
+    }
+
+    @Override
+    public boolean isAttacks(Point position) {
+        Point stepForward = attackDirection.change(this.position);
+        Point clockwiseAttack = attackDirection.clockwise().change(stepForward);
+        Point counterclockwiseAttack = attackDirection.counterClockwise().change(stepForward);
+        return position.equals(clockwiseAttack) || position.equals(counterclockwiseAttack);
     }
 }

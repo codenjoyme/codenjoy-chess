@@ -27,8 +27,6 @@ import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.chess.service.GameBoard;
 import com.codenjoy.dojo.services.Point;
-import com.codenjoy.dojo.services.QDirection;
-import com.google.common.collect.Lists;
 
 import java.util.Collection;
 import java.util.List;

@@ -125,6 +125,13 @@ public class King extends Piece {
     }
 
     @Override
+    public boolean isAttacks(Point position) {
+        return availableMoves(board, this.position, color, moved, false, attackDirection).stream()
+                .map(Move::getTo)
+                .anyMatch(p -> p.equals(position));
+    }
+
+    @Override
     public void setAlive(boolean alive) {
         if (this.alive && !alive) {
             this.alive = false;

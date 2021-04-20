@@ -22,14 +22,12 @@ package com.codenjoy.dojo.chess.service;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.model.Move;
-import com.codenjoy.dojo.chess.model.level.Level;
 import com.codenjoy.dojo.chess.model.Color;
+import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.chess.model.item.Barrier;
 import com.codenjoy.dojo.chess.model.item.Square;
-import com.codenjoy.dojo.chess.model.item.piece.King;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
-import com.codenjoy.dojo.services.Direction;
+import com.codenjoy.dojo.chess.model.level.Level;
 import com.codenjoy.dojo.services.Point;
 import com.google.common.collect.Lists;
 
@@ -89,33 +87,12 @@ public class GameBoard {
     }
 
     public boolean isUnderAttack(Point point, Color color) {
-        // TODO refactor
-        boolean result = gameSets.stream()
+        return gameSets.stream()
                 .filter(gameSet -> gameSet.getColor() != color)
+                .filter(GameSet::isKingAlive)
                 .map(GameSet::getPieces)
                 .flatMap(Collection::stream)
-                .filter(p -> p.getType() != Piece.Type.KING)
-                .map(Piece::getAvailableMoves)
-                .flatMap(Collection::stream)
-                .anyMatch(m -> m.getTo().equals(point));
-        boolean kingAttack = gameSets.stream()
-                .map(GameSet::getPieces)
-                .flatMap(Collection::stream)
-                .filter(p -> p.getType() == Piece.Type.KING && p.getColor() != color)
-                .anyMatch(king -> King.availableMoves(this, point, color, king.isMoved(), false, Color.WHITE.getAttackDirection()).stream()
-                        .map(Move::getTo)
-                        .anyMatch(p -> p.equals(point)));
-        boolean pawnAttack = gameSets.stream()
-                .map(GameSet::getPieces)
-                .flatMap(Collection::stream)
-                .filter(p -> p.getType() == Piece.Type.PAWN && p.getColor() != color)
-                .anyMatch(pawn -> {
-                    Direction direction = pawn.getAttackDirection();
-                    Direction attack1 = direction.clockwise();
-                    Direction attack2 = direction.counterClockwise();
-                    return attack1.change(direction.change(pawn.getPosition())).equals(point) || attack2.change(direction.change(pawn.getPosition())).equals(point);
-                });
-        return result || pawnAttack || kingAttack;
+                .anyMatch(p -> p.isAttacks(point));
     }
 
     public boolean isInBounds(Point position) {

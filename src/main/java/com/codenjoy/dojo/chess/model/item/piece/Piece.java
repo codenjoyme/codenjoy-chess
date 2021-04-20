@@ -148,8 +148,10 @@ public abstract class Piece {
 
     public abstract List<Move> getAvailableMoves();
 
-    public Direction getAttackDirection() {
-        return attackDirection;
+    public boolean isAttacks(Point position) {
+        return getAvailableMoves().stream()
+                .map(Move::getTo)
+                .anyMatch(p -> p.equals(position));
     }
 
     @Override
