@@ -65,7 +65,6 @@ public class King extends Piece {
         return moves;
     }
 
-    // TODO check behaviour when on custom board start positions of king and rook next to each other
     public static List<Move> castlingMoves(GameBoard board,
                                            Point position,
                                            Color color,
