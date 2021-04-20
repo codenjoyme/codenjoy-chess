@@ -25,7 +25,6 @@ package com.codenjoy.dojo.chess.model;
 
 import com.codenjoy.dojo.chess.common.AbstractGameTest;
 import com.codenjoy.dojo.chess.service.GameSettings;
-import org.junit.Assert;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.Color.BLACK;
@@ -33,7 +32,6 @@ import static com.codenjoy.dojo.chess.model.Color.WHITE;
 import static com.codenjoy.dojo.chess.model.Events.*;
 import static com.codenjoy.dojo.chess.model.Move.from;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class GameTest extends AbstractGameTest {
@@ -187,26 +185,26 @@ public class GameTest extends AbstractGameTest {
         fired(WHITE, WIN);
     }
 
-    @Test
-    public void allPiecesShouldDieWithTheirKing() {
+//    @Test TODO make optional
+//    public void allPiecesShouldDieWithTheirKing() {
+//
+//        givenFl("wpp\n" +
+//                "W..\n" +
+//                "...\n");
+//
+//         when
+//        move(WHITE, from(0, 1).to(0, 2));
+//
+//         then
+//        assertE("W..\n" +
+//                "...\n" +
+//                "...\n");
+//    }
 
-        givenFl("wpp\n" +
-                "W..\n" +
-                "...\n");
-
-        // when
-        move(WHITE, from(0, 1).to(0, 2));
-
-        // then
-        assertE("W..\n" +
-                "...\n" +
-                "...\n");
-    }
-
-    @Test
-    public void shouldBeThrownIllegalArgumentException_whenTryToMakeGameSetWithoutKing() {
-        Assert.assertThrows(IllegalArgumentException.class, () -> givenFl("ppp....W."));
-    }
+//    @Test TODO make optional of get rid of it
+//    public void shouldBeThrownIllegalArgumentException_whenTryToMakeGameSetWithoutKing() {
+//        Assert.assertThrows(IllegalArgumentException.class, () -> givenFl("ppp....W."));
+//    }
 
     @Test
     public void shouldNotFireWrongMoveEvent_whenPlayerDidntMakeAMoveAtHisTurn() {
