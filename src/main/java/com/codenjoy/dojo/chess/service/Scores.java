@@ -71,11 +71,19 @@ public class Scores implements PlayerScores {
     @Override
     public void update(Object score) {
         this.score.set(Integer.parseInt(score.toString()));
+        setZeroIfNegative();
     }
 
     @Override
     public void event(Object eventObj) {
         Events event = (Events) eventObj;
         score.addAndGet(eventsToRewards.get(event));
+        setZeroIfNegative();
+    }
+
+    private void setZeroIfNegative() {
+        if (score.get() < 0) {
+            score.set(0);
+        }
     }
 }
