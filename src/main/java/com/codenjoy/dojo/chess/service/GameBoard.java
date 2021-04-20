@@ -138,6 +138,14 @@ public class GameBoard {
         return aliveSets.size() == 1 && aliveSets.get(0).getColor() == color;
     }
 
+    public List<Move> getAvailableMoves(Color color) {
+        GameSet gameSet = getGameSet(color);
+        if (!gameSet.isKingAlive()) {
+            return Lists.newArrayList();
+        }
+        return gameSet.getAvailableMoves();
+    }
+
     public Move getLastMoveOf(Color color) {
         GameSet gameSet = getGameSet(color);
         if (gameSet == null) {

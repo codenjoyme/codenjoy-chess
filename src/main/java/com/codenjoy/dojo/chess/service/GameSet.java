@@ -32,8 +32,10 @@ import com.codenjoy.dojo.services.Point;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class GameSet {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameSet.class);
@@ -104,6 +106,13 @@ public class GameSet {
 
     public void die() {
         pieces.forEach(p -> p.setAlive(false));
+    }
+
+    public List<Move> getAvailableMoves() {
+        return pieces.stream()
+                .map(Piece::getAvailableMoves)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 
     public Move getLastMove() {

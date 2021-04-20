@@ -87,7 +87,7 @@ public class Chess implements GameField<Player> {
         }
 
         Move move = player.makeMove();
-        if (move == null && settings.bool(WAIT_UNTIL_MAKE_A_MOVE)) {
+        if (move == null && settings.waitUntilMakeAMove()) {
             LOGGER.debug(
                     "{} player's move didn't committed; " +
                             "Option {} set to true, so right to move is not transferred further",
@@ -100,6 +100,7 @@ public class Chess implements GameField<Player> {
         currentColor = nextColor();
         checkGameOvers(aliveBeforeTick);
         checkVictory();
+        checkStalemate();
     }
 
     @Override
@@ -159,6 +160,24 @@ public class Chess implements GameField<Player> {
         return board;
     }
 
+    // TODO test me
+    private void checkStalemate() {
+        List<Color> marked = Lists.newArrayList();
+        while (currentColor != null && board.getAvailableMoves(currentColor).isEmpty()) {
+            if (settings.waitUntilMakeAMove()) {
+                getPlayer(currentColor).event(Events.GAME_OVER);
+            } else {
+                if (marked.contains(currentColor)) {
+                    marked.forEach(c -> getPlayer(c).event(Events.GAME_OVER));
+                } else {
+                    marked.add(currentColor);
+                    getPlayer(currentColor).event(Events.WRONG_MOVE);
+                }
+            }
+            currentColor = nextColor();
+        }
+    }
+
     private void checkGameOvers(List<Color> aliveBeforeTick) {
         List<Color> alive = getAlivePlayers().stream()
                 .map(Player::getColor)
@@ -190,6 +209,9 @@ public class Chess implements GameField<Player> {
 
     private Color nextColor() {
         List<Player> alivePlayers = getAlivePlayers();
+        if (alivePlayers.isEmpty()) {
+            return null;
+        }
         alivePlayers.sort(Comparator.comparingInt(p -> p.getColor().getPriority()));
         return alivePlayers.stream()
                 .map(Player::getColor)

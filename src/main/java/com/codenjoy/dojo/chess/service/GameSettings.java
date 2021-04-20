@@ -23,6 +23,7 @@ package com.codenjoy.dojo.chess.service;
  */
 
 
+import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import com.codenjoy.dojo.chess.model.level.Level;
 import com.codenjoy.dojo.chess.model.level.Levels;
 import com.codenjoy.dojo.services.settings.SettingsImpl;
@@ -33,6 +34,7 @@ import java.util.List;
 
 import static com.codenjoy.dojo.chess.service.GameSettings.Option.*;
 
+@SuppressWarnings("unused")
 public final class GameSettings extends SettingsImpl implements SettingsReader<GameSettings> {
 
     @Override
@@ -45,10 +47,11 @@ public final class GameSettings extends SettingsImpl implements SettingsReader<G
         LEVEL_MAP("Level map"),
         GAME_OVER_IF_WRONG_MOVE("Game over if tried to make wrong move"),
         WAIT_UNTIL_MAKE_A_MOVE("Wait a player's move if not responds in time"),
+        LAST_PLAYER_STAYS("Last alive player continues to play"),
+
         VICTORY_REWARD("Victory reward"),
         WRONG_MOVE_PENALTY("Wrong move penalty"),
         GAME_OVER_PENALTY("Game over penalty"),
-        LAST_PLAYER_STAYS("Last alive player continues to play"),
 
         KING_WORTH("The worth of king piece"),
         QUEEN_WORTH("The worth of queen piece"),
@@ -90,5 +93,48 @@ public final class GameSettings extends SettingsImpl implements SettingsReader<G
 
     public Level level() {
         return new Level(string(LEVEL_MAP));
+    }
+
+    public boolean gameOverIfWrongMove() {
+        return bool(GAME_OVER_IF_WRONG_MOVE);
+    }
+
+    public boolean waitUntilMakeAMove() {
+        return bool(WAIT_UNTIL_MAKE_A_MOVE);
+    }
+
+    public int victoryReward() {
+        return integer(VICTORY_REWARD);
+    }
+
+    public int wrongMovePenalty() {
+        return integer(WRONG_MOVE_PENALTY);
+    }
+
+    public int gameOverPenalty() {
+        return integer(GAME_OVER_PENALTY);
+    }
+
+    public boolean lastPlayerStays() {
+        return bool(LAST_PLAYER_STAYS);
+    }
+
+    public int worthOf(Piece.Type type) {
+        switch (type) {
+            case KING:
+                return integer(KING_WORTH);
+            case QUEEN:
+                return integer(QUEEN_WORTH);
+            case KNIGHT:
+                return integer(KNIGHT_WORTH);
+            case BISHOP:
+                return integer(BISHOP_WORTH);
+            case ROOK:
+                return integer(ROOK_WORTH);
+            case PAWN:
+                return integer(PAWN_WORTH);
+            default:
+                throw new IllegalArgumentException("Piece type " + type + " not supported");
+        }
     }
 }
