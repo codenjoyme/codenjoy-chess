@@ -85,7 +85,7 @@ public final class GameSettings extends SettingsImpl implements SettingsReader<G
         integer(KNIGHT_WORTH, 3);
         integer(PAWN_WORTH, 1);
 
-        multiline(LEVEL_MAP, Levels.classicChessBoard());
+        multiline(LEVEL_MAP, Levels.classicFourPlayerChessBoard());
     }
 
     public Level level() {

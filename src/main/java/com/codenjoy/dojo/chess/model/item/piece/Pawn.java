@@ -30,20 +30,14 @@ import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.google.common.collect.Lists;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.codenjoy.dojo.chess.model.Color.*;
 
 // https://en.wikipedia.org/wiki/Pawn_(chess)
 public class Pawn extends Piece {
     private static final int LINE_OF_PROMOTION = 7;
-    private static final Map<Color, Color> enPassantOpponentColors = new HashMap<>() {{
-        put(WHITE, BLACK);
-        put(BLACK, WHITE);
-        put(RED, BLUE);
-        put(BLUE, RED);
-    }};
 
     public Pawn(Color color, GameBoard board, Point position) {
         super(Type.PAWN, color, board, position);
@@ -229,24 +223,38 @@ public class Pawn extends Piece {
      * @return move if "en passant" in this direction is able, Optional.empty() otherwise
      */
     private static Optional<Move> enPassant(GameBoard board, Point position, Direction attackDirection, Color color, boolean clockwise) {
-        Move enPassantMove = board.getLastMoveOf(enPassantOpponentColors.get(color));
-        if (enPassantMove == null || board.getPieceAt(enPassantMove.getTo()).isEmpty()) {
-            return Optional.empty();
+        boolean enPassantAvailable = board.getColors().stream()
+                .filter(c -> !c.equals(color))
+                .map(board::getLastMoveOf)
+                .anyMatch(m -> isAbleForEnPassant(m, board, position, attackDirection, clockwise));
+        if (enPassantAvailable) {
+            Point attackPosition = clockwise
+                    ? attackDirection.change(attackDirection.clockwise().change(position))
+                    : attackDirection.change(attackDirection.counterClockwise().change(position));
+            return Optional.ofNullable(Move.from(position).to(attackPosition));
         }
-        Piece enPassantPiece = board.getPieceAt(enPassantMove.getTo()).get();
-        if (enPassantPiece.getType() != Type.PAWN) {
-            return Optional.empty();
+        return Optional.empty();
+    }
+
+    // TODO comment and test me
+    private static boolean isAbleForEnPassant(Move move, GameBoard board, Point position, Direction attackDirection, boolean clockwise) {
+        if (move == null) {
+            return false;
         }
-        Direction toEnemyPawn = clockwise ? attackDirection.clockwise() : attackDirection.counterClockwise();
-        Point enemyPawnPosition = toEnemyPawn.change(position);
-        if (!enemyPawnPosition.equals(enPassantMove.getTo())) {
-            return Optional.empty();
+        Point moveDestination = move.getTo();
+        boolean pawnMove = board.getPieceAt(moveDestination)
+                .map(p -> p.getType() == Type.PAWN)
+                .orElse(false);
+        if (!pawnMove) {
+            return false;
         }
-        Point enemyPawnStartPosition = attackDirection.change(attackDirection.change(enemyPawnPosition));
-        if (!enemyPawnStartPosition.equals(enPassantMove.getFrom())) {
-            return Optional.empty();
+        Point pawnShouldStartFrom = attackDirection.change(attackDirection.change(moveDestination));
+        if (!pawnShouldStartFrom.equals(move.getFrom())) {
+            return false;
         }
-        return Optional.ofNullable(Move.from(position).to(attackDirection.change(enemyPawnPosition)));
+        return clockwise
+                ? attackDirection.clockwise().change(position).equals(moveDestination)
+                : attackDirection.counterClockwise().change(position).equals(moveDestination);
     }
 
     @Override
