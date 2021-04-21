@@ -38,19 +38,18 @@ public abstract class Piece {
     protected final Color color;
     protected final Type type;
     protected final GameBoard board;
-    protected Point position;
-    protected boolean alive;
-    protected boolean moved;
-    protected List<Move> committedMoves;
+
+    protected List<Move> committedMoves = Lists.newArrayList();
+    protected boolean alive = true;
     protected Direction attackDirection;
+    protected Point position;
+    protected boolean moved;
 
     public Piece(Type type, Color color, GameBoard board, Point position) {
         this.type = type;
         this.color = color;
         this.board = board;
         this.position = position;
-        this.alive = true;
-        this.committedMoves = Lists.newArrayList();
         this.attackDirection = color.getAttackDirection();
     }
 
@@ -71,13 +70,6 @@ public abstract class Piece {
             default:
                 throw new IllegalArgumentException("Unknown piece type: " + type);
         }
-    }
-
-    protected static Point diagonal(Point position, Direction one, Direction two) {
-        if (one == two || one.inverted() == two) {
-            throw new IllegalArgumentException("Directions should be perpendicular for diagonal position calculation");
-        }
-        return one.change(two.change(position));
     }
 
     /**
@@ -107,23 +99,55 @@ public abstract class Piece {
         return moves;
     }
 
+    /**
+     * The method checks if the piece already moved at least once or not.
+     *
+     * @return true, if already moved, false otherwise
+     */
     public boolean isMoved() {
         return moved;
     }
 
-    public boolean move(Point position) {
+    /**
+     * The method is used for moving the piece on chess board.
+     * If there is a piece at destination square, it will be taken.
+     *
+     * @param position new position of the piece
+     */
+    public void move(Point position) {
         board.getPieceAt(position).ifPresent(p -> p.setAlive(false));
         committedMoves.add(Move.from(this.position).to(position));
         moved = true;
         this.position = position;
-        return true;
     }
 
+    /**
+     * The method is used for moving the piece on chess board.
+     * If specific move not starts at the piece's position,
+     * the move will not be committed.
+     *
+     * @param move a move for the piece
+     * @return true, if the move committed, false otherwise
+     */
     public boolean move(Move move) {
         if (!move.getFrom().equals(position)) {
             return false;
         }
-        return move(move.getTo());
+        move(move.getTo());
+        return true;
+    }
+
+    /**
+     * The method checks if the piece is attacking
+     * specific position of chess board or not.
+     *
+     * @param position a position on chess board
+     * @return true, if the piece is attacking the position, false otherwise
+     */
+    public boolean isAttacks(Point position) {
+        return getAvailableMoves().stream()
+                .map(Move::getTo)
+                .anyMatch(p -> p.equals(position));
     }
 
     public Color getColor() {
@@ -147,12 +171,6 @@ public abstract class Piece {
     }
 
     public abstract List<Move> getAvailableMoves();
-
-    public boolean isAttacks(Point position) {
-        return getAvailableMoves().stream()
-                .map(Move::getTo)
-                .anyMatch(p -> p.equals(position));
-    }
 
     @Override
     public String toString() {

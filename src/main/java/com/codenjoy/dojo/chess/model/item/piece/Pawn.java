@@ -51,7 +51,7 @@ public class Pawn extends Piece {
      * @param attackDirection the direction of attack of pawn
      * @param destination     the destination point of pawn
      * @param boardSize       the size of a board
-     * @return true if promotion is able, false otherwise
+     * @return true, if promotion is able, false otherwise
      */
     private static boolean isPromotionAble(Direction attackDirection, Point destination, int boardSize) {
         switch (attackDirection) {
@@ -248,7 +248,7 @@ public class Pawn extends Piece {
      * @param position        a position of a pawn, which should make the attack
      * @param attackDirection a direction of attack of the pawn described above
      * @param clockwise       should method checks clockwise diagonal "en passant" or counterclockwise
-     * @return true if "en passant" is executable, false otherwise
+     * @return true, if "en passant" is executable, false otherwise
      */
     private static boolean isAbleForEnPassant(Move move, GameBoard board, Point position, Direction attackDirection, boolean clockwise) {
         if (move == null) {
@@ -302,7 +302,7 @@ public class Pawn extends Piece {
      * The method checks if a move is "en passant" move of the piece or not.
      *
      * @param move the move
-     * @return true if the move is "en passant", false otherwise
+     * @return true, if the move is "en passant", false otherwise
      */
     public boolean isEnPassant(Move move) {
         return enPassants(board, position, attackDirection, color).contains(move);
