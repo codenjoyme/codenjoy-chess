@@ -25,6 +25,7 @@ package com.codenjoy.dojo.chess.model.item;
 import com.codenjoy.dojo.services.Point;
 
 public class Barrier {
+
     private final Point position;
 
     public Barrier(Point position) {

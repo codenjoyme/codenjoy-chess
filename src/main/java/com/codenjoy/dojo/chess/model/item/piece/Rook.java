@@ -39,6 +39,7 @@ import static com.codenjoy.dojo.services.Direction.*;
 
 // https://en.wikipedia.org/wiki/Rook_(chess)
 public class Rook extends Piece {
+
     public Rook(Color color, GameBoard board, Point position) {
         super(Type.ROOK, color, board, position);
     }

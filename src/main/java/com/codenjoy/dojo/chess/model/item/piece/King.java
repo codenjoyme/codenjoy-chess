@@ -32,8 +32,10 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static com.codenjoy.dojo.services.Direction.*;
+import static com.codenjoy.dojo.services.QDirection.*;
 
 // https://en.wikipedia.org/wiki/King_(chess)
 public class King extends Piece {
@@ -42,6 +44,19 @@ public class King extends Piece {
         super(Type.KING, color, board, position);
     }
 
+    /**
+     * The method calculates all available moves of king piece
+     * in described circumstances, including castling moves (optionally)
+     * and those where enemy's piece can be taken.
+     *
+     * @param board           a chess board
+     * @param position        a position of a king
+     * @param color           a color of the king
+     * @param moved           if the king already moved at least once or not
+     * @param withCastling    get castling moves if available or not
+     * @param attackDirection direction of attack of the king
+     * @return all available moves according to parameters
+     */
     public static List<Move> availableMoves(GameBoard board,
                                             Point position,
                                             Color color,
@@ -49,22 +64,37 @@ public class King extends Piece {
                                             boolean withCastling,
                                             Direction attackDirection
     ) {
-        List<Move> moves = filterAvailableMoves(board, position, color,
+        List<Move> moves = Stream.of(
                 LEFT.change(position),
                 UP.change(position),
                 RIGHT.change(position),
                 DOWN.change(position),
-                LEFT.change(UP.change(position)),
-                UP.change(RIGHT.change(position)),
-                RIGHT.change(DOWN.change(position)),
-                DOWN.change(LEFT.change(position))
-        );
+                LEFT_UP.change(position),
+                LEFT_DOWN.change(position),
+                RIGHT_UP.change(position),
+                RIGHT_DOWN.change(position)
+        )
+                .filter(board::isInBounds)
+                .filter(dest -> isFreeOrWithEnemy(board, dest, color))
+                .map(dest -> Move.from(position).to(dest))
+                .collect(Collectors.toList());
+
         if (withCastling && !moved && !board.isUnderAttack(position, color)) {
             moves.addAll(castlingMoves(board, position, color, attackDirection));
         }
         return moves;
     }
 
+    /**
+     * The method calculates all castling moves of king piece
+     * in described circumstances.
+     *
+     * @param board           a chess board
+     * @param position        a position of a king
+     * @param color           a color of the king
+     * @param attackDirection direction of attack of the king
+     * @return all available castling moves
+     */
     public static List<Move> castlingMoves(GameBoard board,
                                            Point position,
                                            Color color,
@@ -77,6 +107,15 @@ public class King extends Piece {
         return castlingMoves;
     }
 
+    /**
+     * The method calculates castling move in specific direction if it is possible.
+     *
+     * @param board        a chess board
+     * @param kingPosition a position of a king
+     * @param color        a color of the king
+     * @param direction    castling direction
+     * @return castling move if it is possible, Optional.empty() otherwise
+     */
     private static Optional<Move> getCastling(GameBoard board,
                                               Point kingPosition,
                                               Color color,
@@ -103,19 +142,9 @@ public class King extends Piece {
         return Optional.ofNullable(Move.from(kingPosition).to(rookPosition));
     }
 
-    private static List<Move> filterAvailableMoves(GameBoard board, Point position, Color color, Point... destinations) {
-        List<Move> result = Lists.newArrayList();
-        for (Point dest : destinations) {
-            if (isAvailable(board, dest, color)) {
-                result.add(Move.from(position).to(dest));
-            }
-        }
-        return result;
-    }
-
-    private static boolean isAvailable(GameBoard board, Point dest, Color color) {
+    private static boolean isFreeOrWithEnemy(GameBoard board, Point dest, Color color) {
         Optional<Piece> pieceAtDest = board.getPieceAt(dest);
-        return board.isInBounds(dest) && (pieceAtDest.isEmpty() || pieceAtDest.get().getColor() != color);
+        return pieceAtDest.isEmpty() || pieceAtDest.get().getColor() != color;
     }
 
     @Override

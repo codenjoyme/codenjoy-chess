@@ -43,9 +43,10 @@ public class Pawn extends Piece {
         super(Type.PAWN, color, board, position);
     }
 
-    // TODO test me
     /**
      * Checks if promotion is able at destination point or not.
+     *
+     * TODO: Needs testing
      *
      * @param attackDirection the direction of attack of pawn
      * @param destination     the destination point of pawn
@@ -161,7 +162,7 @@ public class Pawn extends Piece {
     }
 
     /**
-     * The method calculates is there an attack move in specific direction.
+     * The method calculates an attack move in specific direction if it is possible.
      * A pawn has an attack direction that simply describes the direction where pawn can move.
      * But a pawn is able to take enemy's piece diagonally, in accordance with it's direction of attack.
      * This method accepts a {@param clockwise} that describes diagonal to check.
@@ -236,11 +237,24 @@ public class Pawn extends Piece {
         return Optional.empty();
     }
 
-    // TODO comment and test me
+    /**
+     * The method checks if a move of enemy's pawn allows take it
+     * "en passant" by a pawn in described circumstances or not.
+     *
+     * TODO: Needs testing
+     *
+     * @param move            a movement possibly suitable for allowing to take a piece which made it
+     * @param board           a chess board
+     * @param position        a position of a pawn, which should make the attack
+     * @param attackDirection a direction of attack of the pawn described above
+     * @param clockwise       should method checks clockwise diagonal "en passant" or counterclockwise
+     * @return true if "en passant" is executable, false otherwise
+     */
     private static boolean isAbleForEnPassant(Move move, GameBoard board, Point position, Direction attackDirection, boolean clockwise) {
         if (move == null) {
             return false;
         }
+        // checks if the move is made by pawn
         Point moveDestination = move.getTo();
         boolean pawnMove = board.getPieceAt(moveDestination)
                 .map(p -> p.getType() == Type.PAWN)
@@ -248,10 +262,13 @@ public class Pawn extends Piece {
         if (!pawnMove) {
             return false;
         }
+        // checks if the pawn made a two step forward move
         Point pawnShouldStartFrom = attackDirection.change(attackDirection.change(moveDestination));
         if (!pawnShouldStartFrom.equals(move.getFrom())) {
             return false;
         }
+        // checks if the pawn located to the left or right of
+        // specified position relative to the direction of attack
         return clockwise
                 ? attackDirection.clockwise().change(position).equals(moveDestination)
                 : attackDirection.counterClockwise().change(position).equals(moveDestination);
@@ -281,6 +298,12 @@ public class Pawn extends Piece {
         return position.equals(clockwiseAttack) || position.equals(counterclockwiseAttack);
     }
 
+    /**
+     * The method checks if a move is "en passant" move of the piece or not.
+     *
+     * @param move the move
+     * @return true if the move is "en passant", false otherwise
+     */
     public boolean isEnPassant(Move move) {
         return enPassants(board, position, attackDirection, color).contains(move);
     }
