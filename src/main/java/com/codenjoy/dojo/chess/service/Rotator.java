@@ -22,13 +22,12 @@ package com.codenjoy.dojo.chess.service;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 
 @SuppressWarnings("SuspiciousNameCombination")
 public class Rotator {
+
     private final int boardSize;
 
     public Rotator(int boardSize) {
@@ -47,37 +46,6 @@ public class Rotator {
 
     public <T extends Point> void mapPosition(T position, Direction from, Direction to) {
         rotateClockwise(position, countRotationTimes(from, to));
-    }
-
-    public <T extends Point> void mapPosition(Color colorFrom, Color colorTo, T position) {
-        rotateClockwise(
-                position,
-                countRotationTimes(colorFrom.getAttackDirection(), colorTo.getAttackDirection())
-        );
-    }
-
-    public <T extends Point> void mapPosition(Color color, T position) {
-        rotateClockwise(position, countRotationTimes(color.getAttackDirection(), Direction.UP));
-    }
-
-    public void mapPosition(Color color, Iterable<? extends Point> positions) {
-        positions.forEach(p -> mapPosition(color, p));
-    }
-
-    public Move mapMove(Color color, Move move) {
-        Point from = move.getFrom().copy();
-        Point to = move.getTo().copy();
-        mapPosition(Color.WHITE, color, from);
-        mapPosition(Color.WHITE, color, to);
-        return Move.from(from).to(to).promotion(move.getPromotion());
-    }
-
-    public Move mapMove(Move move, Direction source, Direction target) {
-        Point from = move.getFrom().copy();
-        Point to = move.getTo().copy();
-        mapPosition(from, source, target);
-        mapPosition(to, source, target);
-        return Move.from(from).to(to).promotion(move.getPromotion());
     }
 
     /**

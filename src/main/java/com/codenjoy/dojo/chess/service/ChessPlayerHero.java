@@ -26,6 +26,8 @@ import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Events;
 import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
+import com.codenjoy.dojo.services.Direction;
+import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.joystick.NoDirectionJoystick;
 import com.codenjoy.dojo.services.multiplayer.PlayerHero;
 import org.apache.commons.collections4.CollectionUtils;
@@ -68,8 +70,18 @@ public class ChessPlayerHero extends PlayerHero<Chess> implements NoDirectionJoy
             );
             return;
         }
-        action = field.getRotator()
-                .mapMove(color, action);
+        action = mapMove(action);
+    }
+
+    private Move mapMove(Move move) {
+        Rotator rotator = field.getRotator();
+        Direction directionFrom = Chess.getDefaultAttackDirection();
+        Direction directionTo = color.getAttackDirection();
+        Point from = move.getFrom().copy();
+        Point to = move.getTo().copy();
+        rotator.mapPosition(from, directionFrom, directionTo);
+        rotator.mapPosition(to, directionFrom, directionTo);
+        return Move.from(from).to(to).promotion(move.getPromotion());
     }
 
     private void clearBeforeTick() {

@@ -23,6 +23,7 @@ package com.codenjoy.dojo.chess.service;
  */
 
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
+import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.printer.BoardReader;
 import com.google.common.collect.Lists;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ChessBoardReader implements BoardReader<Player> {
+
     private final Chess game;
 
     public ChessBoardReader(Chess game) {
@@ -69,7 +71,10 @@ public class ChessBoardReader implements BoardReader<Player> {
         elements.addAll(squares);
 
         // rotate board towards the player by his side
-        game.getRotator().mapPosition(player.getColor(), elements);
+        Rotator rotator = game.getRotator();
+        Direction directionFrom = player.getColor().getAttackDirection();
+        Direction directionTo = Chess.getDefaultAttackDirection();
+        elements.forEach(e -> rotator.mapPosition(e, directionFrom, directionTo));
 
         return elements;
     }

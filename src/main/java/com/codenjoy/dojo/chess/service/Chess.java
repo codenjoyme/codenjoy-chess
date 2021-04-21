@@ -28,6 +28,7 @@ import com.codenjoy.dojo.chess.model.Events;
 import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.chess.model.level.Level;
 import com.codenjoy.dojo.services.Dice;
+import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.multiplayer.GameField;
 import com.codenjoy.dojo.services.printer.BoardReader;
 import com.google.common.collect.Lists;
@@ -42,6 +43,7 @@ import static com.codenjoy.dojo.chess.service.GameSettings.Option.WAIT_UNTIL_MAK
 
 public class Chess implements GameField<Player> {
     private static final Logger LOGGER = LoggerFactory.getLogger(Chess.class);
+    private static final Direction DEFAULT_ATTACK_DIRECTION = Color.WHITE.getAttackDirection();
 
     @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private final Dice dice;
@@ -52,7 +54,6 @@ public class Chess implements GameField<Player> {
     private final GameSettings settings;
     private final Rotator rotator;
     private final GameBoard board;
-
 
     private Color currentColor;
 
@@ -211,6 +212,10 @@ public class Chess implements GameField<Player> {
                 .filter(p -> p.getColor() == color)
                 .findAny()
                 .orElse(null);
+    }
+
+    public static Direction getDefaultAttackDirection() {
+        return DEFAULT_ATTACK_DIRECTION;
     }
 
     private Color nextColor() {

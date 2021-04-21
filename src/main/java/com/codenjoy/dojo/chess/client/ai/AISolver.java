@@ -27,6 +27,7 @@ import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.chess.model.item.piece.Pawn;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
+import com.codenjoy.dojo.chess.service.Chess;
 import com.codenjoy.dojo.chess.service.GameBoard;
 import com.codenjoy.dojo.chess.service.Rotator;
 import com.codenjoy.dojo.client.Solver;
@@ -43,7 +44,7 @@ import java.util.stream.Collectors;
 public class AISolver implements Solver<Board> {
 
     // direction of attack of each player on the boards they received
-    private static final Direction ATTACK_DIRECTION = Direction.UP;
+    private static final Direction SOLVER_ATTACK_DIRECTION = Chess.getDefaultAttackDirection();
     private static final String REQUEST_FOR_COLOR = "ACT";
 
     private final Dice dice;
@@ -66,7 +67,7 @@ public class AISolver implements Solver<Board> {
      */
     @SuppressWarnings("SuspiciousNameCombination")
     private static String rotate(Color color, String board) {
-        int times = Rotator.countRotationTimes(ATTACK_DIRECTION, color.getAttackDirection());
+        int times = Rotator.countRotationTimes(SOLVER_ATTACK_DIRECTION, color.getAttackDirection());
         String map = LevelUtils.clear(board);
         if (times == 0) {
             return map;
@@ -134,6 +135,7 @@ public class AISolver implements Solver<Board> {
                 .filter(this::withoutPromotion)
                 .collect(Collectors.toList());
 
+        // nowhere to go
         if (availableMoves.isEmpty()) {
             return "";
         }
@@ -151,8 +153,7 @@ public class AISolver implements Solver<Board> {
         // since the board was rotated back, the move we decided to make is rotated too,
         // so we need to make move's coordinates look like they was for received board
         // in accordance with player's color
-        decision = new Rotator(this.board.getSize())
-                .mapMove(decision, color.getAttackDirection(), ATTACK_DIRECTION);
+        decision = mapMove(decision);
 
         return String.format(
                 "ACT(%d,%d,%d,%d)",
@@ -161,6 +162,16 @@ public class AISolver implements Solver<Board> {
                 decision.getTo().getX(),
                 decision.getTo().getY()
         );
+    }
+
+    private Move mapMove(Move move) {
+        Direction direction = color.getAttackDirection();
+        Rotator rotator = new Rotator(board.getSize());
+        Point from = move.getFrom();
+        Point to = move.getTo();
+        rotator.mapPosition(from, direction, SOLVER_ATTACK_DIRECTION);
+        rotator.mapPosition(to, direction, SOLVER_ATTACK_DIRECTION);
+        return Move.from(from).to(to).promotion(move.getPromotion());
     }
 
     @SuppressWarnings("DuplicatedCode")

@@ -37,7 +37,6 @@ import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.printer.PrinterFactory;
 import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
-import com.codenjoy.dojo.utils.TestUtils;
 import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.mockito.ArgumentCaptor;
@@ -172,8 +171,8 @@ public abstract class AbstractGameTest {
             Rotator rotator = game.getRotator();
             Point from = move.getFrom();
             Point to = move.getTo();
-            rotator.mapPosition(color, Color.WHITE, from);
-            rotator.mapPosition(color, Color.WHITE, to);
+            rotator.mapPosition(from, color.getAttackDirection(), Chess.getDefaultAttackDirection());
+            rotator.mapPosition(to, color.getAttackDirection(), Chess.getDefaultAttackDirection());
             action = Move.from(from).to(to).promotion(move.getPromotion());
         }
         players.get(color).getHero().act(action.command());
