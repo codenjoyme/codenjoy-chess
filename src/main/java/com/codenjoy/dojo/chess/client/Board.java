@@ -25,12 +25,18 @@ package com.codenjoy.dojo.chess.client;
 
 import com.codenjoy.dojo.chess.model.Elements;
 import com.codenjoy.dojo.client.AbstractBoard;
+import com.codenjoy.dojo.services.Point;
+import com.google.common.collect.Lists;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Класс, обрабатывающий строковое представление доски.
  * Содержит ряд унаследованных методов {@see AbstractBoard},
  * но ты можешь добавить сюда любые свои методы на их основе.
  */
+@SuppressWarnings("unused")
 public class Board extends AbstractBoard<Elements> {
 
     @Override
@@ -53,5 +59,37 @@ public class Board extends AbstractBoard<Elements> {
             return null;
         }
         return super.getAt(x, y);
+    }
+
+    public List<Point> getBarriers() {
+        return get(Elements.BARRIER);
+    }
+
+    public boolean isBarrier(int x, int y) {
+        return getAt(x, y) == Elements.BARRIER;
+    }
+
+    public boolean isBarrier(Point position) {
+        return isBarrier(position.getX(), position.getY());
+    }
+
+    public Color getColor(int x, int y) {
+        return ElementsMapper.getColor(getAt(x, y));
+    }
+
+    public Color getColor(Point position) {
+        return getColor(position.getX(), position.getY());
+    }
+
+    public List<Point> getSquares() {
+        ArrayList<Point> positions = Lists.newArrayList();
+        positions.addAll(get(Elements.SQUARE));
+        positions.addAll(get(Elements.pieces()));
+        return positions;
+    }
+
+    public List<Point> getPieces(Color color) {
+        Elements[] elements = ElementsMapper.getElements(color).toArray(Elements[]::new);
+        return get(elements);
     }
 }
