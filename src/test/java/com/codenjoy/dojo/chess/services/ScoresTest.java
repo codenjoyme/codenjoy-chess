@@ -23,14 +23,16 @@ package com.codenjoy.dojo.chess.services;
  */
 
 
-import com.codenjoy.dojo.chess.model.Events;
 import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.chess.service.Scores;
 import com.codenjoy.dojo.services.PlayerScores;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
+import static com.codenjoy.dojo.chess.model.Events.*;
+import static com.codenjoy.dojo.chess.model.item.piece.Piece.Type.KING;
+import static com.codenjoy.dojo.chess.model.item.piece.Piece.Type.QUEEN;
+import static com.codenjoy.dojo.chess.service.GameSettings.Option.WRONG_MOVE_PENALTY;
 import static org.junit.Assert.assertEquals;
 
 public class ScoresTest {
@@ -38,37 +40,51 @@ public class ScoresTest {
     private PlayerScores scores;
     private GameSettings settings;
 
-    public void win() {
-        scores.event(Events.WIN);
-    }
-
     @Before
     public void setup() {
         settings = new GameSettings();
-        scores = new Scores(0, settings);
+        scores = new Scores(settings);
     }
 
     @Test
-    @Ignore
     public void shouldCollectScores() {
-        scores = new Scores(140, settings);
 
-        win();
-        win();
-        win();
-        win();
-        // TODO!
-//        assertEquals(140 + 4 * settings.integer(WIN_SCORE), scores.getScore());
+        // when
+        scores.event(QUEEN_TAKEN);
+        scores.event(KING_TAKEN);
+        scores.event(WIN);
+
+        // then
+        assertEquals(settings.worthOf(QUEEN) + settings.worthOf(KING) + settings.victoryReward(), scores.getScore());
     }
 
     @Test
-    @Ignore
     public void shouldClearScore() {
-        win();    // +30
 
+        // given
+        scores.event(WIN);
+
+        // when
         scores.clear();
 
+        // then
         assertEquals(0, scores.getScore());
     }
 
+    @Test
+    public void shouldNotBeLessThanZero() {
+
+        // given
+        settings.integer(WRONG_MOVE_PENALTY, 100);
+
+        // when
+        scores.event(WRONG_MOVE);
+        scores.event(WRONG_MOVE);
+        scores.event(WRONG_MOVE);
+        scores.event(WRONG_MOVE);
+        scores.event(WRONG_MOVE);
+
+        // then
+        assertEquals(0, scores.getScore());
+    }
 }

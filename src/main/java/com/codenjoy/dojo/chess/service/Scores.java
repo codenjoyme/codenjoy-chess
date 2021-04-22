@@ -41,6 +41,10 @@ public class Scores implements PlayerScores {
 
     private final AtomicInteger score;
 
+    public Scores(GameSettings settings) {
+        this(DEFAULT_SCORE, settings);
+    }
+
     public Scores(int startScore, GameSettings settings) {
         this.score = new AtomicInteger(startScore);
         this.eventsToRewards = new HashMap<>() {{
