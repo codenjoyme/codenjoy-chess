@@ -32,8 +32,7 @@ import static com.codenjoy.dojo.chess.model.Move.from;
 import static com.codenjoy.dojo.chess.model.Events.WRONG_MOVE;
 import static org.junit.Assert.assertFalse;
 
-@Ignore
-public class EnPassant4x4Test extends AbstractGameTest {
+public class EnPassantFFATest extends AbstractGameTest {
 
     @Test
     public void shouldBeAllowed_whenBlueAttacksRed() {
@@ -48,8 +47,8 @@ public class EnPassant4x4Test extends AbstractGameTest {
                 "RKBQWBKR\n");
         Piece redPawn = getPieceAt(1, 3);
         move(WHITE, from(4, 1).to(4, 2));
-        move(BLACK, from(0, 6).to(0, 5));
         move(RED, from(1, 3).to(2, 3));
+        move(BLACK, from(0, 6).to(0, 5));
 
         // when
         move(BLUE, from(3, 4).to(2, 3));
@@ -80,19 +79,18 @@ public class EnPassant4x4Test extends AbstractGameTest {
                 "RKBQWBKR\n");
         Piece bluePawn = getPieceAt(6, 4);
         move(WHITE, from(4, 1).to(4, 2));
-        move(BLACK, from(0, 6).to(0, 5));
         move(RED, from(3, 3).to(4, 3));
+        move(BLACK, from(0, 6).to(0, 5));
         move(BLUE, from(6, 4).to(4, 4));
         move(WHITE, from(0, 1).to(0, 2));
-        move(BLACK, from(7, 6).to(7, 5));
 
         // when
         move(RED, from(4, 3).to(5, 4));
 
         // then
         assertE("rkbqwbkr\n" +
-                ".pppppp.\n" +
-                "p......p\n" +
+                ".ppppppp\n" +
+                "p.......\n" +
                 "Y....Z.y\n" +
                 "........\n" +
                 "P...P...\n" +
@@ -104,6 +102,7 @@ public class EnPassant4x4Test extends AbstractGameTest {
 
     @Test
     public void shouldNotBeAllowedFromSide() {
+
         givenFl("rkbqwbkr\n" +
                 "pppppppp\n" +
                 "........\n" +
@@ -113,15 +112,14 @@ public class EnPassant4x4Test extends AbstractGameTest {
                 "PPPPPPPP\n" +
                 "RKBQWBKR\n");
         move(WHITE, from(4, 1).to(4, 3));
-        move(BLACK, from(0, 6).to(0, 5));
 
         // when trying to do en passant from side
         move(RED, from(3, 3).to(4, 2));
 
         // then
         assertE("rkbqwbkr\n" +
-                ".ppppppp\n" +
-                "p.......\n" +
+                "pppppppp\n" +
+                "........\n" +
                 "Y......y\n" +
                 "...ZP...\n" +
                 "........\n" +
