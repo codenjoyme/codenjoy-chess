@@ -24,6 +24,7 @@ package com.codenjoy.dojo.chess.service;
 
 
 import com.codenjoy.dojo.chess.model.Color;
+import com.codenjoy.dojo.chess.model.Events;
 import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
@@ -33,6 +34,8 @@ import static com.codenjoy.dojo.chess.service.GameSettings.Option.LAST_PLAYER_ST
 public class Player extends GamePlayer<ChessPlayerHero, Chess> {
     private ChessPlayerHero hero;
     private Chess game;
+    private boolean winner = false;
+    private boolean alive = true;
 
     public Player(EventListener listener, GameSettings settings) {
         super(listener, settings);
@@ -52,17 +55,26 @@ public class Player extends GamePlayer<ChessPlayerHero, Chess> {
 
     @Override
     public boolean isAlive() {
-        return hero.isAlive();
+        return alive && hero.isAlive();
     }
 
     @Override
     public boolean isWin() {
-        return hero.isWinner();
+        return winner;
     }
 
     @Override
     public void event(Object eventObj) {
         super.event(eventObj);
+        Events event = (Events) eventObj;
+        switch (event) {
+            case WIN:
+                this.winner = true;
+                break;
+            case GAME_OVER:
+                this.alive = false;
+                break;
+        }
     }
 
     public Color getColor() {
