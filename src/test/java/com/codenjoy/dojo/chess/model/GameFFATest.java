@@ -33,8 +33,7 @@ import static com.codenjoy.dojo.chess.model.Move.*;
  * https://en.wikipedia.org/wiki/Four-player_chess
  * Order in this implementation: WHITE -> RED -> BLACK -> BLUE
  */
-@Ignore
-public class FourPlayerChessGameTest extends AbstractGameTest {
+public class GameFFATest extends AbstractGameTest {
 
     private String fourPlayersBoard() {
         return  "   rkbwqbkr   \n" +
@@ -303,6 +302,4 @@ public class FourPlayerChessGameTest extends AbstractGameTest {
                 "   .PPPPPP.   \n" +
                 "   RKBQWBKR   \n");
     }
-
-
 }
