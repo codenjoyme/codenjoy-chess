@@ -58,9 +58,7 @@ public class GameSet {
     public boolean isKingAlive() {
         return pieces.stream()
                 .filter(p -> p.getType() == Piece.Type.KING)
-                .findAny()
-                .map(Piece::isAlive)
-                .orElse(false);
+                .anyMatch(Piece::isAlive);
     }
 
     public Color getColor() {
