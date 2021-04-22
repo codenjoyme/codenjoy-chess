@@ -98,9 +98,26 @@ public class AISolver implements Solver<Board> {
         return LevelUtils.clear(board.boardAsString());
     }
 
+    /**
+     * This method checks is it new game or not.
+     * It does it in very naive way, relying on the fact
+     * that if there ara more pieces than there were before,
+     * then it means that new game started.
+     *
+     * @param newBoard a new state of board from server
+     * @return true, if new game, false otherwise
+     */
+    private boolean isNewGame(GameBoard newBoard) {
+        if (color == null || board == null) {
+            return true;
+        }
+        int countOfPiecesOnNewBoard = newBoard.getPieces().size();
+        return countOfPiecesOnNewBoard > board.getPieces().size();
+    }
+
     @Override
-    public String get(final Board newState) {
-        GameBoard receivedBoard = new GameBoard(retrieveMap(newState));
+    public String get(final Board newBoard) {
+        GameBoard receivedBoard = new GameBoard(retrieveMap(newBoard));
 
         // server sends board with only the player's color pieces
         // after the player has sent a request for color identification
@@ -110,8 +127,8 @@ public class AISolver implements Solver<Board> {
         } else {
             // we can not create a GameBoard because at the time we may not know the color
             // but a valid board state received and we should save it for further GameBoard creation
-            state = retrieveMap(newState);
-            if (color == null) {
+            state = retrieveMap(newBoard);
+            if (color == null || isNewGame(receivedBoard)) {
                 // if color is null then we should ask server to send us board
                 // only with the player's color pieces for further color identification
                 return REQUEST_FOR_COLOR;
