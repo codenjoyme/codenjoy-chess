@@ -24,6 +24,7 @@ package com.codenjoy.dojo.chess.model;
 
 import com.codenjoy.dojo.chess.common.AbstractGameTest;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
+import com.codenjoy.dojo.chess.service.GameSettings;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.Color.WHITE;
@@ -139,6 +140,132 @@ public class PromotionTest extends AbstractGameTest {
                 "........\n" +
                 "........\n" +
                 "RKBQWBKR\n");
+        neverFired(WHITE, WRONG_MOVE);
+    }
+
+    @Test
+    public void shouldNotBeAllowedNearerRank_whichSpecifiedInSettings() {
+
+        givenFl("..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "...P......\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                ".W........\n");
+
+        // when
+        move(WHITE, from(3, 5).to(3, 6).promotion(Piece.Type.QUEEN));
+
+        // then
+        fired(WHITE, WRONG_MOVE);
+    }
+
+    @Test
+    public void shouldBeAllowedNotOnRank_whichSpecifiedInSettings() {
+
+        // TODO: specify rank in settings, now hardcode 7
+        givenFl("..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "...P......\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                ".W........\n");
+
+        // when
+        move(WHITE, from(3, 6).to(3, 7).promotion(Piece.Type.QUEEN));
+
+        // then
+        assertE("..........\n" +
+                "..........\n" +
+                "...Q......\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                ".W........\n");
+        neverFired(WHITE, WRONG_MOVE);
+    }
+
+    @Test
+    public void shouldNotBeAllowedFurtherThanRank_whichSpecifiedInSettings() {
+
+        givenFl("..........\n" +
+                "..........\n" +
+                "...P......\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                ".W........\n");
+
+        // when
+        move(WHITE, from(3, 7).to(3, 8).promotion(Piece.Type.QUEEN));
+
+        // then
+        fired(WHITE, WRONG_MOVE);
+    }
+
+    @Test
+    public void shouldNotBeAllowedNearerEndOfTheBoard() {
+
+        givenFl("..........\n" +
+                "..........\n" +
+                "...P......\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                ".W........\n");
+
+        // when
+        move(WHITE, from(3, 7).to(3, 8).promotion(Piece.Type.QUEEN));
+
+        // then
+        fired(WHITE, WRONG_MOVE);
+    }
+
+    @Test
+    public void shouldBeAllowedAtEndOfTheBoard() {
+
+        givenFl("..........\n" +
+                "...P......\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                ".W........\n");
+
+        // when
+        move(WHITE, from(3, 8).to(3, 9).promotion(Piece.Type.QUEEN));
+
+        // then
+        assertE("...Q......\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                "..........\n" +
+                ".W........\n");
         neverFired(WHITE, WRONG_MOVE);
     }
 }
