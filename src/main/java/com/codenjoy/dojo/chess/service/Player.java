@@ -49,6 +49,8 @@ public class Player extends GamePlayer<ChessPlayerHero, Chess> {
     @Override
     public void newHero(Chess game) {
         this.game = game;
+        this.alive = true;
+        this.winner = false;
         Color color = game.getAvailableColor();
         this.hero = new ChessPlayerHero(color, game);
     }
