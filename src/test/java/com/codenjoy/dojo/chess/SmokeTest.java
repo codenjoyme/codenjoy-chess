@@ -23,13 +23,80 @@ package com.codenjoy.dojo.chess;
  */
 
 
-import org.junit.Ignore;
+import com.codenjoy.dojo.chess.client.Board;
+import com.codenjoy.dojo.chess.client.ai.AISolver;
+import com.codenjoy.dojo.chess.model.level.Levels;
+import com.codenjoy.dojo.chess.service.GameRunner;
+import com.codenjoy.dojo.chess.service.GameSettings;
+import com.codenjoy.dojo.client.Solver;
+import com.codenjoy.dojo.client.local.LocalGameRunner;
+import com.codenjoy.dojo.services.Dice;
+import com.codenjoy.dojo.utils.Smoke;
 import org.junit.Test;
 
-@Ignore
+import java.util.function.Supplier;
+import java.util.stream.Stream;
+
+import static com.codenjoy.dojo.chess.service.GameSettings.Option.LEVEL_MAP;
+import static java.util.stream.Collectors.toList;
+
 public class SmokeTest {
+
     @Test
-    public void test() {
-        // TODO: Implement me
+    public void testClassicChessBoard() {
+        Dice dice = LocalGameRunner.getDice("435874345435874365843564398", 100, 200);
+
+        // about 5.2 sec
+        int players = 2;
+        int ticks = 1000;
+
+        Supplier<Solver> solver = () -> new AISolver(dice);
+
+        Smoke.play(ticks, "SmokeTestClassicChessBoard.data",
+                new GameRunner() {
+                    @Override
+                    public Dice getDice() {
+                        return dice;
+                    }
+
+                    @Override
+                    public GameSettings getSettings() {
+                        return super.getSettings()
+                                .string(LEVEL_MAP, Levels.classicChessBoard());
+                    }
+                },
+                Stream.generate(solver)
+                        .limit(players).collect(toList()),
+                Stream.generate(() -> new Board())
+                        .limit(players).collect(toList()));
+    }
+
+    @Test
+    public void testClassicFourPlayerChessBoard() {
+        Dice dice = LocalGameRunner.getDice("435874345435874365843564398", 100, 200);
+
+        // about 11 sec
+        int players = 4;
+        int ticks = 1000;
+
+        Supplier<Solver> solver = () -> new AISolver(dice);
+
+        Smoke.play(ticks, "SmokeTestClassicFourPlayerChessBoard.data",
+                new GameRunner() {
+                    @Override
+                    public Dice getDice() {
+                        return dice;
+                    }
+
+                    @Override
+                    public GameSettings getSettings() {
+                        return super.getSettings()
+                                .string(LEVEL_MAP, Levels.classicFourPlayerChessBoard());
+                    }
+                },
+                Stream.generate(solver)
+                        .limit(players).collect(toList()),
+                Stream.generate(() -> new Board())
+                        .limit(players).collect(toList()));
     }
 }
