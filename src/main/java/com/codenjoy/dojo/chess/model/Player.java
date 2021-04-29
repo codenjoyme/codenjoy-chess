@@ -31,7 +31,7 @@ import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 import static com.codenjoy.dojo.chess.service.GameSettings.Option.LAST_PLAYER_STAYS;
 
 public class Player extends GamePlayer<Hero, Chess> {
-    private Hero hero;
+
     private Chess game;
     private boolean winner = false;
     private boolean alive = true;
@@ -64,20 +64,6 @@ public class Player extends GamePlayer<Hero, Chess> {
         return winner;
     }
 
-    @Override
-    public void event(Object eventObj) {
-        super.event(eventObj);
-        Events event = (Events) eventObj;
-        switch (event) {
-            case WIN:
-                this.winner = true;
-                break;
-            case GAME_OVER:
-                this.alive = false;
-                break;
-        }
-    }
-
     public Color getColor() {
         return hero == null ? null : hero.getColor();
     }
@@ -102,5 +88,15 @@ public class Player extends GamePlayer<Hero, Chess> {
         return settings.bool(LAST_PLAYER_STAYS) &&
                 game.getBoard().getPieces().stream()
                         .anyMatch(p -> !p.getColor().equals(hero.getColor()));
+    }
+
+    public void win() {
+        winner = true;
+        event(Events.WIN);
+    }
+
+    public void gameOver() {
+        alive = false;
+        event(Events.GAME_OVER);
     }
 }

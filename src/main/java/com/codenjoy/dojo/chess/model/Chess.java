@@ -113,8 +113,9 @@ public class Chess implements GameField<Player> {
             LOGGER.warn("Trying to add new player, but the game is already full");
             return;
         }
-
-        players.add(player);
+        if (!players.contains(player)) {
+            players.add(player);
+        }
         player.newHero(this);
     }
 
@@ -169,10 +170,10 @@ public class Chess implements GameField<Player> {
         List<Color> marked = Lists.newArrayList();
         while (currentColor != null && board.getAvailableMoves(currentColor).isEmpty()) {
             if (settings.waitUntilMakeAMove()) {
-                getPlayer(currentColor).event(Events.GAME_OVER);
+                getPlayer(currentColor).gameOver();
             } else {
                 if (marked.contains(currentColor)) {
-                    marked.forEach(c -> getPlayer(c).event(Events.GAME_OVER));
+                    marked.forEach(c -> getPlayer(c).gameOver());
                 } else {
                     marked.add(currentColor);
                     getPlayer(currentColor).event(Events.WRONG_MOVE);
@@ -193,7 +194,7 @@ public class Chess implements GameField<Player> {
     private void checkVictory() {
         List<Player> alivePlayers = getAlivePlayers();
         if (alivePlayers.size() == 1) {
-            alivePlayers.get(0).event(Events.WIN);
+            alivePlayers.get(0).win();
         }
     }
 
