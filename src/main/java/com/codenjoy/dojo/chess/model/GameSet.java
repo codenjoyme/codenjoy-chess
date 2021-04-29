@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.service;
+package com.codenjoy.dojo.chess.model;
 
 /*-
  * #%L
@@ -22,8 +22,6 @@ package com.codenjoy.dojo.chess.service;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.chess.model.item.piece.King;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import com.codenjoy.dojo.chess.model.item.piece.Rook;

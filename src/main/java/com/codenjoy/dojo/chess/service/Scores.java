@@ -23,14 +23,13 @@ package com.codenjoy.dojo.chess.service;
  */
 
 
-import com.codenjoy.dojo.chess.model.Events;
 import com.codenjoy.dojo.services.PlayerScores;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.codenjoy.dojo.chess.model.Events.*;
+import static com.codenjoy.dojo.chess.service.Events.*;
 import static com.codenjoy.dojo.chess.service.GameSettings.Option.*;
 
 public class Scores implements PlayerScores {

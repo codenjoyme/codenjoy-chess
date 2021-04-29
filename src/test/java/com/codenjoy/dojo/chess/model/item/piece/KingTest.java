@@ -30,7 +30,7 @@ import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.Color.WHITE;
 import static com.codenjoy.dojo.chess.model.Move.from;
-import static com.codenjoy.dojo.chess.model.Events.WRONG_MOVE;
+import static com.codenjoy.dojo.chess.service.Events.WRONG_MOVE;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

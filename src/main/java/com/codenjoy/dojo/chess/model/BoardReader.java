@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.service;
+package com.codenjoy.dojo.chess.model;
 
 /*-
  * #%L
@@ -25,18 +25,17 @@ package com.codenjoy.dojo.chess.service;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
-import com.codenjoy.dojo.services.printer.BoardReader;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ChessBoardReader implements BoardReader<Player> {
+public class BoardReader implements com.codenjoy.dojo.services.printer.BoardReader<Player> {
 
     private final Chess game;
 
-    public ChessBoardReader(Chess game) {
+    public BoardReader(Chess game) {
         this.game = game;
     }
 

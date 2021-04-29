@@ -35,7 +35,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static com.codenjoy.dojo.chess.model.Move.from;
-import static com.codenjoy.dojo.chess.model.Events.WRONG_MOVE;
+import static com.codenjoy.dojo.chess.service.Events.WRONG_MOVE;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractPieceTest extends AbstractGameTest {

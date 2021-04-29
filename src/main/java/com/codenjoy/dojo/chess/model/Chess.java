@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.service;
+package com.codenjoy.dojo.chess.model;
 
 /*-
  * #%L
@@ -23,14 +23,11 @@ package com.codenjoy.dojo.chess.service;
  */
 
 
-import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.model.Events;
-import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.chess.model.level.Level;
+import com.codenjoy.dojo.chess.service.*;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.multiplayer.GameField;
-import com.codenjoy.dojo.services.printer.BoardReader;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -132,8 +129,8 @@ public class Chess implements GameField<Player> {
     }
 
     @Override
-    public BoardReader<Player> reader() {
-        return new ChessBoardReader(this);
+    public com.codenjoy.dojo.services.printer.BoardReader reader() {
+        return new BoardReader(this);
     }
 
     public int getBoardSize() {

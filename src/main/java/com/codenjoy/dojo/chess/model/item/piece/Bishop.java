@@ -25,7 +25,7 @@ package com.codenjoy.dojo.chess.model.item.piece;
 
 import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Move;
-import com.codenjoy.dojo.chess.service.GameBoard;
+import com.codenjoy.dojo.chess.model.GameBoard;
 import com.codenjoy.dojo.services.Point;
 
 import java.util.Collection;

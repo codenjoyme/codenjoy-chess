@@ -29,7 +29,7 @@ import com.codenjoy.dojo.services.PlayerScores;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.codenjoy.dojo.chess.model.Events.*;
+import static com.codenjoy.dojo.chess.service.Events.*;
 import static com.codenjoy.dojo.chess.model.item.piece.Piece.Type.KING;
 import static com.codenjoy.dojo.chess.model.item.piece.Piece.Type.QUEEN;
 import static com.codenjoy.dojo.chess.service.GameSettings.Option.WRONG_MOVE_PENALTY;

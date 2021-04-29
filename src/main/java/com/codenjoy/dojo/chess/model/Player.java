@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.service;
+package com.codenjoy.dojo.chess.model;
 
 /*-
  * #%L
@@ -23,16 +23,15 @@ package com.codenjoy.dojo.chess.service;
  */
 
 
-import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.model.Events;
-import com.codenjoy.dojo.chess.model.Move;
+import com.codenjoy.dojo.chess.service.Events;
+import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 
 import static com.codenjoy.dojo.chess.service.GameSettings.Option.LAST_PLAYER_STAYS;
 
-public class Player extends GamePlayer<ChessPlayerHero, Chess> {
-    private ChessPlayerHero hero;
+public class Player extends GamePlayer<Hero, Chess> {
+    private Hero hero;
     private Chess game;
     private boolean winner = false;
     private boolean alive = true;
@@ -42,7 +41,7 @@ public class Player extends GamePlayer<ChessPlayerHero, Chess> {
     }
 
     @Override
-    public ChessPlayerHero getHero() {
+    public Hero getHero() {
         return hero;
     }
 
@@ -52,7 +51,7 @@ public class Player extends GamePlayer<ChessPlayerHero, Chess> {
         this.alive = true;
         this.winner = false;
         Color color = game.getAvailableColor();
-        this.hero = new ChessPlayerHero(color, game);
+        this.hero = new Hero(color, game);
     }
 
     @Override

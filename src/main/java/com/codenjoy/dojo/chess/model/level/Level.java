@@ -28,7 +28,7 @@ import com.codenjoy.dojo.chess.model.*;
 import com.codenjoy.dojo.chess.model.item.Barrier;
 import com.codenjoy.dojo.chess.model.item.Square;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
-import com.codenjoy.dojo.chess.service.ElementMapper;
+import com.codenjoy.dojo.chess.model.ElementMapper;
 import com.codenjoy.dojo.services.LengthToXY;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.utils.LevelUtils;

@@ -29,7 +29,7 @@ import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.Color.BLACK;
 import static com.codenjoy.dojo.chess.model.Color.WHITE;
-import static com.codenjoy.dojo.chess.model.Events.*;
+import static com.codenjoy.dojo.chess.service.Events.*;
 import static com.codenjoy.dojo.chess.model.Move.from;
 import static org.junit.Assert.assertEquals;
 

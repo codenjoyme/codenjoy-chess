@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.model;
+package com.codenjoy.dojo.chess.service;
 
 /*-
  * #%L

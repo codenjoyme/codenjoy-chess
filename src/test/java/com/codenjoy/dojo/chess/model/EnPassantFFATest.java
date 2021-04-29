@@ -24,12 +24,11 @@ package com.codenjoy.dojo.chess.model;
 
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import com.codenjoy.dojo.chess.common.AbstractGameTest;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.Color.*;
 import static com.codenjoy.dojo.chess.model.Move.from;
-import static com.codenjoy.dojo.chess.model.Events.WRONG_MOVE;
+import static com.codenjoy.dojo.chess.service.Events.WRONG_MOVE;
 import static org.junit.Assert.assertFalse;
 
 public class EnPassantFFATest extends AbstractGameTest {

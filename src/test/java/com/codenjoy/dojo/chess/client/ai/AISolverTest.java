@@ -26,18 +26,21 @@ import com.codenjoy.dojo.chess.client.Board;
 import com.codenjoy.dojo.chess.client.Color;
 import com.codenjoy.dojo.chess.client.ElementsMapper;
 import com.codenjoy.dojo.chess.model.Elements;
+import com.codenjoy.dojo.chess.model.level.Levels;
 import com.codenjoy.dojo.client.Solver;
 import com.codenjoy.dojo.services.Dice;
+import com.codenjoy.dojo.utils.LevelUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
-public class SolverTest extends AbstractClientTest {
+public class AISolverTest {
     private static final String REQUEST_FOR_COLOR = "ACT";
 
     private final Dice dice = mock(Dice.class);
+    protected Board board;
     private Solver<Board> solver;
 
     @Before
@@ -56,7 +59,7 @@ public class SolverTest extends AbstractClientTest {
     public void shouldAskColor_whenNewGameStarts() {
 
         // when
-        given(classicBoard());
+        given(Levels.classicChessBoard());
 
         // then
         assertEquals(REQUEST_FOR_COLOR, solver.get(board));
@@ -84,5 +87,10 @@ public class SolverTest extends AbstractClientTest {
 
         // then
         assertEquals("ACT(0,0,0,1)", getAnswerFor(Color.WHITE));
+    }
+
+    protected void given(String board) {
+        String cleanBoard = LevelUtils.clear(board);
+        this.board = (Board) new Board().forString(cleanBoard);
     }
 }

@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.client.ai;
+package com.codenjoy.dojo.chess.client;
 
 /*-
  * #%L
@@ -22,10 +22,10 @@ package com.codenjoy.dojo.chess.client.ai;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.client.Color;
 import com.codenjoy.dojo.chess.model.Elements;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
+import com.codenjoy.dojo.utils.LevelUtils;
 import com.google.common.collect.Sets;
 import org.junit.Test;
 
@@ -34,7 +34,9 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class BoardTest extends AbstractClientTest {
+public class BoardTest {
+
+    protected Board board;
 
     @Test
     public void shouldWork_getAt() {
@@ -153,5 +155,40 @@ public class BoardTest extends AbstractClientTest {
 
         // then
         assertEquals(whitePieces, Sets.newHashSet(board.getPieces(Color.WHITE)));
+    }
+
+    protected void given(String board) {
+        String cleanBoard = LevelUtils.clear(board);
+        this.board = (Board) new Board().forString(cleanBoard);
+    }
+
+    @SuppressWarnings("SpellCheckingInspection")
+    protected String classicFFABoard() {
+        return  "   rkbwqbkr   \n" +
+                "   pppppppp   \n" +
+                "   ........   \n" +
+                "IZ..........zi\n" +
+                "LZ..........zl\n" +
+                "GZ..........zg\n" +
+                "YZ..........zx\n" +
+                "XZ..........zy\n" +
+                "GZ..........zg\n" +
+                "LZ..........zl\n" +
+                "IZ..........zi\n" +
+                "   ........   \n" +
+                "   PPPPPPPP   \n" +
+                "   RKBQWBKR   \n";
+    }
+
+    @SuppressWarnings("SpellCheckingInspection")
+    protected String classicBoard() {
+        return  "rkbqwbkr\n" +
+                "pppppppp\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "........\n" +
+                "PPPPPPPP\n" +
+                "RKBQWBKR\n";
     }
 }
