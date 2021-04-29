@@ -20,4 +20,8 @@
  * #L%
  */
 
-var doNothing = true;
+var setup = setup || {};
+
+// так как фигуры полупрозрачные и рисуются на фоне,
+// то отрисовывать надо все фигуры борды вместе с фоном
+setup.isDrawOnlyChanges = false;

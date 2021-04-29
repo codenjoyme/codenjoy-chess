@@ -58,7 +58,9 @@ public enum Elements implements CharElements {
     BLUE_ROOK('i'),
     BLUE_BISHOP('g'),
     BLUE_KNIGHT('l'),
-    BLUE_PAWN('z');
+    BLUE_PAWN('z'),
+
+    BACKGROUND('-');
 
     final char ch;
 
