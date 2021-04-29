@@ -26,13 +26,13 @@ package com.codenjoy.dojo.chess.model;
 import com.codenjoy.dojo.chess.service.Events;
 import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.services.EventListener;
+import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 
 import static com.codenjoy.dojo.chess.service.GameSettings.Option.LAST_PLAYER_STAYS;
 
-public class Player extends GamePlayer<Hero, Chess> {
+public class Player extends GamePlayer<Hero, Field> {
 
-    private Chess game;
     private boolean winner = false;
     private boolean alive = true;
 
@@ -41,17 +41,10 @@ public class Player extends GamePlayer<Hero, Chess> {
     }
 
     @Override
-    public Hero getHero() {
-        return hero;
-    }
-
-    @Override
-    public void newHero(Chess game) {
-        this.game = game;
+    public Hero createHero(Point pt) {
         this.alive = true;
         this.winner = false;
-        Color color = game.getAvailableColor();
-        this.hero = new Hero(color, game);
+        return new Hero(field.getAvailableColor());
     }
 
     @Override
@@ -74,11 +67,6 @@ public class Player extends GamePlayer<Hero, Chess> {
         return hero.getLastMove();
     }
 
-    @Override
-    public boolean shouldLeave() {
-        return true;
-    }
-
     public boolean askedForColor() {
         return hero.askedForColor();
     }
@@ -86,7 +74,7 @@ public class Player extends GamePlayer<Hero, Chess> {
     @Override
     public boolean wantToStay() {
         return settings.bool(LAST_PLAYER_STAYS) &&
-                game.getBoard().getPieces().stream()
+                field.getBoard().getPieces().stream()
                         .anyMatch(p -> !p.getColor().equals(hero.getColor()));
     }
 

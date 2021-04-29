@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 
 import static com.codenjoy.dojo.chess.service.GameSettings.Option.WAIT_UNTIL_MAKE_A_MOVE;
 
-public class Chess implements GameField<Player> {
+public class Chess implements Field {
     private static final Logger LOGGER = LoggerFactory.getLogger(Chess.class);
     private static final Direction DEFAULT_ATTACK_DIRECTION = Color.WHITE.getAttackDirection();
 

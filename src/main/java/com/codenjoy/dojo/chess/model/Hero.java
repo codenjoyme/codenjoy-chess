@@ -36,19 +36,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Hero extends PlayerHero<Chess> implements NoDirectionJoystick {
+public class Hero extends PlayerHero<Field> implements NoDirectionJoystick {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(Hero.class);
 
     private final Color color;
-
     private final List<Events> events = new ArrayList<>();
     private boolean askedForColor = false;
     private Move lastMove;
     private Move action;
 
-    public Hero(Color color, Chess field) {
+    public Hero(Color color) {
         this.color = color;
-        this.field = field;
     }
 
     @Override
