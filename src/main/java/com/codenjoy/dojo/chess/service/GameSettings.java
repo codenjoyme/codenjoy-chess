@@ -35,7 +35,7 @@ import java.util.List;
 import static com.codenjoy.dojo.chess.service.GameSettings.Option.*;
 
 @SuppressWarnings("unused")
-public final class GameSettings extends SettingsImpl implements SettingsReader<GameSettings> {
+public class GameSettings extends SettingsImpl implements SettingsReader<GameSettings> {
 
     @Override
     public List<Key> allKeys() {
@@ -73,9 +73,9 @@ public final class GameSettings extends SettingsImpl implements SettingsReader<G
     }
 
     public GameSettings() {
-        bool(GAME_OVER_IF_WRONG_MOVE, false);
-        bool(WAIT_UNTIL_MAKE_A_MOVE, true);
-        bool(LAST_PLAYER_STAYS, false);
+        bool(GAME_OVER_IF_WRONG_MOVE, true);
+        bool(WAIT_UNTIL_MAKE_A_MOVE, false);
+        bool(LAST_PLAYER_STAYS, true);
 
         integer(VICTORY_REWARD, 100);
         integer(WRONG_MOVE_PENALTY, 0);

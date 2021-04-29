@@ -22,6 +22,7 @@ package com.codenjoy.dojo.chess.model;
  * #L%
  */
 
+import com.codenjoy.dojo.chess.TestGameSettings;
 import com.codenjoy.dojo.chess.service.Events;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import com.codenjoy.dojo.chess.model.level.Level;
@@ -75,7 +76,7 @@ public abstract class AbstractGameTest {
     public void setup() {
         dice = mock(Dice.class);
         printerFactory = new PrinterFactoryImpl();
-        settings = new GameSettings();
+        settings = new TestGameSettings();
         history = new TestHistory();
     }
 
