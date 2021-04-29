@@ -22,8 +22,6 @@ package com.codenjoy.dojo.chess.model;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.common.AbstractGameTest;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.Color.*;

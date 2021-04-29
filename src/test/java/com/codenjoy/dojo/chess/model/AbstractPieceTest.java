@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.common;
+package com.codenjoy.dojo.chess.model;
 
 /*-
  * #%L
@@ -23,9 +23,6 @@ package com.codenjoy.dojo.chess.common;
  */
 
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
-import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.model.Elements;
-import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.google.common.collect.Lists;

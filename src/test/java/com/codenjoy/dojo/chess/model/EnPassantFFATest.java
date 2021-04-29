@@ -23,7 +23,6 @@ package com.codenjoy.dojo.chess.model;
  */
 
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
-import com.codenjoy.dojo.chess.common.AbstractGameTest;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.Color.*;

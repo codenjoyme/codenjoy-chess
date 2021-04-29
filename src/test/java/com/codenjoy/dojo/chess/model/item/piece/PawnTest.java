@@ -23,7 +23,7 @@ package com.codenjoy.dojo.chess.model.item.piece;
  */
 
 import com.codenjoy.dojo.chess.model.Elements;
-import com.codenjoy.dojo.chess.common.AbstractPieceTest;
+import com.codenjoy.dojo.chess.model.AbstractPieceTest;
 import com.codenjoy.dojo.services.PointImpl;
 import org.fest.util.Arrays;
 import org.junit.Test;

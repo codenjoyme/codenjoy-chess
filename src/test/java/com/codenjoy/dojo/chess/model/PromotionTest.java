@@ -22,7 +22,6 @@ package com.codenjoy.dojo.chess.model;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.common.AbstractGameTest;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import org.junit.Test;
 
