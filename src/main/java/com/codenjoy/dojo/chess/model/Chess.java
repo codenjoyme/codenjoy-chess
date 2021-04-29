@@ -34,9 +34,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.codenjoy.dojo.chess.service.GameSettings.Option.WAIT_UNTIL_MAKE_A_MOVE;
+import static java.util.stream.Collectors.toList;
 
 public class Chess implements Field {
     private static final Logger LOGGER = LoggerFactory.getLogger(Chess.class);
@@ -74,9 +74,13 @@ public class Chess implements Field {
 
     @Override
     public void tick() {
+        if (players.isEmpty()) {
+            return;
+        }
+
         List<Color> aliveBeforeTick = getAlivePlayers().stream()
                 .map(Player::getColor)
-                .collect(Collectors.toList());
+                .collect(toList());
         Player player = getPlayer(currentColor);
 
         if (player.askedForColor()) {
@@ -145,7 +149,7 @@ public class Chess implements Field {
     public List<Player> getAlivePlayers() {
         return players.stream()
                 .filter(Player::isAlive)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     public Color getCurrentColor() {
@@ -157,8 +161,12 @@ public class Chess implements Field {
     }
 
     public Color getAvailableColor() {
-        Collection<Color> unusedColors = CollectionUtils.subtract(board.getColors(), getUsedColors());
-        return unusedColors.size() > 0 ? unusedColors.iterator().next() : null;
+        List<Color> used = getUsedColors();
+        return board.getColors().stream()
+                .filter(color -> !used.contains(color))
+                .sorted()
+                .findFirst()
+                .orElse(null);
     }
 
     public GameBoard getBoard() {
@@ -186,7 +194,7 @@ public class Chess implements Field {
     private void checkGameOvers(List<Color> aliveBeforeTick) {
         List<Color> alive = getAlivePlayers().stream()
                 .map(Player::getColor)
-                .collect(Collectors.toList());
+                .collect(toList());
         Collection<Color> died = CollectionUtils.subtract(aliveBeforeTick, alive);
         died.forEach(color -> getPlayer(color).event(Events.GAME_OVER));
     }
@@ -202,7 +210,7 @@ public class Chess implements Field {
         return players.stream()
                 .map(Player::getColor)
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     private Player getPlayer(Color color) {

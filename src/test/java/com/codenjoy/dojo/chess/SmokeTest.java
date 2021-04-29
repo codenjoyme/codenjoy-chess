@@ -37,7 +37,7 @@ import org.junit.Test;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static com.codenjoy.dojo.chess.service.GameSettings.Option.LEVEL_MAP;
+import static com.codenjoy.dojo.chess.service.GameSettings.Option.*;
 import static java.util.stream.Collectors.toList;
 
 public class SmokeTest {
@@ -52,6 +52,10 @@ public class SmokeTest {
 
         Supplier<Solver> solver = () -> new AISolver(dice);
 
+        LocalGameRunner.removeWhenWin = true;
+        LocalGameRunner.removeWhenGameOver = true;
+        LocalGameRunner.reloadPlayersWhenGameOverAll = true;
+
         Smoke.play(ticks, "SmokeTestClassicChessBoard.data",
                 new GameRunner() {
                     @Override
@@ -62,6 +66,8 @@ public class SmokeTest {
                     @Override
                     public GameSettings getSettings() {
                         return super.getSettings()
+                                .integer(WRONG_MOVE_PENALTY, 1)
+                                .integer(GAME_OVER_PENALTY, 1)
                                 .string(LEVEL_MAP, Levels.classicChessBoard());
                     }
                 },
@@ -75,11 +81,15 @@ public class SmokeTest {
     public void testClassicFourPlayerChessBoard() {
         Dice dice = LocalGameRunner.getDice("435874345435874365843564398", 100, 200);
 
-        // about 11 sec
+        // about 2 sec
         int players = 4;
         int ticks = 1000;
 
         Supplier<Solver> solver = () -> new AISolver(dice);
+
+        LocalGameRunner.removeWhenWin = true;
+        LocalGameRunner.removeWhenGameOver = true;
+        LocalGameRunner.reloadPlayersWhenGameOverAll = true;
 
         Smoke.play(ticks, "SmokeTestClassicFourPlayerChessBoard.data",
                 new GameRunner() {
@@ -91,6 +101,8 @@ public class SmokeTest {
                     @Override
                     public GameSettings getSettings() {
                         return super.getSettings()
+                                .integer(WRONG_MOVE_PENALTY, 1)
+                                .integer(GAME_OVER_PENALTY, 1)
                                 .string(LEVEL_MAP, Levels.classicFourPlayerChessBoard());
                     }
                 },

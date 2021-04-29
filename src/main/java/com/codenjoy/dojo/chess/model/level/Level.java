@@ -23,21 +23,20 @@ package com.codenjoy.dojo.chess.model.level;
  */
 
 
+import com.codenjoy.dojo.chess.model.Color;
+import com.codenjoy.dojo.chess.model.ElementMapper;
 import com.codenjoy.dojo.chess.model.Elements;
-import com.codenjoy.dojo.chess.model.*;
 import com.codenjoy.dojo.chess.model.item.Barrier;
 import com.codenjoy.dojo.chess.model.item.Square;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
-import com.codenjoy.dojo.chess.model.ElementMapper;
 import com.codenjoy.dojo.services.LengthToXY;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.utils.LevelUtils;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -63,14 +62,15 @@ public class Level {
     }
 
     public List<Color> presentedColors() {
-        Set<Color> presented = Sets.newHashSet();
+        List<Color> result = new LinkedList<>();
         for (int i = 0; i < map.length(); i++) {
             Optional.ofNullable(Elements.of(map.charAt(i)))
                     .filter(e -> Lists.newArrayList(Elements.pieces()).contains(e))
                     .map(ElementMapper::mapToColor)
-                    .ifPresent(presented::add);
+                    .filter(e -> !result.contains(e))
+                    .ifPresent(result::add);
         }
-        return Lists.newArrayList(presented);
+        return result;
     }
 
     public List<Square> squares() {
