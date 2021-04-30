@@ -141,7 +141,7 @@ public class GameBoard {
     }
 
     private List<Piece> getEnemyPieces(Color color) {
-        return getPieces().stream()
+        return getAlivePieces().stream()
                 .filter(p -> p.getColor() != color)
                 .collect(toList());
     }

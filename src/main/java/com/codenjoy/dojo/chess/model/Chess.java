@@ -149,7 +149,7 @@ public class Chess implements Field {
 
     public List<Player> getAlivePlayers() {
         return players.stream()
-                .filter(Player::isAlive)
+                .filter(Player::isActive)
                 .collect(toList());
     }
 

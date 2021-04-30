@@ -34,7 +34,7 @@ import static com.codenjoy.dojo.chess.service.GameSettings.Option.LAST_PLAYER_ST
 public class Player extends GamePlayer<Hero, Field> {
 
     private boolean winner;
-    private boolean alive;
+    private boolean active;
 
     public Player(EventListener listener, GameSettings settings) {
         super(listener, settings);
@@ -42,7 +42,7 @@ public class Player extends GamePlayer<Hero, Field> {
 
     @Override
     public Hero createHero(Point pt) {
-        this.alive = true;
+        this.active = true;
         this.winner = false;
         return new Hero(field.getAvailableColor());
     }
@@ -53,7 +53,14 @@ public class Player extends GamePlayer<Hero, Field> {
      */
     @Override
     public boolean isAlive() {
-        return alive && hero.isAlive() && !isLastWinnerOnBoard();
+        return isActive() && !isLastWinnerOnBoard();
+    }
+
+    /**
+     * The player is active as long as his king is alive.
+     */
+    public boolean isActive() {
+        return active && hero.isAlive();
     }
 
     /**
@@ -105,6 +112,6 @@ public class Player extends GamePlayer<Hero, Field> {
 
     public void gameOver() {
         event(Events.GAME_OVER);
-        alive = false;
+        active = false;
     }
 }
