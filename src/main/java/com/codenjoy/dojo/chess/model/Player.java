@@ -57,6 +57,11 @@ public class Player extends GamePlayer<Hero, Field> {
         return winner;
     }
 
+    @Override
+    public boolean shouldLeave() {
+        return true;
+    }
+
     public Color getColor() {
         return hero == null ? null : hero.getColor();
     }
