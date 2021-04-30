@@ -27,7 +27,7 @@ import com.codenjoy.dojo.chess.model.level.Level;
 import com.codenjoy.dojo.chess.service.*;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Direction;
-import com.codenjoy.dojo.services.multiplayer.GameField;
+import com.codenjoy.dojo.services.printer.BoardReader;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -134,8 +134,8 @@ public class Chess implements Field {
     }
 
     @Override
-    public com.codenjoy.dojo.services.printer.BoardReader reader() {
-        return new BoardReader(this);
+    public BoardReader reader() {
+        return new BoardReaderImpl(this);
     }
 
     public int getBoardSize() {

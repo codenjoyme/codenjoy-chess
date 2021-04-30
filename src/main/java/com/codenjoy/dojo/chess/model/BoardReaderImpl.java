@@ -31,11 +31,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BoardReader implements com.codenjoy.dojo.services.printer.BoardReader<Player> {
+public class BoardReaderImpl implements com.codenjoy.dojo.services.printer.BoardReader<Player> {
 
     private final Chess game;
 
-    public BoardReader(Chess game) {
+    public BoardReaderImpl(Chess game) {
         this.game = game;
     }
 
