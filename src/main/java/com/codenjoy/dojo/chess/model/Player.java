@@ -67,7 +67,7 @@ public class Player extends GamePlayer<Hero, Field> {
      * @return true - when the player removes all the kings from the field
      *          AND there are no more pieces of a different color.
      */
-    private boolean isLastWinnerOnBoard() {
+    public boolean isLastWinnerOnBoard() {
         return isWin() && hero.isWinner();
     }
 

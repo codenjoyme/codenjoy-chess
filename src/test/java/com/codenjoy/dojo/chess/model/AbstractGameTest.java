@@ -23,9 +23,9 @@ package com.codenjoy.dojo.chess.model;
  */
 
 import com.codenjoy.dojo.chess.TestGameSettings;
-import com.codenjoy.dojo.chess.service.Events;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import com.codenjoy.dojo.chess.model.level.Level;
+import com.codenjoy.dojo.chess.service.Events;
 import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.EventListener;
@@ -39,18 +39,19 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.stubbing.OngoingStubbing;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.stream.Collectors.joining;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 @SuppressWarnings({"rawtypes", "unused", "unchecked", "SpellCheckingInspection"})
 public abstract class AbstractGameTest {
-    private final Map<Color, Player> players = new HashMap<>();
-    private final Map<Player, EventListener> listeners = new HashMap<>();
+    private final Map<Color, Player> players = new LinkedHashMap<>();
+    private final Map<Player, EventListener> listeners = new LinkedHashMap<>();
 
     private String board;
 
@@ -59,7 +60,6 @@ public abstract class AbstractGameTest {
     protected PrinterFactory printerFactory;
     protected GameSettings settings;
     protected TestHistory history;
-
 
     public static String classicBoard() {
         return "rkbqwbkr\n" +
@@ -83,6 +83,33 @@ public abstract class AbstractGameTest {
     protected void reset() {
         setup();
         givenFl(board);
+    }
+
+    public void assrtPl(String expected) {
+        assertEquals(expected,
+                players.values().stream()
+                        .map(player -> playerStatus(player))
+                        .collect(joining("\n---------------\n")));
+    }
+
+    private String playerStatus(Player player) {
+        return String.format(
+                "Color  = %s\n" +
+                "Alive  = %s\n" +
+                "Active = %s\n" +
+                "Win    = %s\n" +
+                "Stay   = %s\n" +
+                "Leave  = %s\n" +
+                "Asked  = %s\n" +
+                "Last   = %s",
+                player.getColor(),
+                player.isAlive(),
+                player.isActive(),
+                player.isWin(),
+                player.wantToStay(),
+                player.shouldLeave(),
+                player.askedForColor(),
+                player.isLastWinnerOnBoard());
     }
 
     protected void dice(int... ints) {

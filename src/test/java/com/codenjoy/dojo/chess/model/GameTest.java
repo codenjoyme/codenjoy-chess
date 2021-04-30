@@ -28,8 +28,9 @@ import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.Color.BLACK;
 import static com.codenjoy.dojo.chess.model.Color.WHITE;
-import static com.codenjoy.dojo.chess.service.Events.*;
 import static com.codenjoy.dojo.chess.model.Move.from;
+import static com.codenjoy.dojo.chess.service.Events.*;
+import static com.codenjoy.dojo.chess.service.GameSettings.Option.LAST_PLAYER_STAYS;
 import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("SpellCheckingInspection")
@@ -147,15 +148,35 @@ public class GameTest extends AbstractGameTest {
                 "........\n" +
                 "PPPPP.PP\n" +
                 "RKBQWBKR\n");
+
         neverFired(WRONG_MOVE);
     }
 
     @Test
-    public void shouldBeFiredGameOverEvent_whenKingDies() {
+    public void shouldBeFiredGameOverEvent_whenKingDies_lastLeave() {
+        settings.bool(LAST_PLAYER_STAYS, false);
 
         givenFl("w..\n" +
                 "W..\n" +
                 "...\n");
+
+        assrtPl("Color  = WHITE\n" +
+                "Alive  = true\n" +
+                "Active = true\n" +
+                "Win    = false\n" +
+                "Stay   = false\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false\n" +
+                "---------------\n" +
+                "Color  = BLACK\n" +
+                "Alive  = true\n" +
+                "Active = true\n" +
+                "Win    = false\n" +
+                "Stay   = false\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false");
 
         // when
         move(WHITE, from(0, 1).to(0, 2));
@@ -164,15 +185,53 @@ public class GameTest extends AbstractGameTest {
         assertE("W..\n" +
                 "...\n" +
                 "...\n");
+
+        assrtPl("Color  = WHITE\n" +
+                "Alive  = false\n" +
+                "Active = true\n" +
+                "Win    = true\n" +
+                "Stay   = false\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = true\n" +
+                "---------------\n" +
+                "Color  = BLACK\n" +
+                "Alive  = false\n" +
+                "Active = false\n" +
+                "Win    = false\n" +
+                "Stay   = false\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false");
+
         fired(BLACK, GAME_OVER);
     }
 
     @Test
-    public void shouldBeFiredWinEventForPlayer_whichKingLastsAlone() {
+    public void shouldBeFiredGameOverEvent_whenKingDies_lastStay() {
+        settings.bool(LAST_PLAYER_STAYS, true);
 
         givenFl("w..\n" +
                 "W..\n" +
                 "...\n");
+
+        assrtPl("Color  = WHITE\n" +
+                "Alive  = true\n" +
+                "Active = true\n" +
+                "Win    = false\n" +
+                "Stay   = true\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false\n" +
+                "---------------\n" +
+                "Color  = BLACK\n" +
+                "Alive  = true\n" +
+                "Active = true\n" +
+                "Win    = false\n" +
+                "Stay   = true\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false");
 
         // when
         move(WHITE, from(0, 1).to(0, 2));
@@ -181,29 +240,294 @@ public class GameTest extends AbstractGameTest {
         assertE("W..\n" +
                 "...\n" +
                 "...\n");
+
+        assrtPl("Color  = WHITE\n" +
+                "Alive  = false\n" +
+                "Active = true\n" +
+                "Win    = true\n" +
+                "Stay   = true\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = true\n" +
+                "---------------\n" +
+                "Color  = BLACK\n" +
+                "Alive  = false\n" +
+                "Active = false\n" +
+                "Win    = false\n" +
+                "Stay   = true\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false");
+
+        fired(BLACK, GAME_OVER);
+    }
+
+    @Test
+    public void shouldBeFiredWinEventForPlayer_whichKingLastsAlone_lastLeave() {
+        settings.bool(LAST_PLAYER_STAYS, false);
+
+        givenFl("w..\n" +
+                "W..\n" +
+                "...\n");
+
+        assrtPl("Color  = WHITE\n" +
+                "Alive  = true\n" +
+                "Active = true\n" +
+                "Win    = false\n" +
+                "Stay   = false\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false\n" +
+                "---------------\n" +
+                "Color  = BLACK\n" +
+                "Alive  = true\n" +
+                "Active = true\n" +
+                "Win    = false\n" +
+                "Stay   = false\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false");
+
+        // when
+        move(WHITE, from(0, 1).to(0, 2));
+
+        // then
+        assertE("W..\n" +
+                "...\n" +
+                "...\n");
+
+        assrtPl("Color  = WHITE\n" +
+                "Alive  = false\n" +
+                "Active = true\n" +
+                "Win    = true\n" +
+                "Stay   = false\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = true\n" +
+                "---------------\n" +
+                "Color  = BLACK\n" +
+                "Alive  = false\n" +
+                "Active = false\n" +
+                "Win    = false\n" +
+                "Stay   = false\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false");
+
         fired(WHITE, WIN);
     }
 
-//    @Test TODO make optional
-//    public void allPiecesShouldDieWithTheirKing() {
-//
-//        givenFl("wpp\n" +
-//                "W..\n" +
-//                "...\n");
-//
-//         when
-//        move(WHITE, from(0, 1).to(0, 2));
-//
-//         then
-//        assertE("W..\n" +
-//                "...\n" +
-//                "...\n");
-//    }
+    @Test
+    public void shouldBeFiredWinEventForPlayer_whichKingLastsAlone_lastStay() {
+        settings.bool(LAST_PLAYER_STAYS, true);
 
-//    @Test TODO make optional of get rid of it
-//    public void shouldBeThrownIllegalArgumentException_whenTryToMakeGameSetWithoutKing() {
-//        Assert.assertThrows(IllegalArgumentException.class, () -> givenFl("ppp....W."));
-//    }
+        givenFl("w..\n" +
+                "W..\n" +
+                "...\n");
+
+        assrtPl("Color  = WHITE\n" +
+                "Alive  = true\n" +
+                "Active = true\n" +
+                "Win    = false\n" +
+                "Stay   = true\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false\n" +
+                "---------------\n" +
+                "Color  = BLACK\n" +
+                "Alive  = true\n" +
+                "Active = true\n" +
+                "Win    = false\n" +
+                "Stay   = true\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false");
+
+        // when
+        move(WHITE, from(0, 1).to(0, 2));
+
+        // then
+        assertE("W..\n" +
+                "...\n" +
+                "...\n");
+
+        assrtPl("Color  = WHITE\n" +
+                "Alive  = false\n" +
+                "Active = true\n" +
+                "Win    = true\n" +
+                "Stay   = true\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = true\n" +
+                "---------------\n" +
+                "Color  = BLACK\n" +
+                "Alive  = false\n" +
+                "Active = false\n" +
+                "Win    = false\n" +
+                "Stay   = true\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false");
+
+        fired(WHITE, WIN);
+    }
+
+    @Test
+    public void allPiecesShouldNotDieWithTheirKing_lastLeave() {
+        settings.bool(LAST_PLAYER_STAYS, false);
+
+        givenFl("wpp\n" +
+                "W..\n" +
+                "...\n");
+
+        assrtPl("Color  = WHITE\n" +
+                "Alive  = true\n" +
+                "Active = true\n" +
+                "Win    = false\n" +
+                "Stay   = false\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false\n" +
+                "---------------\n" +
+                "Color  = BLACK\n" +
+                "Alive  = true\n" +
+                "Active = true\n" +
+                "Win    = false\n" +
+                "Stay   = false\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false");
+
+        // when
+        move(WHITE, from(0, 1).to(0, 2));
+
+        // then
+        assertE("Wpp\n" +
+                "...\n" +
+                "...\n");
+
+        assrtPl("Color  = WHITE\n" +
+                "Alive  = true\n" +
+                "Active = true\n" +
+                "Win    = true\n" +
+                "Stay   = false\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false\n" +
+                "---------------\n" +
+                "Color  = BLACK\n" +
+                "Alive  = false\n" +
+                "Active = false\n" +
+                "Win    = false\n" +
+                "Stay   = false\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false");
+    }
+
+    @Test
+    public void allPiecesShouldNotDieWithTheirKing_lastStay() {
+        settings.bool(LAST_PLAYER_STAYS, true);
+
+        givenFl("wpp\n" +
+                "W..\n" +
+                "...\n");
+
+        assrtPl("Color  = WHITE\n" +
+                "Alive  = true\n" +
+                "Active = true\n" +
+                "Win    = false\n" +
+                "Stay   = true\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false\n" +
+                "---------------\n" +
+                "Color  = BLACK\n" +
+                "Alive  = true\n" +
+                "Active = true\n" +
+                "Win    = false\n" +
+                "Stay   = true\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false");
+
+        // when
+        move(WHITE, from(0, 1).to(0, 2));
+
+        // then
+        assertE("Wpp\n" +
+                "...\n" +
+                "...\n");
+
+        assrtPl("Color  = WHITE\n" +
+                "Alive  = true\n" +
+                "Active = true\n" +
+                "Win    = true\n" +
+                "Stay   = true\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false\n" +
+                "---------------\n" +
+                "Color  = BLACK\n" +
+                "Alive  = false\n" +
+                "Active = false\n" +
+                "Win    = false\n" +
+                "Stay   = true\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false");
+    }
+
+    @Test
+    public void shouldNotBeThrownException_whenTryToMakeGameSetWithoutKing() {
+        givenFl("ppp\n" +
+                "W..\n" +
+                "...\n");
+
+        assrtPl("Color  = WHITE\n" +
+                "Alive  = true\n" +
+                "Active = true\n" +
+                "Win    = false\n" +
+                "Stay   = false\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false\n" +
+                "---------------\n" +
+                "Color  = BLACK\n" +
+                "Alive  = false\n" +
+                "Active = false\n" +
+                "Win    = false\n" +
+                "Stay   = false\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false");
+
+        // when
+        move(WHITE, from(0, 1).to(0, 2));
+
+        // then
+        assertE("Wpp\n" +
+                "...\n" +
+                "...\n");
+
+        assrtPl("Color  = WHITE\n" +
+                "Alive  = true\n" +
+                "Active = true\n" +
+                "Win    = false\n" +
+                "Stay   = false\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false\n" +
+                "---------------\n" +
+                "Color  = BLACK\n" +
+                "Alive  = false\n" +
+                "Active = false\n" +
+                "Win    = false\n" +
+                "Stay   = false\n" +
+                "Leave  = true\n" +
+                "Asked  = false\n" +
+                "Last   = false");
+    }
 
     @Test
     public void shouldNotFireWrongMoveEvent_whenPlayerDidntMakeAMoveAtHisTurn() {
