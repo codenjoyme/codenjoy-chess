@@ -33,7 +33,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 public class GameBoard {
 
@@ -57,7 +58,7 @@ public class GameBoard {
             for (Piece.Type pieceType : Piece.Type.values()) {
                 pieces.addAll(level.pieces(color, pieceType).stream()
                         .map(position -> Piece.create(pieceType, color, this, position))
-                        .collect(Collectors.toList()));
+                        .collect(toList()));
             }
             gameSets.add(new GameSet(color, this, pieces));
         }
@@ -113,14 +114,14 @@ public class GameBoard {
     public List<Color> getColors() {
         return gameSets.stream()
                 .map(GameSet::getColor)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     public List<Piece> getPieces() {
         return gameSets.stream()
                 .map(GameSet::getPieces)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     public List<Barrier> getBarriers() {
@@ -132,8 +133,17 @@ public class GameBoard {
     }
 
     public boolean isWinner(Color color) {
+        List<Piece> enemyPieces = getEnemyPieces(color);
         List<GameSet> aliveSets = getAliveSets();
-        return aliveSets.size() == 1 && aliveSets.get(0).getColor() == color;
+        return aliveSets.size() == 1
+                && aliveSets.get(0).getColor() == color
+                && enemyPieces.size() == 0;
+    }
+
+    private List<Piece> getEnemyPieces(Color color) {
+        return getPieces().stream()
+                .filter(p -> p.getColor() != color)
+                .collect(toList());
     }
 
     public List<Move> getAvailableMoves(Color color) {
@@ -155,13 +165,13 @@ public class GameBoard {
     public List<Piece> getAlivePieces() {
         return getPieces().stream()
                 .filter(Piece::isAlive)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     private List<GameSet> getAliveSets() {
         return gameSets.stream()
                 .filter(GameSet::isKingAlive)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     private GameSet getGameSet(Color color) {

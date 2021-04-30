@@ -33,8 +33,8 @@ import static com.codenjoy.dojo.chess.service.GameSettings.Option.LAST_PLAYER_ST
 
 public class Player extends GamePlayer<Hero, Field> {
 
-    private boolean winner = false;
-    private boolean alive = true;
+    private boolean winner;
+    private boolean alive;
 
     public Player(EventListener listener, GameSettings settings) {
         super(listener, settings);
@@ -47,11 +47,26 @@ public class Player extends GamePlayer<Hero, Field> {
         return new Hero(field.getAvailableColor());
     }
 
+    /**
+     * The player is alive as long as his king is alive and he
+     * has something to attack on the field.
+     */
     @Override
     public boolean isAlive() {
-        return alive && hero.isAlive() && !winner;
+        return alive && hero.isAlive() && !isLastWinnerOnBoard();
     }
 
+    /**
+     * @return true - when the player removes all the kings from the field
+     *          AND there are no more pieces of a different color.
+     */
+    private boolean isLastWinnerOnBoard() {
+        return isWin() && hero.isWinner();
+    }
+
+    /**
+     * @return true - when the player removes all the kings from the field
+     */
     @Override
     public boolean isWin() {
         return winner;
@@ -84,12 +99,12 @@ public class Player extends GamePlayer<Hero, Field> {
     }
 
     public void win() {
-        winner = true;
         event(Events.WIN);
+        winner = true;
     }
 
     public void gameOver() {
-        alive = false;
         event(Events.GAME_OVER);
+        alive = false;
     }
 }
