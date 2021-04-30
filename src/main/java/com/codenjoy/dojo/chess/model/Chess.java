@@ -39,6 +39,7 @@ import static com.codenjoy.dojo.chess.service.GameSettings.Option.WAIT_UNTIL_MAK
 import static java.util.stream.Collectors.toList;
 
 public class Chess implements Field {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(Chess.class);
     private static final Direction DEFAULT_ATTACK_DIRECTION = Color.WHITE.getAttackDirection();
 

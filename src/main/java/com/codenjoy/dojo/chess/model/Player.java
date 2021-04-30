@@ -49,7 +49,7 @@ public class Player extends GamePlayer<Hero, Field> {
 
     @Override
     public boolean isAlive() {
-        return alive && hero.isAlive();
+        return alive && hero.isAlive() && !winner;
     }
 
     @Override
