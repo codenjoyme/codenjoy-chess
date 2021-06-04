@@ -25,12 +25,11 @@ package com.codenjoy.dojo.chess.model;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import org.junit.Test;
 
-import static com.codenjoy.dojo.chess.model.Color.WHITE;
+import static com.codenjoy.dojo.chess.model.HeroColor.WHITE;
 import static com.codenjoy.dojo.chess.service.Events.WRONG_MOVE;
 import static com.codenjoy.dojo.chess.model.Move.from;
 
 // Wiki: https://en.wikipedia.org/wiki/Promotion_(chess)
-@SuppressWarnings("SpellCheckingInspection")
 public class PromotionTest extends AbstractGameTest {
 
     @Test

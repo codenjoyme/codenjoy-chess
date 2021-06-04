@@ -25,7 +25,6 @@ package com.codenjoy.dojo.chess.model;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 
-@SuppressWarnings("SuspiciousNameCombination")
 public class Rotator {
 
     private final int boardSize;

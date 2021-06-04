@@ -23,9 +23,9 @@ package com.codenjoy.dojo.chess.model.item.piece;
  */
 
 
-import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.chess.model.GameBoard;
+import com.codenjoy.dojo.chess.model.HeroColor;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.google.common.collect.Lists;
@@ -40,7 +40,7 @@ import static com.codenjoy.dojo.services.QDirection.*;
 // https://en.wikipedia.org/wiki/King_(chess)
 public class King extends Piece {
 
-    public King(Color color, GameBoard board, Point position) {
+    public King(HeroColor color, GameBoard board, Point position) {
         super(Type.KING, color, board, position);
     }
 
@@ -59,7 +59,7 @@ public class King extends Piece {
      */
     public static List<Move> availableMoves(GameBoard board,
                                             Point position,
-                                            Color color,
+                                            HeroColor color,
                                             boolean moved,
                                             boolean withCastling,
                                             Direction attackDirection
@@ -97,7 +97,7 @@ public class King extends Piece {
      */
     public static List<Move> castlingMoves(GameBoard board,
                                            Point position,
-                                           Color color,
+                                           HeroColor color,
                                            Direction attackDirection) {
         List<Move> castlingMoves = Lists.newArrayList();
         getCastling(board, position, color, attackDirection.clockwise())
@@ -118,7 +118,7 @@ public class King extends Piece {
      */
     private static Optional<Move> getCastling(GameBoard board,
                                               Point kingPosition,
-                                              Color color,
+                                              HeroColor color,
                                               Direction direction) {
         Point rookPosition = kingPosition;
         do {
@@ -142,7 +142,7 @@ public class King extends Piece {
         return Optional.ofNullable(Move.from(kingPosition).to(rookPosition));
     }
 
-    private static boolean isFreeOrWithEnemy(GameBoard board, Point dest, Color color) {
+    private static boolean isFreeOrWithEnemy(GameBoard board, Point dest, HeroColor color) {
         Optional<Piece> pieceAtDest = board.getPieceAt(dest);
         return pieceAtDest.isEmpty() || pieceAtDest.get().getColor() != color;
     }

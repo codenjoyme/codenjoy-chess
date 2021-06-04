@@ -22,7 +22,6 @@ package com.codenjoy.dojo.chess.model.level;
  * #L%
  */
 
-@SuppressWarnings("SpellCheckingInspection")
 public class Levels {
 
     public static String classicChessBoard() {

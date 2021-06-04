@@ -23,6 +23,7 @@ package com.codenjoy.dojo.chess.model;
  */
 
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
+import com.codenjoy.dojo.games.chess.Element;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.google.common.collect.Lists;
@@ -37,9 +38,9 @@ import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractPieceTest extends AbstractGameTest {
 
-    private final Elements testingElement;
+    private final Element testingElement;
 
-    protected AbstractPieceTest(Elements testingElement) {
+    protected AbstractPieceTest(Element testingElement) {
         this.testingElement = testingElement;
     }
 
@@ -47,7 +48,7 @@ public abstract class AbstractPieceTest extends AbstractGameTest {
     public void shouldNotBeAbleToMoveOutOfSquaresOnBoard() {
 
         // when given
-        if (testingElement == Elements.WHITE_KING) {
+        if (testingElement == Element.WHITE_KING) {
             givenFl("W");
         } else {
             givenFl("W " + testingElement.ch());
@@ -73,7 +74,7 @@ public abstract class AbstractPieceTest extends AbstractGameTest {
 
     protected void assertCanMoveOnlyTo(Preconditions preconditions, Piece piece, Point... positionsArray) {
         List<Point> positions = Lists.newArrayList(positionsArray);
-        Color color = piece.getColor();
+        HeroColor color = piece.getColor();
         Point position = piece.getPosition();
         for (int x = -1; x <= getBoardSize(); x++) {
             for (int y = -1; y <= getBoardSize(); y++) {

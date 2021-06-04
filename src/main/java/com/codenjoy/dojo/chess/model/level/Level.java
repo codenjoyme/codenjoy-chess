@@ -23,11 +23,11 @@ package com.codenjoy.dojo.chess.model.level;
  */
 
 
-import com.codenjoy.dojo.chess.model.Color;
+import com.codenjoy.dojo.chess.model.HeroColor;
 import com.codenjoy.dojo.chess.model.ElementMapper;
-import com.codenjoy.dojo.chess.model.Elements;
 import com.codenjoy.dojo.chess.model.item.Barrier;
 import com.codenjoy.dojo.chess.model.item.Square;
+import com.codenjoy.dojo.games.chess.Element;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import com.codenjoy.dojo.services.LengthToXY;
 import com.codenjoy.dojo.services.Point;
@@ -40,8 +40,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.codenjoy.dojo.chess.model.Elements.BARRIER;
-import static com.codenjoy.dojo.chess.model.Elements.SQUARE;
+import static com.codenjoy.dojo.games.chess.Element.BARRIER;
+import static com.codenjoy.dojo.games.chess.Element.SQUARE;
 
 public class Level {
 
@@ -57,15 +57,15 @@ public class Level {
         return (int) Math.sqrt(map.length());
     }
 
-    public List<Point> pieces(Color color, Piece.Type type) {
+    public List<Point> pieces(HeroColor color, Piece.Type type) {
         return LevelUtils.getObjects(xy, map, Function.identity(), ElementMapper.mapToElement(color, type));
     }
 
-    public List<Color> presentedColors() {
-        List<Color> result = new LinkedList<>();
+    public List<HeroColor> presentedColors() {
+        List<HeroColor> result = new LinkedList<>();
         for (int i = 0; i < map.length(); i++) {
-            Optional.ofNullable(Elements.of(map.charAt(i)))
-                    .filter(e -> Lists.newArrayList(Elements.pieces()).contains(e))
+            Optional.ofNullable(Element.of(map.charAt(i)))
+                    .filter(e -> Lists.newArrayList(Element.pieces()).contains(e))
                     .map(ElementMapper::mapToColor)
                     .filter(e -> !result.contains(e))
                     .ifPresent(result::add);
@@ -75,7 +75,7 @@ public class Level {
 
     public List<Square> squares() {
         List<Point> squares = LevelUtils.getObjects(xy, map, Function.identity(), SQUARE);
-        List<Point> pieces = LevelUtils.getObjects(xy, map, Function.identity(), Elements.pieces());
+        List<Point> pieces = LevelUtils.getObjects(xy, map, Function.identity(), Element.pieces());
         squares.addAll(pieces);
         return squares.stream()
                 .map(Square::new)

@@ -23,7 +23,7 @@ package com.codenjoy.dojo.chess.model.item.piece;
  */
 
 
-import com.codenjoy.dojo.chess.model.Color;
+import com.codenjoy.dojo.chess.model.HeroColor;
 import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.chess.model.GameBoard;
 import com.codenjoy.dojo.services.Point;
@@ -36,7 +36,7 @@ import java.util.stream.Stream;
 // https://en.wikipedia.org/wiki/Knight_(chess)
 public class Knight extends Piece {
 
-    public Knight(Color color, GameBoard board, Point position) {
+    public Knight(HeroColor color, GameBoard board, Point position) {
         super(Type.KNIGHT, color, board, position);
     }
 
@@ -50,7 +50,7 @@ public class Knight extends Piece {
      * @param color       a color of a knight
      * @return true, if destination is available to move to, false otherwise
      */
-    private static boolean isAvailable(GameBoard board, Point destination, Color color) {
+    private static boolean isAvailable(GameBoard board, Point destination, HeroColor color) {
         return board.getPieceAt(destination)
                 .map(p -> p.getColor() != color)
                 .orElse(board.isInBounds(destination));
@@ -66,7 +66,7 @@ public class Knight extends Piece {
      * @param color    a color of the knight
      * @return all available moves
      */
-    private static List<Move> availableMoves(GameBoard board, Point position, Color color) {
+    private static List<Move> availableMoves(GameBoard board, Point position, HeroColor color) {
         int x = position.getX();
         int y = position.getY();
         return Stream.of(

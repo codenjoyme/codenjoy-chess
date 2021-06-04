@@ -24,9 +24,9 @@ package com.codenjoy.dojo.chess.service;
 
 
 import com.codenjoy.dojo.chess.model.Chess;
-import com.codenjoy.dojo.chess.model.Elements;
-import com.codenjoy.dojo.chess.client.Board;
-import com.codenjoy.dojo.chess.client.ai.AISolver;
+import com.codenjoy.dojo.games.chess.Element;
+import com.codenjoy.dojo.games.chess.Board;
+import com.codenjoy.dojo.chess.service.ai.AISolver;
 import com.codenjoy.dojo.chess.model.Player;
 import com.codenjoy.dojo.client.ClientBoard;
 import com.codenjoy.dojo.client.Solver;
@@ -53,7 +53,6 @@ public class GameRunner extends AbstractGameType<GameSettings> {
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
     public GameField createGame(int levelNumber, GameSettings settings) {
         return new Chess(settings.level(), getDice(), settings);
     }
@@ -70,11 +69,10 @@ public class GameRunner extends AbstractGameType<GameSettings> {
 
     @Override
     public CharElements[] getPlots() {
-        return Elements.values();
+        return Element.values();
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
     public Class<? extends Solver> getAI() {
         return AISolver.class;
     }
@@ -100,7 +98,6 @@ public class GameRunner extends AbstractGameType<GameSettings> {
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
     public GamePlayer createPlayer(EventListener listener, String playerId, GameSettings settings) {
         return new Player(listener, settings);
     }

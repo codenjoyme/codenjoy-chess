@@ -23,9 +23,9 @@ package com.codenjoy.dojo.chess.model.item.piece;
  */
 
 
-import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.chess.model.GameBoard;
+import com.codenjoy.dojo.chess.model.HeroColor;
+import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.services.Point;
 
 import java.util.Collection;
@@ -37,7 +37,7 @@ import static com.codenjoy.dojo.services.QDirection.*;
 
 public class Bishop extends Piece {
 
-    public Bishop(Color color, GameBoard board, Point position) {
+    public Bishop(HeroColor color, GameBoard board, Point position) {
         super(Type.BISHOP, color, board, position);
     }
 
@@ -51,7 +51,7 @@ public class Bishop extends Piece {
      * @param color    a color of the bishop
      * @return all available moves
      */
-    public static List<Move> availableMoves(GameBoard board, Point position, Color color) {
+    public static List<Move> availableMoves(GameBoard board, Point position, HeroColor color) {
         return Stream.of(LEFT_DOWN, LEFT_UP, RIGHT_DOWN, RIGHT_UP)
                 .map(direction -> movesInQDirection(board, position, color, direction))
                 .flatMap(Collection::stream)

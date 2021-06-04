@@ -25,7 +25,7 @@ package com.codenjoy.dojo.chess.model;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import org.junit.Test;
 
-import static com.codenjoy.dojo.chess.model.Color.*;
+import static com.codenjoy.dojo.chess.model.HeroColor.*;
 import static com.codenjoy.dojo.chess.model.Move.from;
 import static com.codenjoy.dojo.chess.service.Events.WRONG_MOVE;
 import static org.junit.Assert.assertFalse;

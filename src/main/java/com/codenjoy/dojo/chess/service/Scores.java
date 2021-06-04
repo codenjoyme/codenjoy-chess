@@ -34,7 +34,6 @@ import static com.codenjoy.dojo.chess.service.GameSettings.Option.*;
 
 public class Scores implements PlayerScores {
 
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private final Map<Events, Integer> eventsToRewards;
     private final static int DEFAULT_SCORE = 0;
 

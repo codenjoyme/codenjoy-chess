@@ -23,8 +23,8 @@ package com.codenjoy.dojo.chess;
  */
 
 
-import com.codenjoy.dojo.chess.client.Board;
-import com.codenjoy.dojo.chess.client.ai.AISolver;
+import com.codenjoy.dojo.games.chess.Board;
+import com.codenjoy.dojo.chess.service.ai.AISolver;
 import com.codenjoy.dojo.chess.model.level.Levels;
 import com.codenjoy.dojo.chess.service.GameRunner;
 import com.codenjoy.dojo.chess.service.GameSettings;

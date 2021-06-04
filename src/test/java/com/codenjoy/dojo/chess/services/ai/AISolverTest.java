@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.client.ai;
+package com.codenjoy.dojo.chess.services.ai;
 
 /*-
  * #%L
@@ -22,10 +22,10 @@ package com.codenjoy.dojo.chess.client.ai;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.client.Board;
-import com.codenjoy.dojo.chess.client.Color;
-import com.codenjoy.dojo.chess.client.ElementsMapper;
-import com.codenjoy.dojo.chess.model.Elements;
+import com.codenjoy.dojo.chess.service.ai.AISolver;
+import com.codenjoy.dojo.games.chess.Board;
+import com.codenjoy.dojo.games.chess.Color;
+import com.codenjoy.dojo.games.chess.Element;
 import com.codenjoy.dojo.chess.model.level.Levels;
 import com.codenjoy.dojo.client.Solver;
 import com.codenjoy.dojo.services.Dice;
@@ -48,10 +48,9 @@ public class AISolverTest {
         solver = new AISolver(dice);
     }
 
-    @SuppressWarnings("SameParameterValue")
     private String getAnswerFor(Color color) {
         solver.get(board);
-        Elements piece = ElementsMapper.getElements(color).get(0);
+        Element piece = Element.elements(color).get(0);
         return solver.get((Board) new Board().forString(piece.toString()));
     }
 

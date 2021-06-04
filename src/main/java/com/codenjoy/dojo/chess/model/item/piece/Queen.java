@@ -23,7 +23,7 @@ package com.codenjoy.dojo.chess.model.item.piece;
  */
 
 
-import com.codenjoy.dojo.chess.model.Color;
+import com.codenjoy.dojo.chess.model.HeroColor;
 import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.chess.model.GameBoard;
 import com.codenjoy.dojo.services.Point;
@@ -34,7 +34,7 @@ import java.util.List;
 // https://en.wikipedia.org/wiki/Queen_(chess)
 public class Queen extends Piece {
 
-    public Queen(Color color, GameBoard board, Point position) {
+    public Queen(HeroColor color, GameBoard board, Point position) {
         super(Type.QUEEN, color, board, position);
     }
 
@@ -48,7 +48,7 @@ public class Queen extends Piece {
      * @param color    a color of the queen
      * @return all available moves
      */
-    public static List<Move> availableMoves(GameBoard board, Point position, Color color) {
+    public static List<Move> availableMoves(GameBoard board, Point position, HeroColor color) {
         List<Move> result = Lists.newArrayList();
         result.addAll(Rook.availableMoves(board, position, color));
         result.addAll(Bishop.availableMoves(board, position, color));

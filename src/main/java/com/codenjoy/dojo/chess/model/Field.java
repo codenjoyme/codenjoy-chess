@@ -26,11 +26,11 @@ import com.codenjoy.dojo.services.multiplayer.GameField;
 
 public interface Field extends GameField<Player> {
 
-    Color getAvailableColor();
+    HeroColor getAvailableColor();
 
     GameBoard getBoard();
 
-    Color getCurrentColor();
+    HeroColor getCurrentColor();
 
     Rotator getRotator();
 }

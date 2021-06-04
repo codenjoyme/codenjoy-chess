@@ -23,11 +23,11 @@ package com.codenjoy.dojo.chess.model.item.piece;
  */
 
 import com.codenjoy.dojo.chess.model.AbstractPieceTest;
-import com.codenjoy.dojo.chess.model.Elements;
+import com.codenjoy.dojo.games.chess.Element;
 import com.codenjoy.dojo.services.PointImpl;
 import org.junit.Test;
 
-import static com.codenjoy.dojo.chess.model.Color.WHITE;
+import static com.codenjoy.dojo.chess.model.HeroColor.WHITE;
 import static com.codenjoy.dojo.chess.service.Events.WRONG_MOVE;
 import static com.codenjoy.dojo.chess.model.Move.from;
 import static org.junit.Assert.assertFalse;
@@ -36,7 +36,7 @@ import static org.junit.Assert.assertTrue;
 public class QueenTest extends AbstractPieceTest {
 
     public QueenTest() {
-        super(Elements.WHITE_QUEEN);
+        super(Element.WHITE_QUEEN);
     }
 
     @Override

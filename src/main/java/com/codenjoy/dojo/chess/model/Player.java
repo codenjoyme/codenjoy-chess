@@ -84,7 +84,7 @@ public class Player extends GamePlayer<Hero, Field> {
         return true;
     }
 
-    public Color getColor() {
+    public HeroColor getColor() {
         return hero == null ? null : hero.getColor();
     }
 

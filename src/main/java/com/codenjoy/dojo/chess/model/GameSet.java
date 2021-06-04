@@ -38,13 +38,13 @@ import java.util.stream.Collectors;
 public class GameSet {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameSet.class);
 
-    private final Color color;
+    private final HeroColor color;
     private final List<Piece> pieces;
     private final GameBoard board;
 
     private Move lastMove;
 
-    public GameSet(Color color, GameBoard board, List<Piece> pieces) {
+    public GameSet(HeroColor color, GameBoard board, List<Piece> pieces) {
         this.color = color;
         this.board = board;
         if (pieces.stream().anyMatch(p -> p.getColor() != color)) {
@@ -59,7 +59,7 @@ public class GameSet {
                 .anyMatch(Piece::isAlive);
     }
 
-    public Color getColor() {
+    public HeroColor getColor() {
         return color;
     }
 

@@ -23,9 +23,9 @@ package com.codenjoy.dojo.chess.model.item.piece;
  */
 
 
-import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.chess.model.GameBoard;
+import com.codenjoy.dojo.chess.model.Move;
+import com.codenjoy.dojo.chess.model.HeroColor;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.QDirection;
@@ -35,7 +35,7 @@ import java.util.List;
 
 public abstract class Piece {
 
-    protected final Color color;
+    protected final HeroColor color;
     protected final Type type;
     protected final GameBoard board;
 
@@ -45,7 +45,7 @@ public abstract class Piece {
     protected Point position;
     protected boolean moved;
 
-    public Piece(Type type, Color color, GameBoard board, Point position) {
+    public Piece(Type type, HeroColor color, GameBoard board, Point position) {
         this.type = type;
         this.color = color;
         this.board = board;
@@ -53,7 +53,7 @@ public abstract class Piece {
         this.attackDirection = color.getAttackDirection();
     }
 
-    public static Piece create(Type type, Color color, GameBoard board, Point position) {
+    public static Piece create(Type type, HeroColor color, GameBoard board, Point position) {
         switch (type) {
             case KING:
                 return new King(color, board, position);
@@ -84,7 +84,7 @@ public abstract class Piece {
      * @param direction a direction of attack of the bishop
      * @return all available moves in specific direction
      */
-    protected static List<Move> movesInQDirection(GameBoard board, Point position, Color color, QDirection direction) {
+    protected static List<Move> movesInQDirection(GameBoard board, Point position, HeroColor color, QDirection direction) {
         List<Move> moves = Lists.newArrayList();
         Point destination = direction.change(position);
         while (board.isInBounds(destination) && board.getPieceAt(destination).isEmpty()) {
@@ -150,7 +150,7 @@ public abstract class Piece {
                 .anyMatch(p -> p.equals(position));
     }
 
-    public Color getColor() {
+    public HeroColor getColor() {
         return color;
     }
 

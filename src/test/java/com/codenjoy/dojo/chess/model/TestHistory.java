@@ -22,9 +22,7 @@ package com.codenjoy.dojo.chess.model;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.model.Color;
 import com.codenjoy.dojo.chess.service.Events;
-import com.codenjoy.dojo.chess.model.Move;
 import com.google.common.collect.Lists;
 
 import java.util.List;
@@ -48,7 +46,7 @@ public class TestHistory {
                 .orElse(null);
     }
 
-    public void add(Color color, Move move, List<Events> events) {
+    public void add(HeroColor color, Move move, List<Events> events) {
         if (events == null || events.size() == 0) {
             records.add(new Record(color, move));
         } else {
@@ -56,7 +54,7 @@ public class TestHistory {
         }
     }
 
-    public void add(Color color, Move move, Events... events) {
+    public void add(HeroColor color, Move move, Events... events) {
         records.add(new Record(color, move, events));
     }
 
@@ -68,17 +66,17 @@ public class TestHistory {
     }
 
     public static class Record {
-        private final Color color;
+        private final HeroColor color;
         private final Move move;
         private final List<Events> events;
 
-        private Record(Color color, Move move, Events... events) {
+        private Record(HeroColor color, Move move, Events... events) {
             this.color = color;
             this.move = move;
             this.events = Lists.newArrayList(events);
         }
 
-        public Color getColor() {
+        public HeroColor getColor() {
             return color;
         }
 
@@ -90,7 +88,6 @@ public class TestHistory {
             return events;
         }
 
-        @SuppressWarnings("unused")
         public boolean hasEvents() {
             return events.size() > 0;
         }

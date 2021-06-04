@@ -24,9 +24,10 @@ package com.codenjoy.dojo.chess.model;
 
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import com.codenjoy.dojo.services.Point;
-import com.codenjoy.dojo.services.PointImpl;
 
 import java.util.Objects;
+
+import static com.codenjoy.dojo.services.PointImpl.pt;
 
 public class Move {
 
@@ -63,7 +64,7 @@ public class Move {
     }
 
     public static Builder from(int x, int y) {
-        return from(new PointImpl(x, y));
+        return from(pt(x, y));
     }
 
     public static Builder from(Point from) {
@@ -89,7 +90,6 @@ public class Move {
         return this;
     }
 
-    @SuppressWarnings("UnusedReturnValue")
     public Move promotion(int pieceId) {
         return promotion(Piece.Type.byId(pieceId));
     }
@@ -121,7 +121,7 @@ public class Move {
         }
 
         public Move to(int x, int y) {
-            return to(new PointImpl(x, y));
+            return to(pt(x, y));
         }
 
         public Move to(Point to) {

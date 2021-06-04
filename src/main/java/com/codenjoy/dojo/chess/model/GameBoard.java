@@ -53,7 +53,7 @@ public class GameBoard {
         this.barriers = level.barriers();
         this.gameSets = new ArrayList<>();
 
-        for (Color color : level.presentedColors()) {
+        for (HeroColor color : level.presentedColors()) {
             List<Piece> pieces = Lists.newArrayList();
             for (Piece.Type pieceType : Piece.Type.values()) {
                 pieces.addAll(level.pieces(color, pieceType).stream()
@@ -64,7 +64,7 @@ public class GameBoard {
         }
     }
 
-    public boolean isAlive(Color color) {
+    public boolean isAlive(HeroColor color) {
         GameSet gameSet = getGameSet(color);
         if (gameSet == null) {
             throw new IllegalArgumentException("Game set with color " + color + " not exists");
@@ -72,7 +72,7 @@ public class GameBoard {
         return gameSet.isKingAlive();
     }
 
-    public boolean tryMove(Color color, Move move) {
+    public boolean tryMove(HeroColor color, Move move) {
         return getGameSet(color).makeMove(move);
     }
 
@@ -85,7 +85,7 @@ public class GameBoard {
                 .findAny();
     }
 
-    public boolean isUnderAttack(Point point, Color color) {
+    public boolean isUnderAttack(Point point, HeroColor color) {
         return gameSets.stream()
                 .filter(gameSet -> gameSet.getColor() != color)
                 .filter(GameSet::isKingAlive)
@@ -100,7 +100,7 @@ public class GameBoard {
         return !outOfBounds;
     }
 
-    public void die(Color color) {
+    public void die(HeroColor color) {
         gameSets.stream()
                 .filter(gameSet -> gameSet.getColor() == color)
                 .findAny()
@@ -111,7 +111,7 @@ public class GameBoard {
         return level.getSize();
     }
 
-    public List<Color> getColors() {
+    public List<HeroColor> getColors() {
         return gameSets.stream()
                 .map(GameSet::getColor)
                 .collect(toList());
@@ -132,7 +132,7 @@ public class GameBoard {
         return squares;
     }
 
-    public boolean isWinner(Color color) {
+    public boolean isWinner(HeroColor color) {
         List<Piece> enemyPieces = getEnemyPieces(color);
         List<GameSet> aliveSets = getAliveSets();
         return aliveSets.size() == 1
@@ -140,13 +140,13 @@ public class GameBoard {
                 && enemyPieces.size() == 0;
     }
 
-    private List<Piece> getEnemyPieces(Color color) {
+    private List<Piece> getEnemyPieces(HeroColor color) {
         return getAlivePieces().stream()
                 .filter(p -> p.getColor() != color)
                 .collect(toList());
     }
 
-    public List<Move> getAvailableMoves(Color color) {
+    public List<Move> getAvailableMoves(HeroColor color) {
         GameSet gameSet = getGameSet(color);
         if (!gameSet.isKingAlive()) {
             return Lists.newArrayList();
@@ -154,7 +154,7 @@ public class GameBoard {
         return gameSet.getAvailableMoves();
     }
 
-    public Move getLastMoveOf(Color color) {
+    public Move getLastMoveOf(HeroColor color) {
         GameSet gameSet = getGameSet(color);
         if (gameSet == null) {
             return null;
@@ -174,7 +174,7 @@ public class GameBoard {
                 .collect(toList());
     }
 
-    private GameSet getGameSet(Color color) {
+    private GameSet getGameSet(HeroColor color) {
         return gameSets.stream()
                 .filter(gameSet -> gameSet.getColor() == color)
                 .findAny()

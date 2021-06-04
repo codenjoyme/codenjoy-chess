@@ -22,9 +22,6 @@ package com.codenjoy.dojo.chess.model;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.model.Move;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +37,7 @@ public class GameHistory {
         this.records = records;
     }
 
-    public void add(Color color, Move move) {
+    public void add(HeroColor color, Move move) {
         add(new Record(color, move));
     }
 
@@ -48,7 +45,6 @@ public class GameHistory {
         records.add(record);
     }
 
-    @SuppressWarnings("unused")
     public Record getLastRecord() {
         return records.isEmpty() ? null : records.get(records.size() - 1);
     }
@@ -60,15 +56,15 @@ public class GameHistory {
 
     public static class Record {
 
-        private final Color color;
+        private final HeroColor color;
         private final Move move;
 
-        public Record(Color color, Move move) {
+        public Record(HeroColor color, Move move) {
             this.color = color;
             this.move = move;
         }
 
-        public Color getColor() {
+        public HeroColor getColor() {
             return color;
         }
 

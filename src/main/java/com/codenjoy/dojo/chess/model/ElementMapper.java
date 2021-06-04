@@ -22,20 +22,19 @@ package com.codenjoy.dojo.chess.model;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.model.Elements;
-import com.codenjoy.dojo.chess.model.Color;
+import com.codenjoy.dojo.games.chess.Element;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import java.util.Objects;
 
-import static com.codenjoy.dojo.chess.model.Elements.*;
-import static com.codenjoy.dojo.chess.model.Color.*;
+import static com.codenjoy.dojo.games.chess.Element.*;
+import static com.codenjoy.dojo.chess.model.HeroColor.*;
 import static com.codenjoy.dojo.chess.model.item.piece.Piece.Type.*;
 
 public class ElementMapper {
-    private static final BiMap<ColorAndType, Elements> elementsByColorAndType = HashBiMap.create();
+    private static final BiMap<ColorAndType, Element> elementsByColorAndType = HashBiMap.create();
 
     static {
         define(WHITE, KING, WHITE_KING);
@@ -67,35 +66,31 @@ public class ElementMapper {
         define(BLUE, PAWN, BLUE_PAWN);
     }
 
-    private static void define(Color color, Piece.Type type, Elements element) {
+    private static void define(HeroColor color, Piece.Type type, Element element) {
         elementsByColorAndType.put(new ColorAndType(color, type), element);
     }
 
-    @SuppressWarnings("unused")
-    public static Elements mapToElement(Piece piece) {
+    public static Element mapToElement(Piece piece) {
         return mapToElement(piece.getColor(), piece.getType());
     }
 
-    @SuppressWarnings("unused")
-    public static Elements mapToElement(Color color, Piece.Type type) {
+    public static Element mapToElement(HeroColor color, Piece.Type type) {
         return elementsByColorAndType.get(new ColorAndType(color, type));
     }
 
-    @SuppressWarnings("unused")
-    public static Color mapToColor(Elements element) {
+    public static HeroColor mapToColor(Element element) {
         return elementsByColorAndType.inverse().get(element).color;
     }
 
-    @SuppressWarnings("unused")
-    public static Piece.Type mapToPieceType(Elements element) {
+    public static Piece.Type mapToPieceType(Element element) {
         return elementsByColorAndType.inverse().get(element).type;
     }
 
     private static class ColorAndType {
-        private final Color color;
+        private final HeroColor color;
         private final Piece.Type type;
 
-        public ColorAndType(Color color, Piece.Type type) {
+        public ColorAndType(HeroColor color, Piece.Type type) {
             this.color = color;
             this.type = type;
         }

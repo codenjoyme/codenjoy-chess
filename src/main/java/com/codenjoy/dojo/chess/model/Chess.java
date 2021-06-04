@@ -41,19 +41,18 @@ import static java.util.stream.Collectors.toList;
 public class Chess implements Field {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Chess.class);
-    private static final Direction DEFAULT_ATTACK_DIRECTION = Color.WHITE.getAttackDirection();
+    private static final Direction DEFAULT_ATTACK_DIRECTION = HeroColor.WHITE.getAttackDirection();
 
-    @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private final Dice dice;
 
     private final List<Player> players = Lists.newLinkedList();
     private final GameHistory history = new GameHistory();
-    private final Set<Color> askedColors = new HashSet<>();
+    private final Set<HeroColor> askedColors = new HashSet<>();
     private final GameSettings settings;
     private final Rotator rotator;
     private final GameBoard board;
 
-    private Color currentColor;
+    private HeroColor currentColor;
 
     public Chess(Level level, Dice dice, GameSettings settings) {
         this.dice = dice;
@@ -61,7 +60,7 @@ public class Chess implements Field {
         this.board = new GameBoard(level);
         this.rotator = new Rotator(board.getSize());
         this.currentColor = getColors().stream()
-                .min(Comparator.comparingInt(Color::getPriority))
+                .min(Comparator.comparingInt(HeroColor::getPriority))
                 .orElseThrow(() -> new IllegalArgumentException("Level " + level + " is invalid"));
     }
 
@@ -69,7 +68,7 @@ public class Chess implements Field {
         return askedColors.contains(player.getColor());
     }
 
-    public void colorAnswered(Color color) {
+    public void colorAnswered(HeroColor color) {
         askedColors.remove(color);
     }
 
@@ -79,7 +78,7 @@ public class Chess implements Field {
             return;
         }
 
-        List<Color> aliveBeforeTick = getAlivePlayers().stream()
+        List<HeroColor> aliveBeforeTick = getAlivePlayers().stream()
                 .map(Player::getColor)
                 .collect(toList());
         Player player = getPlayer(currentColor);
@@ -153,16 +152,16 @@ public class Chess implements Field {
                 .collect(toList());
     }
 
-    public Color getCurrentColor() {
+    public HeroColor getCurrentColor() {
         return currentColor;
     }
 
-    public List<Color> getColors() {
+    public List<HeroColor> getColors() {
         return board.getColors();
     }
 
-    public Color getAvailableColor() {
-        List<Color> used = getUsedColors();
+    public HeroColor getAvailableColor() {
+        List<HeroColor> used = getUsedColors();
         return board.getColors().stream()
                 .filter(color -> !used.contains(color))
                 .sorted()
@@ -176,7 +175,7 @@ public class Chess implements Field {
 
     // TODO test me
     private void checkStalemate() {
-        List<Color> marked = Lists.newArrayList();
+        List<HeroColor> marked = Lists.newArrayList();
         while (currentColor != null && board.getAvailableMoves(currentColor).isEmpty()) {
             if (settings.waitUntilMakeAMove()) {
                 getPlayer(currentColor).gameOver();
@@ -192,11 +191,11 @@ public class Chess implements Field {
         }
     }
 
-    private void checkGameOvers(List<Color> aliveBeforeTick) {
-        List<Color> alive = getAlivePlayers().stream()
+    private void checkGameOvers(List<HeroColor> aliveBeforeTick) {
+        List<HeroColor> alive = getAlivePlayers().stream()
                 .map(Player::getColor)
                 .collect(toList());
-        Collection<Color> died = CollectionUtils.subtract(aliveBeforeTick, alive);
+        Collection<HeroColor> died = CollectionUtils.subtract(aliveBeforeTick, alive);
         died.forEach(color -> getPlayer(color).event(Events.GAME_OVER));
     }
 
@@ -207,14 +206,14 @@ public class Chess implements Field {
         }
     }
 
-    private List<Color> getUsedColors() {
+    private List<HeroColor> getUsedColors() {
         return players.stream()
                 .map(Player::getColor)
                 .filter(Objects::nonNull)
                 .collect(toList());
     }
 
-    private Player getPlayer(Color color) {
+    private Player getPlayer(HeroColor color) {
         return players.stream()
                 .filter(p -> p.getColor() == color)
                 .findAny()
@@ -225,7 +224,7 @@ public class Chess implements Field {
         return DEFAULT_ATTACK_DIRECTION;
     }
 
-    private Color nextColor() {
+    private HeroColor nextColor() {
         List<Player> alivePlayers = getAlivePlayers();
         if (alivePlayers.isEmpty()) {
             return null;

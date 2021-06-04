@@ -23,7 +23,7 @@ package com.codenjoy.dojo.chess.model.item.piece;
  */
 
 
-import com.codenjoy.dojo.chess.model.Color;
+import com.codenjoy.dojo.chess.model.HeroColor;
 import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.chess.model.GameBoard;
 import com.codenjoy.dojo.services.Direction;
@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 public class Pawn extends Piece {
     private static final int LINE_OF_PROMOTION = 7;
 
-    public Pawn(Color color, GameBoard board, Point position) {
+    public Pawn(HeroColor color, GameBoard board, Point position) {
         super(Type.PAWN, color, board, position);
     }
 
@@ -101,7 +101,7 @@ public class Pawn extends Piece {
      */
     public static List<Move> availableMoves(GameBoard board,
                                             Point position,
-                                            Color color,
+                                            HeroColor color,
                                             boolean moved,
                                             Direction attackDirection) {
         List<Move> moves = Lists.newArrayList();
@@ -154,7 +154,7 @@ public class Pawn extends Piece {
      * @return all available attack moves
      */
     // TODO 2x2 should not take pieces of friendly color
-    private static List<Move> attackMoves(GameBoard board, Point position, Direction attackDirection, Color color) {
+    private static List<Move> attackMoves(GameBoard board, Point position, Direction attackDirection, HeroColor color) {
         List<Move> moves = Lists.newArrayList();
         attackMove(board, position, attackDirection, color, true).ifPresent(moves::add);
         attackMove(board, position, attackDirection, color, false).ifPresent(moves::add);
@@ -178,7 +178,7 @@ public class Pawn extends Piece {
      * @param clockwise       should method checks clockwise diagonal step or counterclockwise
      * @return move if enemy's piece can be taken or Optional.empty() otherwise
      */
-    private static Optional<Move> attackMove(GameBoard board, Point position, Direction attackDirection, Color color, boolean clockwise) {
+    private static Optional<Move> attackMove(GameBoard board, Point position, Direction attackDirection, HeroColor color, boolean clockwise) {
         Point destination = attackDirection.change(position);
         destination = clockwise
                 ? attackDirection.clockwise().change(destination)
@@ -204,7 +204,7 @@ public class Pawn extends Piece {
      * @param color           a color of the pawn
      * @return all available "en passant" moves
      */
-    private static List<Move> enPassants(GameBoard board, Point position, Direction attackDirection, Color color) {
+    private static List<Move> enPassants(GameBoard board, Point position, Direction attackDirection, HeroColor color) {
         List<Move> enPassants = Lists.newArrayList();
         enPassant(board, position, attackDirection, color, true).ifPresent(enPassants::add);
         enPassant(board, position, attackDirection, color, false).ifPresent(enPassants::add);
@@ -213,7 +213,7 @@ public class Pawn extends Piece {
 
     /**
      * The method calculates is there an "en passant" move in specific direction.
-     * Look {@link Pawn#attackMove(GameBoard, Point, Direction, Color, boolean)}
+     * Look {@link Pawn#attackMove(GameBoard, Point, Direction, HeroColor, boolean)}
      * for clarification about clockwise parameter.
      *
      * @param board           a chess board
@@ -223,7 +223,7 @@ public class Pawn extends Piece {
      * @param clockwise       should method checks clockwise diagonal "en passant" or counterclockwise
      * @return move if "en passant" in this direction is able, Optional.empty() otherwise
      */
-    private static Optional<Move> enPassant(GameBoard board, Point position, Direction attackDirection, Color color, boolean clockwise) {
+    private static Optional<Move> enPassant(GameBoard board, Point position, Direction attackDirection, HeroColor color, boolean clockwise) {
         boolean enPassantAvailable = board.getColors().stream()
                 .filter(c -> !c.equals(color))
                 .map(board::getLastMoveOf)

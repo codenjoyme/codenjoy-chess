@@ -25,38 +25,39 @@ package com.codenjoy.dojo.chess.model;
 import com.codenjoy.dojo.chess.model.item.Barrier;
 import com.codenjoy.dojo.chess.model.item.Square;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
+import com.codenjoy.dojo.games.chess.Element;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.State;
 
-public class ReaderElement extends PointImpl implements State<Elements, Player> {
-    private final Elements element;
+public class ReaderElement extends PointImpl implements State<Element, Player> {
+    private final Element element;
 
     public static ReaderElement create(Piece piece) {
         Point position = piece.getPosition();
-        Elements element = ElementMapper.mapToElement(piece);
+        Element element = ElementMapper.mapToElement(piece);
         return new ReaderElement(position, element);
     }
 
     public static ReaderElement create(Square square) {
-        return new ReaderElement(square.getPosition(), Elements.SQUARE);
+        return new ReaderElement(square.getPosition(), Element.SQUARE);
     }
 
     public static ReaderElement create(Barrier barrier) {
-        return new ReaderElement(barrier.getPosition(), Elements.BARRIER);
+        return new ReaderElement(barrier.getPosition(), Element.BARRIER);
     }
 
     public ReaderElement copy() {
         return new ReaderElement(new PointImpl(x, y), element);
     }
 
-    public ReaderElement(Point position, Elements element) {
+    public ReaderElement(Point position, Element element) {
         super(position);
         this.element = element;
     }
 
     @Override
-    public Elements state(Player player, Object... alsoAtPoint) {
+    public Element state(Player player, Object... alsoAtPoint) {
         return element;
     }
 }

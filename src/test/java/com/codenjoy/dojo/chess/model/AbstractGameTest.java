@@ -48,9 +48,8 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
-@SuppressWarnings({"rawtypes", "unused", "unchecked", "SpellCheckingInspection"})
 public abstract class AbstractGameTest {
-    private final Map<Color, Player> players = new LinkedHashMap<>();
+    private final Map<HeroColor, Player> players = new LinkedHashMap<>();
     private final Map<Player, EventListener> listeners = new LinkedHashMap<>();
 
     private String board;
@@ -119,7 +118,7 @@ public abstract class AbstractGameTest {
         }
     }
 
-    protected void neverFired(Color color, Events event) {
+    protected void neverFired(HeroColor color, Events event) {
         EventListener eventListener = listeners.get(players.get(color));
         verify(eventListener, never()).event(event);
     }
@@ -130,16 +129,16 @@ public abstract class AbstractGameTest {
         }
     }
 
-    protected void fired(Color color, int times, Events event) {
+    protected void fired(HeroColor color, int times, Events event) {
         EventListener eventListener = listeners.get(players.get(color));
         verify(eventListener, times(times)).event(event);
     }
 
-    protected void fired(Color color, Events event) {
+    protected void fired(HeroColor color, Events event) {
         fired(color, 1, event);
     }
 
-    protected void fired(Color color, Events... events) {
+    protected void fired(HeroColor color, Events... events) {
         ArgumentCaptor<Events> captor = ArgumentCaptor.forClass(Events.class);
         EventListener eventListener = listeners.get(players.get(color));
         verify(eventListener, times(events.length)).event(captor.capture());
@@ -162,33 +161,33 @@ public abstract class AbstractGameTest {
     }
 
     protected void assertE(String expected) {
-        assertE(expected, Color.WHITE);
+        assertE(expected, HeroColor.WHITE);
     }
 
-    protected void assertE(String expected, Color playerColor) {
+    protected void assertE(String expected, HeroColor playerColor) {
         assertEquals(expected, getBoardState(playerColor));
     }
 
-    protected void act(Color color, int... codes) {
+    protected void act(HeroColor color, int... codes) {
         act(color, true, codes);
     }
 
-    protected void act(Color color,  boolean withTick, int... codes) {
+    protected void act(HeroColor color, boolean withTick, int... codes) {
         players.get(color).getHero().act(codes);
         if (withTick) {
             game.tick();
         }
     }
 
-    protected void move(Color color, Move move) {
+    protected void move(HeroColor color, Move move) {
         move(color, move, true, true);
     }
 
-    protected void move(Color color, Move move, boolean withTick) {
+    protected void move(HeroColor color, Move move, boolean withTick) {
         move(color, move, true, withTick);
     }
 
-    protected void move(Color color, final Move move, boolean notRotatedBoard, boolean withTick) {
+    protected void move(HeroColor color, final Move move, boolean notRotatedBoard, boolean withTick) {
         Move action = move;
         if (notRotatedBoard) {
             Rotator rotator = game.getRotator();
@@ -235,7 +234,7 @@ public abstract class AbstractGameTest {
         return game.getBoard().getSize();
     }
 
-    protected String getBoardState(Color color) {
+    protected String getBoardState(HeroColor color) {
         return (String) printerFactory.getPrinter(
                 game.reader(), players.get(color)).print();
     }

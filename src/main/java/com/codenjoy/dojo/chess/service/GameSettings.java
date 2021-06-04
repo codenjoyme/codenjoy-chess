@@ -34,7 +34,6 @@ import java.util.List;
 
 import static com.codenjoy.dojo.chess.service.GameSettings.Option.*;
 
-@SuppressWarnings("unused")
 public class GameSettings extends SettingsImpl implements SettingsReader<GameSettings> {
 
     @Override

@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.client;
+package com.codenjoy.dojo.chess.model;
 
 /*-
  * #%L
@@ -22,6 +22,27 @@ package com.codenjoy.dojo.chess.client;
  * #L%
  */
 
-public enum Color {
-    WHITE, BLACK, RED, BLUE
+import com.codenjoy.dojo.services.Direction;
+
+public enum HeroColor {
+    WHITE   (0, Direction.UP),
+    BLACK   (2, Direction.DOWN),
+    RED     (1, Direction.RIGHT),
+    BLUE    (3, Direction.LEFT);
+
+    private final int priority;
+    private final Direction attackDirection;
+
+    HeroColor(int priority, Direction attackDirection) {
+        this.priority = priority;
+        this.attackDirection = attackDirection;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public Direction getAttackDirection() {
+        return attackDirection;
+    }
 }

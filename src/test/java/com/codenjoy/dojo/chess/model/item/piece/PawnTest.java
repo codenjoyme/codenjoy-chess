@@ -22,23 +22,22 @@ package com.codenjoy.dojo.chess.model.item.piece;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.model.Elements;
+import com.codenjoy.dojo.games.chess.Element;
 import com.codenjoy.dojo.chess.model.AbstractPieceTest;
 import com.codenjoy.dojo.services.PointImpl;
 import org.fest.util.Arrays;
 import org.junit.Test;
 
-import static com.codenjoy.dojo.chess.model.Color.*;
+import static com.codenjoy.dojo.chess.model.HeroColor.*;
 import static com.codenjoy.dojo.chess.model.Move.from;
 import static com.codenjoy.dojo.chess.service.Events.WRONG_MOVE;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-@SuppressWarnings("SpellCheckingInspection")
 public class PawnTest extends AbstractPieceTest {
 
     public PawnTest() {
-        super(Elements.WHITE_PAWN);
+        super(Element.WHITE_PAWN);
     }
 
     @Override

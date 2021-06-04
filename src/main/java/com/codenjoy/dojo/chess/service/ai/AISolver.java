@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.chess.client.ai;
+package com.codenjoy.dojo.chess.service.ai;
 
 /*-
  * #%L
@@ -22,15 +22,11 @@ package com.codenjoy.dojo.chess.client.ai;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.client.Board;
-import com.codenjoy.dojo.chess.model.Color;
-import com.codenjoy.dojo.chess.model.Move;
+import com.codenjoy.dojo.chess.model.*;
 import com.codenjoy.dojo.chess.model.item.piece.Pawn;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
-import com.codenjoy.dojo.chess.model.Chess;
-import com.codenjoy.dojo.chess.model.GameBoard;
-import com.codenjoy.dojo.chess.model.Rotator;
 import com.codenjoy.dojo.client.Solver;
+import com.codenjoy.dojo.games.chess.Board;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.LengthToXY;
@@ -50,7 +46,7 @@ public class AISolver implements Solver<Board> {
     private final Dice dice;
 
     private GameBoard board;
-    private Color color;
+    private HeroColor color;
     private String state;
 
     public AISolver(Dice dice) {
@@ -65,8 +61,7 @@ public class AISolver implements Solver<Board> {
      * so that it returns to the same position as on the server.
      * This will allow you to use server-side code to simplify the writing of this solver.
      */
-    @SuppressWarnings("SuspiciousNameCombination")
-    private static String rotate(Color color, String board) {
+    private static String rotate(HeroColor color, String board) {
         int times = Rotator.countRotationTimes(SOLVER_ATTACK_DIRECTION, color.getAttackDirection());
         String map = LevelUtils.clear(board);
         if (times == 0) {
@@ -191,7 +186,6 @@ public class AISolver implements Solver<Board> {
         return Move.from(from).to(to).promotion(move.getPromotion());
     }
 
-    @SuppressWarnings("DuplicatedCode")
     private boolean notCastling(Move move) {
         Piece piece1 = board.getPieceAt(move.getFrom()).orElse(null);
         Piece piece2 = board.getPieceAt(move.getTo()).orElse(null);
@@ -214,7 +208,7 @@ public class AISolver implements Solver<Board> {
         return !move.withPromotion();
     }
 
-    private List<Piece> getPieces(Color color) {
+    private List<Piece> getPieces(HeroColor color) {
         return board.getPieces().stream()
                 .filter(p -> p.getColor() == color)
                 .collect(Collectors.toList());

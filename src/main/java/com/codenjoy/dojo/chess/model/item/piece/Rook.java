@@ -23,7 +23,7 @@ package com.codenjoy.dojo.chess.model.item.piece;
  */
 
 
-import com.codenjoy.dojo.chess.model.Color;
+import com.codenjoy.dojo.chess.model.HeroColor;
 import com.codenjoy.dojo.chess.model.Move;
 import com.codenjoy.dojo.chess.model.GameBoard;
 import com.codenjoy.dojo.services.Direction;
@@ -40,7 +40,7 @@ import static com.codenjoy.dojo.services.Direction.*;
 // https://en.wikipedia.org/wiki/Rook_(chess)
 public class Rook extends Piece {
 
-    public Rook(Color color, GameBoard board, Point position) {
+    public Rook(HeroColor color, GameBoard board, Point position) {
         super(Type.ROOK, color, board, position);
     }
 
@@ -54,7 +54,7 @@ public class Rook extends Piece {
      * @param color    a color of the bishop
      * @return all available moves
      */
-    public static List<Move> availableMoves(GameBoard board, Point position, Color color) {
+    public static List<Move> availableMoves(GameBoard board, Point position, HeroColor color) {
         return Stream.of(LEFT, UP, RIGHT, DOWN)
                 .map(direction -> movesInQDirection(board, position, color, toQDirection(direction)))
                 .flatMap(Collection::stream)

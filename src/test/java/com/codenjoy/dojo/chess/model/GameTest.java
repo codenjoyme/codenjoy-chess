@@ -26,14 +26,13 @@ package com.codenjoy.dojo.chess.model;
 import com.codenjoy.dojo.chess.service.GameSettings;
 import org.junit.Test;
 
-import static com.codenjoy.dojo.chess.model.Color.BLACK;
-import static com.codenjoy.dojo.chess.model.Color.WHITE;
+import static com.codenjoy.dojo.chess.model.HeroColor.BLACK;
 import static com.codenjoy.dojo.chess.model.Move.from;
+import static com.codenjoy.dojo.chess.model.HeroColor.WHITE;
 import static com.codenjoy.dojo.chess.service.Events.*;
 import static com.codenjoy.dojo.chess.service.GameSettings.Option.LAST_PLAYER_STAYS;
 import static org.junit.Assert.assertEquals;
 
-@SuppressWarnings("SpellCheckingInspection")
 public class GameTest extends AbstractGameTest {
 
     @Test

@@ -40,13 +40,13 @@ public class Hero extends PlayerHero<Field> implements NoDirectionJoystick {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Hero.class);
 
-    private final Color color;
+    private final HeroColor color;
     private final List<Events> events = new ArrayList<>();
     private boolean askedForColor = false;
     private Move lastMove;
     private Move action;
 
-    public Hero(Color color) {
+    public Hero(HeroColor color) {
         this.color = color;
     }
 
@@ -129,7 +129,7 @@ public class Hero extends PlayerHero<Field> implements NoDirectionJoystick {
         }
     }
 
-    public Color getColor() {
+    public HeroColor getColor() {
         return color;
     }
 

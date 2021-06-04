@@ -34,5 +34,4 @@ public enum Events {
     ROOK_TAKEN,
     KNIGHT_TAKEN,
     PAWN_TAKEN
-    ;
 }

@@ -24,7 +24,7 @@ package com.codenjoy.dojo.chess.model;
 
 import org.junit.Test;
 
-import static com.codenjoy.dojo.chess.model.Color.*;
+import static com.codenjoy.dojo.chess.model.HeroColor.*;
 import static com.codenjoy.dojo.chess.model.Move.*;
 
 /**
