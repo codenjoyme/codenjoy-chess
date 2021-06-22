@@ -1,4 +1,4 @@
 /.idea/
-/chess-engine.iml
+*.iml
 /target/
 /src/main/webapp/resources/user/
