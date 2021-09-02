@@ -46,7 +46,7 @@ public class SmokeTest {
     public void testClassicChessBoard() {
         Dice dice = LocalGameRunner.getDice("435874345435874365843564398", 100, 200);
 
-        // about 5.2 sec
+        // about 1.5 sec
         int players = 2;
         int ticks = 1000;
 
@@ -81,7 +81,7 @@ public class SmokeTest {
     public void testClassicFourPlayerChessBoard() {
         Dice dice = LocalGameRunner.getDice("435874345435874365843564398", 100, 200);
 
-        // about 2 sec
+        // about 9 sec
         int players = 4;
         int ticks = 1000;
 

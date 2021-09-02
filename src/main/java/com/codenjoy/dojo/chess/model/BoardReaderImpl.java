@@ -29,6 +29,7 @@ import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class BoardReaderImpl implements com.codenjoy.dojo.services.printer.BoardReader<Player> {
@@ -45,7 +46,7 @@ public class BoardReaderImpl implements com.codenjoy.dojo.services.printer.Board
     }
 
     @Override
-    public Iterable<? extends Point> elements(Player player) {
+    public void addAll(Player player, Consumer<Iterable<? extends Point>> processor) {
         GameBoard board = game.getBoard();
 
         List<ReaderElement> pieces = board.getPieces().stream()
@@ -75,6 +76,6 @@ public class BoardReaderImpl implements com.codenjoy.dojo.services.printer.Board
         Direction directionTo = Chess.getDefaultAttackDirection();
         elements.forEach(e -> rotator.mapPosition(e, directionFrom, directionTo));
 
-        return elements;
+        processor.accept(elements);
     }
 }
