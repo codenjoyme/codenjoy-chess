@@ -108,7 +108,7 @@ public class GameBoard {
     }
 
     public int getSize() {
-        return level.getSize();
+        return level.size();
     }
 
     public List<HeroColor> getColors() {

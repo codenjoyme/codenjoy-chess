@@ -31,6 +31,7 @@ import com.codenjoy.dojo.games.chess.Element;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import com.codenjoy.dojo.services.LengthToXY;
 import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.field.AbstractLevel;
 import com.codenjoy.dojo.utils.LevelUtils;
 import com.google.common.collect.Lists;
 
@@ -43,22 +44,14 @@ import java.util.stream.Collectors;
 import static com.codenjoy.dojo.games.chess.Element.BARRIER;
 import static com.codenjoy.dojo.games.chess.Element.SQUARE;
 
-public class Level {
-
-    private final LengthToXY xy;
-    private final String map;
+public class Level extends AbstractLevel {
 
     public Level(String map) {
-        this.map = LevelUtils.clear(map);
-        xy = new LengthToXY(getSize());
-    }
-
-    public int getSize() {
-        return (int) Math.sqrt(map.length());
+        super(map);
     }
 
     public List<Point> pieces(HeroColor color, Piece.Type type) {
-        return LevelUtils.getObjects(xy, map, Function.identity(), ElementMapper.mapToElement(color, type));
+        return find(Function.identity(), ElementMapper.mapToElement(color, type));
     }
 
     public List<HeroColor> presentedColors() {
@@ -74,17 +67,13 @@ public class Level {
     }
 
     public List<Square> squares() {
-        List<Point> squares = LevelUtils.getObjects(xy, map, Function.identity(), SQUARE);
-        List<Point> pieces = LevelUtils.getObjects(xy, map, Function.identity(), Element.pieces());
-        squares.addAll(pieces);
-        return squares.stream()
-                .map(Square::new)
-                .collect(Collectors.toList());
+        List<Square> result = new LinkedList<>();
+        result.addAll(find(Square::new, SQUARE));
+        result.addAll(find(Square::new, Element.pieces()));
+        return result;
     }
 
     public List<Barrier> barriers() {
-        return LevelUtils.getObjects(xy, map, Function.identity(), BARRIER).stream()
-                .map(Barrier::new)
-                .collect(Collectors.toList());
+        return find(Barrier::new, BARRIER);
     }
 }
