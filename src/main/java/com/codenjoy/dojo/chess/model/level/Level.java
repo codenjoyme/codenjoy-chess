@@ -67,10 +67,10 @@ public class Level extends AbstractLevel {
     }
 
     public List<Square> squares() {
-        List<Square> result = new LinkedList<>();
-        result.addAll(find(Square::new, SQUARE));
-        result.addAll(find(Square::new, Element.pieces()));
-        return result;
+        return new LinkedList<>(){{
+            addAll(find(Square::new, SQUARE));
+            addAll(find(Square::new, Element.pieces()));
+        }};
     }
 
     public List<Barrier> barriers() {
