@@ -23,40 +23,46 @@ package com.codenjoy.dojo.chess;
  */
 
 
-import com.codenjoy.dojo.games.chess.Board;
-import com.codenjoy.dojo.chess.service.ai.AISolver;
 import com.codenjoy.dojo.chess.model.level.Levels;
 import com.codenjoy.dojo.chess.service.GameRunner;
 import com.codenjoy.dojo.chess.service.GameSettings;
+import com.codenjoy.dojo.chess.service.ai.AISolver;
 import com.codenjoy.dojo.client.Solver;
-import com.codenjoy.dojo.client.local.LocalGameRunner;
+import com.codenjoy.dojo.games.chess.Board;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.utils.Smoke;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 import static com.codenjoy.dojo.chess.service.GameSettings.Option.*;
-import static java.util.stream.Collectors.toList;
 
 public class SmokeTest {
 
+    private Smoke smoke;
+    private Dice dice;
+    private Supplier<Solver> solver;
+
+    @Before
+    public void setup() {
+        smoke = new Smoke();
+        dice = smoke.dice();
+
+        solver = () -> new AISolver(dice);
+
+        smoke.settings().removeWhenWin(true);
+        smoke.settings().removeWhenGameOver(true);
+        smoke.settings().reloadPlayersWhenGameOverAll(true);
+    }
+
     @Test
     public void testClassicChessBoard() {
-        Dice dice = LocalGameRunner.getDice("435874345435874365843564398", 100, 200);
-
         // about 1.5 sec
         int players = 2;
         int ticks = 1000;
 
-        Supplier<Solver> solver = () -> new AISolver(dice);
-
-        LocalGameRunner.removeWhenWin = true;
-        LocalGameRunner.removeWhenGameOver = true;
-        LocalGameRunner.reloadPlayersWhenGameOverAll = true;
-
-        Smoke.play(ticks, "SmokeTestClassicChessBoard.data",
+        smoke.play(ticks, "SmokeTestClassicChessBoard.data",
                 new GameRunner() {
                     @Override
                     public Dice getDice() {
@@ -71,27 +77,16 @@ public class SmokeTest {
                                 .string(LEVEL_MAP, Levels.classicChessBoard());
                     }
                 },
-                Stream.generate(solver)
-                        .limit(players).collect(toList()),
-                Stream.generate(() -> new Board())
-                        .limit(players).collect(toList()));
+                players, solver, Board::new);
     }
 
     @Test
     public void testClassicFourPlayerChessBoard() {
-        Dice dice = LocalGameRunner.getDice("435874345435874365843564398", 100, 200);
-
         // about 9 sec
         int players = 4;
         int ticks = 1000;
 
-        Supplier<Solver> solver = () -> new AISolver(dice);
-
-        LocalGameRunner.removeWhenWin = true;
-        LocalGameRunner.removeWhenGameOver = true;
-        LocalGameRunner.reloadPlayersWhenGameOverAll = true;
-
-        Smoke.play(ticks, "SmokeTestClassicFourPlayerChessBoard.data",
+        smoke.play(ticks, "SmokeTestClassicFourPlayerChessBoard.data",
                 new GameRunner() {
                     @Override
                     public Dice getDice() {
@@ -106,9 +101,6 @@ public class SmokeTest {
                                 .string(LEVEL_MAP, Levels.classicFourPlayerChessBoard());
                     }
                 },
-                Stream.generate(solver)
-                        .limit(players).collect(toList()),
-                Stream.generate(() -> new Board())
-                        .limit(players).collect(toList()));
+                players, solver, Board::new);
     }
 }
