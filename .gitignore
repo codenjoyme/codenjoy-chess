@@ -1,5 +1,5 @@
 /.idea/
 *.iml
 /target/
-/src/main/webapp/resources/user/
+/src/main/webapp/resources/**/user/
 /**/pitest/**
