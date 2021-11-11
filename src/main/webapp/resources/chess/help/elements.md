@@ -3,30 +3,30 @@
 ## Symbol breakdown
 | Sprite | Code | Description |
 | -------- | -------- | -------- |
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/square.png" style="width:40px;" /> | `SQUARE('.')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/barrier.png" style="width:40px;" /> | `BARRIER(' ')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/white_king.png" style="width:40px;" /> | `WHITE_KING('W')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/white_queen.png" style="width:40px;" /> | `WHITE_QUEEN('Q')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/white_rook.png" style="width:40px;" /> | `WHITE_ROOK('R')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/white_bishop.png" style="width:40px;" /> | `WHITE_BISHOP('B')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/white_knight.png" style="width:40px;" /> | `WHITE_KNIGHT('K')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/white_pawn.png" style="width:40px;" /> | `WHITE_PAWN('P')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/black_king.png" style="width:40px;" /> | `BLACK_KING('w')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/black_queen.png" style="width:40px;" /> | `BLACK_QUEEN('q')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/black_rook.png" style="width:40px;" /> | `BLACK_ROOK('r')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/black_bishop.png" style="width:40px;" /> | `BLACK_BISHOP('b')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/black_knight.png" style="width:40px;" /> | `BLACK_KNIGHT('k')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/black_pawn.png" style="width:40px;" /> | `BLACK_PAWN('p')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/red_king.png" style="width:40px;" /> | `RED_KING('Y')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/red_queen.png" style="width:40px;" /> | `RED_QUEEN('X')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/red_rook.png" style="width:40px;" /> | `RED_ROOK('I')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/red_bishop.png" style="width:40px;" /> | `RED_BISHOP('G')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/red_knight.png" style="width:40px;" /> | `RED_KNIGHT('L')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/red_pawn.png" style="width:40px;" /> | `RED_PAWN('Z')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/blue_king.png" style="width:40px;" /> | `BLUE_KING('y')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/blue_queen.png" style="width:40px;" /> | `BLUE_QUEEN('x')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/blue_rook.png" style="width:40px;" /> | `BLUE_ROOK('i')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/blue_bishop.png" style="width:40px;" /> | `BLUE_BISHOP('g')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/blue_knight.png" style="width:40px;" /> | `BLUE_KNIGHT('l')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/blue_pawn.png" style="width:40px;" /> | `BLUE_PAWN('z')` |  | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/background.png" style="width:40px;" /> | `BACKGROUND('-')` |  | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/square.png" style="width:40px;" /> | `SQUARE('.')` | . | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/barrier.png" style="width:40px;" /> | `BARRIER(' ')` | . | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/white_king.png" style="width:40px;" /> | `WHITE_KING('W')` | Король белых. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/white_queen.png" style="width:40px;" /> | `WHITE_QUEEN('Q')` | Ферзь белых. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/white_rook.png" style="width:40px;" /> | `WHITE_ROOK('R')` | Ладья белых. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/white_bishop.png" style="width:40px;" /> | `WHITE_BISHOP('B')` | Слон белых. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/white_knight.png" style="width:40px;" /> | `WHITE_KNIGHT('K')` | Конь белых. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/white_pawn.png" style="width:40px;" /> | `WHITE_PAWN('P')` | Пешка белых. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/black_king.png" style="width:40px;" /> | `BLACK_KING('w')` | Король черных. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/black_queen.png" style="width:40px;" /> | `BLACK_QUEEN('q')` | Ферзь черных. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/black_rook.png" style="width:40px;" /> | `BLACK_ROOK('r')` | Ладья черных. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/black_bishop.png" style="width:40px;" /> | `BLACK_BISHOP('b')` | Слон черных. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/black_knight.png" style="width:40px;" /> | `BLACK_KNIGHT('k')` | Конь черных. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/black_pawn.png" style="width:40px;" /> | `BLACK_PAWN('p')` | Пешка черных. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/red_king.png" style="width:40px;" /> | `RED_KING('Y')` | Король красных. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/red_queen.png" style="width:40px;" /> | `RED_QUEEN('X')` | Ферзь красных. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/red_rook.png" style="width:40px;" /> | `RED_ROOK('I')` | Ладья красных. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/red_bishop.png" style="width:40px;" /> | `RED_BISHOP('G')` | Слон красных. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/red_knight.png" style="width:40px;" /> | `RED_KNIGHT('L')` | Конь красных. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/red_pawn.png" style="width:40px;" /> | `RED_PAWN('Z')` | Пешка красных. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/blue_king.png" style="width:40px;" /> | `BLUE_KING('y')` | Король синих. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/blue_queen.png" style="width:40px;" /> | `BLUE_QUEEN('x')` | Ферзь синих. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/blue_rook.png" style="width:40px;" /> | `BLUE_ROOK('i')` | Ладья синих. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/blue_bishop.png" style="width:40px;" /> | `BLUE_BISHOP('g')` | Слон синих. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/blue_knight.png" style="width:40px;" /> | `BLUE_KNIGHT('l')` | Конь синих. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/blue_pawn.png" style="width:40px;" /> | `BLUE_PAWN('z')` | Пешка синих. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/background.png" style="width:40px;" /> | `BACKGROUND('-')` | Системный спрайт - изображение шахматной доски. | 
