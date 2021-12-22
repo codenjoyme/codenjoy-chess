@@ -43,21 +43,21 @@ public class GameSettings extends SettingsImpl implements SettingsReader<GameSet
 
     public enum Option implements Key {
 
-        LEVEL_MAP("Level map"),
-        GAME_OVER_IF_WRONG_MOVE("Game over if tried to make wrong move"),
-        WAIT_UNTIL_MAKE_A_MOVE("Wait a player's move if not responds in time"),
-        LAST_PLAYER_STAYS("Last alive player continues to play"),
+        LEVEL_MAP("[Level] Level map"),
+        GAME_OVER_IF_WRONG_MOVE("[Game] Game over if tried to make wrong move"),
+        WAIT_UNTIL_MAKE_A_MOVE("[Game] Wait a player's move if not responds in time"),
+        LAST_PLAYER_STAYS("[Game] Last alive player continues to play"),
 
-        VICTORY_REWARD("Victory reward"),
-        WRONG_MOVE_PENALTY("Wrong move penalty"),
-        GAME_OVER_PENALTY("Game over penalty"),
+        WIN_SCORE("[Score] Victory reward"),
+        WRONG_MOVE_PENALTY("[Score] Wrong move penalty"),
+        GAME_OVER_PENALTY("[Score] Game over penalty"),
 
-        KING_WORTH("The worth of king piece"),
-        QUEEN_WORTH("The worth of queen piece"),
-        BISHOP_WORTH("The worth of bishop piece"),
-        ROOK_WORTH("The worth of rook piece"),
-        KNIGHT_WORTH("The worth of knight piece"),
-        PAWN_WORTH("The worth of pawn piece");
+        KING_WORTH("[Score] King piece worth"),
+        QUEEN_WORTH("[Score] Queen piece worth"),
+        BISHOP_WORTH("[Score] Bishop piece worth"),
+        ROOK_WORTH("[Score] Rook piece worth"),
+        KNIGHT_WORTH("[Score] Knight piece worth"),
+        PAWN_WORTH("[Score] Pawn piece worth");
 
         private final String key;
 
@@ -76,9 +76,9 @@ public class GameSettings extends SettingsImpl implements SettingsReader<GameSet
         bool(WAIT_UNTIL_MAKE_A_MOVE, false);
         bool(LAST_PLAYER_STAYS, true);
 
-        integer(VICTORY_REWARD, 100);
-        integer(WRONG_MOVE_PENALTY, 0);
-        integer(GAME_OVER_PENALTY, 10);
+        integer(WIN_SCORE, 100);
+        integer(WRONG_MOVE_PENALTY, -0);
+        integer(GAME_OVER_PENALTY, -10);
 
         integer(KING_WORTH, 20);
         integer(QUEEN_WORTH, 9);
@@ -102,8 +102,8 @@ public class GameSettings extends SettingsImpl implements SettingsReader<GameSet
         return bool(WAIT_UNTIL_MAKE_A_MOVE);
     }
 
-    public int victoryReward() {
-        return integer(VICTORY_REWARD);
+    public int victoryScore() {
+        return integer(WIN_SCORE);
     }
 
     public int wrongMovePenalty() {

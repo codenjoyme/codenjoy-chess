@@ -27,7 +27,7 @@ import org.junit.Test;
 import static com.codenjoy.dojo.chess.model.HeroColor.BLACK;
 import static com.codenjoy.dojo.chess.model.HeroColor.WHITE;
 import static com.codenjoy.dojo.chess.model.Move.from;
-import static com.codenjoy.dojo.chess.service.Events.WRONG_MOVE;
+import static com.codenjoy.dojo.chess.service.Event.WRONG_MOVE;
 
 public class CastlingTest extends AbstractGameTest {
 

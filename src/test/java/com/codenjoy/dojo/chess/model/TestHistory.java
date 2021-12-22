@@ -22,7 +22,7 @@ package com.codenjoy.dojo.chess.model;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.service.Events;
+import com.codenjoy.dojo.chess.service.Event;
 import com.google.common.collect.Lists;
 
 import java.util.List;
@@ -39,22 +39,22 @@ public class TestHistory {
         this.records = records;
     }
 
-    public Record getFirstWithEvent(Events event) {
+    public Record getFirstWithEvent(Event event) {
         return records.stream()
                 .filter(r -> r.getEvents().contains(event))
                 .findFirst()
                 .orElse(null);
     }
 
-    public void add(HeroColor color, Move move, List<Events> events) {
+    public void add(HeroColor color, Move move, List<Event> events) {
         if (events == null || events.size() == 0) {
             records.add(new Record(color, move));
         } else {
-            records.add(new Record(color, move, events.toArray(Events[]::new)));
+            records.add(new Record(color, move, events.toArray(Event[]::new)));
         }
     }
 
-    public void add(HeroColor color, Move move, Events... events) {
+    public void add(HeroColor color, Move move, Event... events) {
         records.add(new Record(color, move, events));
     }
 
@@ -68,9 +68,9 @@ public class TestHistory {
     public static class Record {
         private final HeroColor color;
         private final Move move;
-        private final List<Events> events;
+        private final List<Event> events;
 
-        private Record(HeroColor color, Move move, Events... events) {
+        private Record(HeroColor color, Move move, Event... events) {
             this.color = color;
             this.move = move;
             this.events = Lists.newArrayList(events);
@@ -84,7 +84,7 @@ public class TestHistory {
             return Move.decode(move.command());
         }
 
-        public List<Events> getEvents() {
+        public List<Event> getEvents() {
             return events;
         }
 

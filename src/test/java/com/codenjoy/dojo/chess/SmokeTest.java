@@ -72,8 +72,8 @@ public class SmokeTest {
                     @Override
                     public GameSettings getSettings() {
                         return super.getSettings()
-                                .integer(WRONG_MOVE_PENALTY, 1)
-                                .integer(GAME_OVER_PENALTY, 1)
+                                .integer(WRONG_MOVE_PENALTY, -1)
+                                .integer(GAME_OVER_PENALTY, -1)
                                 .string(LEVEL_MAP, Levels.classicChessBoard());
                     }
                 },
@@ -96,8 +96,8 @@ public class SmokeTest {
                     @Override
                     public GameSettings getSettings() {
                         return super.getSettings()
-                                .integer(WRONG_MOVE_PENALTY, 1)
-                                .integer(GAME_OVER_PENALTY, 1)
+                                .integer(WRONG_MOVE_PENALTY, -1)
+                                .integer(GAME_OVER_PENALTY, -1)
                                 .string(LEVEL_MAP, Levels.classicFourPlayerChessBoard());
                     }
                 },

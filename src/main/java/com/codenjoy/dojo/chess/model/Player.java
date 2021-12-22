@@ -23,7 +23,7 @@ package com.codenjoy.dojo.chess.model;
  */
 
 
-import com.codenjoy.dojo.chess.service.Events;
+import com.codenjoy.dojo.chess.service.Event;
 import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.Point;
@@ -106,12 +106,12 @@ public class Player extends GamePlayer<Hero, Field> {
     }
 
     public void win() {
-        event(Events.WIN);
+        event(Event.WIN);
         winner = true;
     }
 
     public void gameOver() {
-        event(Events.GAME_OVER);
+        event(Event.GAME_OVER);
         active = false;
     }
 }

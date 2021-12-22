@@ -23,7 +23,7 @@ package com.codenjoy.dojo.chess.model;
  */
 
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
-import com.codenjoy.dojo.chess.service.Events;
+import com.codenjoy.dojo.chess.service.Event;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.joystick.NoDirectionJoystick;
@@ -41,7 +41,7 @@ public class Hero extends PlayerHero<Field> implements NoDirectionJoystick {
     private static final Logger LOGGER = LoggerFactory.getLogger(Hero.class);
 
     private final HeroColor color;
-    private final List<Events> events = new ArrayList<>();
+    private final List<Event> events = new ArrayList<>();
     private boolean askedForColor = false;
     private Move lastMove;
     private Move action;
@@ -101,29 +101,29 @@ public class Hero extends PlayerHero<Field> implements NoDirectionJoystick {
                     .map(this::eventOfTaken)
                     .forEach(events::add);
         } else {
-            events.add(Events.WRONG_MOVE);
+            events.add(Event.WRONG_MOVE);
         }
         action = null;
     }
 
-    private Events eventOfTaken(Piece piece) {
+    private Event eventOfTaken(Piece piece) {
         if (piece.isAlive()) {
             throw new IllegalArgumentException("Piece should be taken");
         }
         Piece.Type type = piece.getType();
         switch (type) {
             case KING:
-                return Events.KING_TAKEN;
+                return Event.KING_TAKEN;
             case QUEEN:
-                return Events.QUEEN_TAKEN;
+                return Event.QUEEN_TAKEN;
             case KNIGHT:
-                return Events.KNIGHT_TAKEN;
+                return Event.KNIGHT_TAKEN;
             case BISHOP:
-                return Events.BISHOP_TAKEN;
+                return Event.BISHOP_TAKEN;
             case ROOK:
-                return Events.ROOK_TAKEN;
+                return Event.ROOK_TAKEN;
             case PAWN:
-                return Events.PAWN_TAKEN;
+                return Event.PAWN_TAKEN;
             default:
                 throw new IllegalArgumentException("Unknown piece type");
         }
@@ -133,7 +133,7 @@ public class Hero extends PlayerHero<Field> implements NoDirectionJoystick {
         return color;
     }
 
-    public List<Events> getEvents() {
+    public List<Event> getEvents() {
         return events;
     }
 

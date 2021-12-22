@@ -23,69 +23,41 @@ package com.codenjoy.dojo.chess.service;
  */
 
 
-import com.codenjoy.dojo.services.PlayerScores;
+import com.codenjoy.dojo.services.event.ScoresMap;
+import com.codenjoy.dojo.services.settings.SettingsReader;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static com.codenjoy.dojo.chess.service.Events.*;
 import static com.codenjoy.dojo.chess.service.GameSettings.Option.*;
 
-public class Scores implements PlayerScores {
+public class Scores extends ScoresMap<Integer> {
 
-    private final Map<Events, Integer> eventsToRewards;
-    private final static int DEFAULT_SCORE = 0;
+    public Scores(SettingsReader settings) {
+        super(settings);
 
-    private final AtomicInteger score;
+        put(Event.WIN,
+                value -> settings.integer(WIN_SCORE));
 
-    public Scores(GameSettings settings) {
-        this(DEFAULT_SCORE, settings);
-    }
+        put(Event.WRONG_MOVE,
+                value -> settings.integer(WRONG_MOVE_PENALTY));
 
-    public Scores(int startScore, GameSettings settings) {
-        this.score = new AtomicInteger(startScore);
-        this.eventsToRewards = new HashMap<>() {{
-           put(WIN, settings.integer(VICTORY_REWARD));
-           put(WRONG_MOVE, settings.integer(WRONG_MOVE_PENALTY) * -1);
-           put(GAME_OVER, settings.integer(GAME_OVER_PENALTY) * -1);
+        put(Event.GAME_OVER,
+                value -> settings.integer(GAME_OVER_PENALTY));
 
-           put(KING_TAKEN, settings.integer(KING_WORTH));
-           put(QUEEN_TAKEN, settings.integer(QUEEN_WORTH));
-           put(BISHOP_TAKEN, settings.integer(BISHOP_WORTH));
-           put(ROOK_TAKEN, settings.integer(ROOK_WORTH));
-           put(KNIGHT_TAKEN, settings.integer(KNIGHT_WORTH));
-           put(PAWN_TAKEN, settings.integer(PAWN_WORTH));
-        }};
-    }
+        put(Event.KING_TAKEN,
+                value -> settings.integer(KING_WORTH));
 
-    @Override
-    public int clear() {
-        score.set(DEFAULT_SCORE);
-        return score.get();
-    }
+        put(Event.QUEEN_TAKEN,
+                value -> settings.integer(QUEEN_WORTH));
 
-    @Override
-    public Integer getScore() {
-        return score.get();
-    }
+        put(Event.BISHOP_TAKEN,
+                value -> settings.integer(BISHOP_WORTH));
 
-    @Override
-    public void update(Object score) {
-        this.score.set(Integer.parseInt(score.toString()));
-        setZeroIfNegative();
-    }
+        put(Event.ROOK_TAKEN,
+                value -> settings.integer(ROOK_WORTH));
 
-    @Override
-    public void event(Object eventObj) {
-        Events event = (Events) eventObj;
-        score.addAndGet(eventsToRewards.get(event));
-        setZeroIfNegative();
-    }
+        put(Event.KNIGHT_TAKEN,
+                value -> settings.integer(KNIGHT_WORTH));
 
-    private void setZeroIfNegative() {
-        if (score.get() < 0) {
-            score.set(0);
-        }
+        put(Event.PAWN_TAKEN,
+                value -> settings.integer(PAWN_WORTH));
     }
 }

@@ -184,7 +184,7 @@ public class Chess implements Field {
                     marked.forEach(c -> getPlayer(c).gameOver());
                 } else {
                     marked.add(currentColor);
-                    getPlayer(currentColor).event(Events.WRONG_MOVE);
+                    getPlayer(currentColor).event(Event.WRONG_MOVE);
                 }
             }
             currentColor = nextColor();
@@ -196,7 +196,7 @@ public class Chess implements Field {
                 .map(Player::getColor)
                 .collect(toList());
         Collection<HeroColor> died = CollectionUtils.subtract(aliveBeforeTick, alive);
-        died.forEach(color -> getPlayer(color).event(Events.GAME_OVER));
+        died.forEach(color -> getPlayer(color).event(Event.GAME_OVER));
     }
 
     private void checkVictory() {

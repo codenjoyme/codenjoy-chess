@@ -34,9 +34,9 @@ public class TestGameSettings extends GameSettings {
         bool(WAIT_UNTIL_MAKE_A_MOVE, true);
         bool(LAST_PLAYER_STAYS, false);
 
-        integer(VICTORY_REWARD, 100);
+        integer(WIN_SCORE, 100);
         integer(WRONG_MOVE_PENALTY, 0);
-        integer(GAME_OVER_PENALTY, 10);
+        integer(GAME_OVER_PENALTY, -10);
 
         integer(KING_WORTH, 20);
         integer(QUEEN_WORTH, 9);
