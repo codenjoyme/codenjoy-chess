@@ -29,6 +29,9 @@ import static com.codenjoy.dojo.chess.service.GameSettings.Option.*;
 
 public class TestGameSettings extends GameSettings {
 
+    /**
+     * Here you can override the settings for all tests.
+     */
     public TestGameSettings() {
         bool(GAME_OVER_IF_WRONG_MOVE, false);
         bool(WAIT_UNTIL_MAKE_A_MOVE, true);
