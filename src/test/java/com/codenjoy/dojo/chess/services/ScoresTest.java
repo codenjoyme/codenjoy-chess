@@ -44,11 +44,13 @@ public class ScoresTest {
     @Before
     public void setup() {
         settings = new TestGameSettings();
-        givenScores(0);
     }
 
     @Test
     public void shouldCollectScores() {
+        // given
+        givenScores(0);
+
         // when
         scores.event(QUEEN_TAKEN);
         scores.event(KING_TAKEN);
@@ -57,12 +59,14 @@ public class ScoresTest {
         // then
         assertEquals(settings.worthOf(QUEEN)
                 + settings.worthOf(KING)
-                + settings.victoryScore(), scores.getScore());
+                + settings.victoryScore(),
+                scores.getScore());
     }
 
     @Test
     public void shouldClearScore() {
         // given
+        givenScores(0);
         scores.event(WIN);
         assertEquals(100, scores.getScore());
 
@@ -101,8 +105,8 @@ public class ScoresTest {
         scores.event(WIN);
 
         // then
-        assertEquals(100 +
-                    2 * settings.victoryScore(),
+        assertEquals(100
+                    + 2 * settings.victoryScore(),
                 scores.getScore());
     }
 
@@ -154,7 +158,7 @@ public class ScoresTest {
 
         // then
         assertEquals(100
-                        + 2 * settings.worthOf(KING),
+                    + 2 * settings.worthOf(KING),
                 scores.getScore());
     }
 
@@ -170,7 +174,7 @@ public class ScoresTest {
 
         // then
         assertEquals(100
-                        + 2 * settings.worthOf(QUEEN),
+                    + 2 * settings.worthOf(QUEEN),
                 scores.getScore());
     }
 
@@ -186,7 +190,7 @@ public class ScoresTest {
 
         // then
         assertEquals(100
-                        + 2 * settings.worthOf(BISHOP),
+                    + 2 * settings.worthOf(BISHOP),
                 scores.getScore());
     }
 
@@ -202,7 +206,7 @@ public class ScoresTest {
 
         // then
         assertEquals(100
-                        + 2 * settings.worthOf(ROOK),
+                    + 2 * settings.worthOf(ROOK),
                 scores.getScore());
     }
 
@@ -218,7 +222,7 @@ public class ScoresTest {
 
         // then
         assertEquals(100
-                        + 2 * settings.worthOf(KNIGHT),
+                    + 2 * settings.worthOf(KNIGHT),
                 scores.getScore());
     }
 
@@ -234,7 +238,7 @@ public class ScoresTest {
 
         // then
         assertEquals(100
-                        + 2 * settings.worthOf(PAWN),
+                    + 2 * settings.worthOf(PAWN),
                 scores.getScore());
     }
 }
