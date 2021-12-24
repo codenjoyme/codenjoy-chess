@@ -44,7 +44,7 @@ public class ScoresTest {
     @Before
     public void setup() {
         settings = new TestGameSettings();
-        scores = new ScoresImpl<>(0, new Scores(settings));
+        givenScores(0);
     }
 
     @Test
@@ -77,7 +77,7 @@ public class ScoresTest {
     public void shouldNotBeLessThanZero() {
         // given
         settings.integer(WRONG_MOVE_PENALTY, -100);
-        scores = new ScoresImpl<>(100, new Scores(settings));
+        givenScores(100);
 
         // when
         scores.event(WRONG_MOVE);
@@ -94,7 +94,7 @@ public class ScoresTest {
     public void shouldVictoryScore() {
         // given
         settings.integer(WIN_SCORE, 100);
-        scores = new ScoresImpl<>(100, new Scores(settings));
+        givenScores(100);
 
         // when
         scores.event(WIN);
@@ -110,7 +110,7 @@ public class ScoresTest {
     public void shouldWrongMove() {
         // given
         settings.integer(WRONG_MOVE_PENALTY, -10);
-        scores = new ScoresImpl<>(100, new Scores(settings));
+        givenScores(100);
 
         // when
         scores.event(WRONG_MOVE);
@@ -122,11 +122,15 @@ public class ScoresTest {
                 scores.getScore());
     }
 
+    private void givenScores(int score) {
+        scores = new ScoresImpl<>(score, new Scores(settings));
+    }
+
     @Test
     public void shouldGameOver() {
         // given
         settings.integer(GAME_OVER_PENALTY, -10);
-        scores = new ScoresImpl<>(100, new Scores(settings));
+        givenScores(100);
 
         // when
         scores.event(GAME_OVER);
@@ -142,7 +146,7 @@ public class ScoresTest {
     public void shouldKingTaken() {
         // given
         settings.integer(KING_WORTH, 10);
-        scores = new ScoresImpl<>(100, new Scores(settings));
+        givenScores(100);
 
         // when
         scores.event(KING_TAKEN);
@@ -158,7 +162,7 @@ public class ScoresTest {
     public void shouldQueenTaken() {
         // given
         settings.integer(QUEEN_WORTH, 10);
-        scores = new ScoresImpl<>(100, new Scores(settings));
+        givenScores(100);
 
         // when
         scores.event(QUEEN_TAKEN);
@@ -174,7 +178,7 @@ public class ScoresTest {
     public void shouldBishopTaken() {
         // given
         settings.integer(BISHOP_WORTH, 10);
-        scores = new ScoresImpl<>(100, new Scores(settings));
+        givenScores(100);
 
         // when
         scores.event(BISHOP_TAKEN);
@@ -190,7 +194,7 @@ public class ScoresTest {
     public void shouldRookTaken() {
         // given
         settings.integer(ROOK_WORTH, 10);
-        scores = new ScoresImpl<>(100, new Scores(settings));
+        givenScores(100);
 
         // when
         scores.event(ROOK_TAKEN);
@@ -206,7 +210,7 @@ public class ScoresTest {
     public void shouldKnightTaken() {
         // given
         settings.integer(KNIGHT_WORTH, 10);
-        scores = new ScoresImpl<>(100, new Scores(settings));
+        givenScores(100);
 
         // when
         scores.event(KNIGHT_TAKEN);
@@ -222,7 +226,7 @@ public class ScoresTest {
     public void shouldPawnTaken() {
         // given
         settings.integer(PAWN_WORTH, 10);
-        scores = new ScoresImpl<>(100, new Scores(settings));
+        givenScores(100);
 
         // when
         scores.event(PAWN_TAKEN);
