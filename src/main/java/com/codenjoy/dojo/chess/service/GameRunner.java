@@ -24,13 +24,15 @@ package com.codenjoy.dojo.chess.service;
 
 
 import com.codenjoy.dojo.chess.model.Chess;
-import com.codenjoy.dojo.games.chess.Element;
-import com.codenjoy.dojo.games.chess.Board;
-import com.codenjoy.dojo.chess.service.ai.AISolver;
 import com.codenjoy.dojo.chess.model.Player;
+import com.codenjoy.dojo.chess.service.ai.AISolver;
 import com.codenjoy.dojo.client.ClientBoard;
 import com.codenjoy.dojo.client.Solver;
-import com.codenjoy.dojo.services.*;
+import com.codenjoy.dojo.games.chess.Board;
+import com.codenjoy.dojo.games.chess.Element;
+import com.codenjoy.dojo.services.AbstractGameType;
+import com.codenjoy.dojo.services.EventListener;
+import com.codenjoy.dojo.services.PlayerScores;
 import com.codenjoy.dojo.services.event.ScoresImpl;
 import com.codenjoy.dojo.services.multiplayer.GameField;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
@@ -50,7 +52,7 @@ public class GameRunner extends AbstractGameType<GameSettings> {
 
     @Override
     public PlayerScores getPlayerScores(Object score, GameSettings settings) {
-        return new ScoresImpl<>(Integer.parseInt(score.toString()), new Scores(settings));
+        return new ScoresImpl<>(Integer.parseInt(score.toString()), settings.calculator());
     }
 
     @Override

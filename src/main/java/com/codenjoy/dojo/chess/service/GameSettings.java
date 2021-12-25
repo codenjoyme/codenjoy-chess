@@ -26,6 +26,7 @@ package com.codenjoy.dojo.chess.service;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import com.codenjoy.dojo.chess.model.level.Level;
 import com.codenjoy.dojo.chess.model.level.Levels;
+import com.codenjoy.dojo.services.event.Calculator;
 import com.codenjoy.dojo.services.settings.SettingsImpl;
 import com.codenjoy.dojo.services.settings.SettingsReader;
 import com.google.common.collect.Lists;
@@ -135,5 +136,9 @@ public class GameSettings extends SettingsImpl implements SettingsReader<GameSet
             default:
                 throw new IllegalArgumentException("Piece type " + type + " not supported");
         }
+    }
+
+    public Calculator<Integer> calculator() {
+        return new Calculator<>(new Scores(this));
     }
 }
