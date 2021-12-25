@@ -78,7 +78,7 @@ public class GameSettings extends SettingsImpl implements SettingsReader<GameSet
         bool(LAST_PLAYER_STAYS, true);
 
         integer(WIN_SCORE, 100);
-        integer(WRONG_MOVE_PENALTY, -0);
+        integer(WRONG_MOVE_PENALTY, -1);
         integer(GAME_OVER_PENALTY, -10);
 
         integer(KING_WORTH, 20);
