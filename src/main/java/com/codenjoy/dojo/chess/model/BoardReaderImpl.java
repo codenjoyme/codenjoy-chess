@@ -25,6 +25,7 @@ package com.codenjoy.dojo.chess.model;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.printer.BoardReader;
 import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-public class BoardReaderImpl implements com.codenjoy.dojo.services.printer.BoardReader<Player> {
+public class BoardReaderImpl implements BoardReader<Player> {
 
     private final Chess game;
 

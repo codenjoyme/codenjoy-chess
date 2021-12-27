@@ -134,7 +134,7 @@ public class Chess implements Field {
     }
 
     @Override
-    public BoardReader reader() {
+    public BoardReader<Player> reader() {
         return new BoardReaderImpl(this);
     }
 
