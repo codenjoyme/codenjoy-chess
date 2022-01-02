@@ -24,7 +24,7 @@ package com.codenjoy.dojo.chess.model;
 
 import com.codenjoy.dojo.services.multiplayer.GameField;
 
-public interface Field extends GameField<Player> {
+public interface Field extends GameField<Player, Hero> {
 
     HeroColor getAvailableColor();
 
