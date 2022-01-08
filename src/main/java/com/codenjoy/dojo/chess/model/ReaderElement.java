@@ -28,7 +28,7 @@ import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import com.codenjoy.dojo.games.chess.Element;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
-import com.codenjoy.dojo.services.State;
+import com.codenjoy.dojo.services.printer.state.State;
 
 public class ReaderElement extends PointImpl implements State<Element, Player> {
     private final Element element;
