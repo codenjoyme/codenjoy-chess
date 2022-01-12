@@ -23,29 +23,29 @@ package com.codenjoy.dojo.chess.model.level;
  */
 
 
-import com.codenjoy.dojo.chess.model.HeroColor;
 import com.codenjoy.dojo.chess.model.ElementMapper;
+import com.codenjoy.dojo.chess.model.HeroColor;
 import com.codenjoy.dojo.chess.model.item.Barrier;
 import com.codenjoy.dojo.chess.model.item.Square;
-import com.codenjoy.dojo.games.chess.Element;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
-import com.codenjoy.dojo.services.LengthToXY;
+import com.codenjoy.dojo.client.ElementsMap;
+import com.codenjoy.dojo.games.chess.Element;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.field.AbstractLevel;
-import com.codenjoy.dojo.utils.LevelUtils;
 import com.google.common.collect.Lists;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static com.codenjoy.dojo.games.chess.Element.BARRIER;
 import static com.codenjoy.dojo.games.chess.Element.SQUARE;
 
 public class Level extends AbstractLevel {
 
+    private static final ElementsMap<Element> elements = new ElementsMap<>(Element.values());
+    
     public Level(String map) {
         super(map);
     }
@@ -57,7 +57,7 @@ public class Level extends AbstractLevel {
     public List<HeroColor> presentedColors() {
         List<HeroColor> result = new LinkedList<>();
         for (int i = 0; i < map.length(); i++) {
-            Optional.ofNullable(Element.of(map.charAt(i)))
+            Optional.ofNullable(elements.get(map.charAt(i)))
                     .filter(e -> Lists.newArrayList(Element.pieces()).contains(e))
                     .map(ElementMapper::mapToColor)
                     .filter(e -> !result.contains(e))
