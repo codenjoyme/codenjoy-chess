@@ -58,7 +58,7 @@ public class SmokeTest {
 
     @Test
     public void testClassicChessBoard() {
-        // about 1.5 sec
+        // about 1.4 sec
         int players = 2;
         int ticks = 1000;
 
@@ -83,7 +83,7 @@ public class SmokeTest {
 
     @Test
     public void testClassicFourPlayerChessBoard() {
-        // about 8.5 sec
+        // about 8.1 sec
         int players = 4;
         int ticks = 1000;
 
