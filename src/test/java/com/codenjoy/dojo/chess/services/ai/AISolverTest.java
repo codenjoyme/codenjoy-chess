@@ -22,24 +22,24 @@ package com.codenjoy.dojo.chess.services.ai;
  * #L%
  */
 
+import com.codenjoy.dojo.chess.model.level.Levels;
 import com.codenjoy.dojo.chess.service.ai.AISolver;
+import com.codenjoy.dojo.client.Solver;
 import com.codenjoy.dojo.games.chess.Board;
 import com.codenjoy.dojo.games.chess.Color;
 import com.codenjoy.dojo.games.chess.Element;
-import com.codenjoy.dojo.chess.model.level.Levels;
-import com.codenjoy.dojo.client.Solver;
-import com.codenjoy.dojo.services.Dice;
+import com.codenjoy.dojo.services.dice.MockDice;
 import com.codenjoy.dojo.utils.LevelUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 
 public class AISolverTest {
+
     private static final String REQUEST_FOR_COLOR = "ACT";
 
-    private final Dice dice = mock(Dice.class);
+    private MockDice dice = new MockDice();
     protected Board board;
     private Solver<Board> solver;
 

@@ -29,7 +29,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class TestHistory {
-    private final List<Record> records;
+
+    private List<Record> records;
 
     public TestHistory() {
         this(Lists.newArrayList());

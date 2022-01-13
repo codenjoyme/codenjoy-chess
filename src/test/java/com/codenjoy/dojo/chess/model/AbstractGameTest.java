@@ -27,16 +27,16 @@ import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import com.codenjoy.dojo.chess.model.level.Level;
 import com.codenjoy.dojo.chess.service.Event;
 import com.codenjoy.dojo.chess.service.GameSettings;
-import com.codenjoy.dojo.services.Dice;
+import com.codenjoy.dojo.games.chess.Element;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.PointImpl;
+import com.codenjoy.dojo.services.dice.MockDice;
 import com.codenjoy.dojo.services.printer.PrinterFactory;
 import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
 import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.mockito.ArgumentCaptor;
-import org.mockito.stubbing.OngoingStubbing;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -45,7 +45,6 @@ import java.util.Map;
 
 import static java.util.stream.Collectors.joining;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 public abstract class AbstractGameTest {
@@ -55,8 +54,8 @@ public abstract class AbstractGameTest {
     private String board;
 
     protected Chess game;
-    protected Dice dice;
-    protected PrinterFactory printerFactory;
+    protected MockDice dice;
+    protected PrinterFactory<Element, Player> printerFactory;
     protected GameSettings settings;
     protected TestHistory history;
 
@@ -73,8 +72,8 @@ public abstract class AbstractGameTest {
 
     @Before
     public void setup() {
-        dice = mock(Dice.class);
-        printerFactory = new PrinterFactoryImpl();
+        dice = new MockDice();
+        printerFactory = new PrinterFactoryImpl<>();
         settings = new TestGameSettings();
         history = new TestHistory();
     }
@@ -87,7 +86,7 @@ public abstract class AbstractGameTest {
     public void assrtPl(String expected) {
         assertEquals(expected,
                 players.values().stream()
-                        .map(player -> playerStatus(player))
+                        .map(this::playerStatus)
                         .collect(joining("\n---------------\n")));
     }
 
@@ -111,11 +110,8 @@ public abstract class AbstractGameTest {
                 player.isLastWinnerOnBoard());
     }
 
-    protected void dice(int... ints) {
-        OngoingStubbing<Integer> when = when(dice.next(anyInt()));
-        for (int i : ints) {
-            when = when.thenReturn(i);
-        }
+    protected void dice(Integer... next) {
+        dice.then(next);
     }
 
     protected void neverFired(HeroColor color, Event event) {
