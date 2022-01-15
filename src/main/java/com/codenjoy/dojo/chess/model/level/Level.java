@@ -57,7 +57,7 @@ public class Level extends AbstractLevel {
     public List<HeroColor> presentedColors() {
         List<HeroColor> result = new LinkedList<>();
         for (int i = 0; i < map.length(); i++) {
-            Optional.ofNullable(elements.get(map.charAt(i)))
+            Optional.ofNullable(elements.get(map.map().charAt(i)))
                     .filter(e -> Lists.newArrayList(Element.pieces()).contains(e))
                     .map(ElementMapper::mapToColor)
                     .filter(e -> !result.contains(e))
