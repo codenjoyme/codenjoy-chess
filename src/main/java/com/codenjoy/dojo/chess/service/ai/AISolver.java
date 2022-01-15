@@ -71,7 +71,7 @@ public class AISolver implements Solver<Board> {
         LengthToXY xy = new LengthToXY(size);
         char[] rotated = new char[map.length()];
         for (int i = 0; i < map.length(); i++) {
-            Point pt = xy.getXY(i);
+            Point pt = xy.point(i);
             int x = pt.getX();
             int y = pt.getY();
             if (times == 1) {
