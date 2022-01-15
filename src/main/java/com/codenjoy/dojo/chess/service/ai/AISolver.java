@@ -75,11 +75,11 @@ public class AISolver implements Solver<Board> {
             int x = pt.getX();
             int y = pt.getY();
             if (times == 1) {
-                rotated[xy.getLength(y, size - 1 - x)] = map.charAt(i);
+                rotated[xy.length(y, size - 1 - x)] = map.charAt(i);
             } else if (times == 2) {
-                rotated[xy.getLength(size - 1 - x, size - 1 - y)] = map.charAt(i);
+                rotated[xy.length(size - 1 - x, size - 1 - y)] = map.charAt(i);
             } else {
-                rotated[xy.getLength(size - 1 - y, x)] = map.charAt(i);
+                rotated[xy.length(size - 1 - y, x)] = map.charAt(i);
             }
         }
         StringBuilder result = new StringBuilder();
