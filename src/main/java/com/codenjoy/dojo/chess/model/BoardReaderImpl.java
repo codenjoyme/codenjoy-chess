@@ -43,7 +43,7 @@ public class BoardReaderImpl implements BoardReader<Player> {
 
     @Override
     public int size() {
-        return game.getBoardSize();
+        return game.size();
     }
 
     @Override

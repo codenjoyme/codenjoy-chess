@@ -24,7 +24,8 @@ package com.codenjoy.dojo.chess.model;
 
 
 import com.codenjoy.dojo.chess.model.level.Level;
-import com.codenjoy.dojo.chess.service.*;
+import com.codenjoy.dojo.chess.service.Event;
+import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.services.printer.BoardReader;
@@ -138,7 +139,8 @@ public class Chess implements Field {
         return new BoardReaderImpl(this);
     }
 
-    public int getBoardSize() {
+    @Override
+    public int size() {
         return board.getSize();
     }
 
