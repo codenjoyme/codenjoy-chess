@@ -23,7 +23,7 @@ package com.codenjoy.dojo.chess.services;
  */
 
 import com.codenjoy.dojo.chess.service.GameSettings;
-import com.codenjoy.dojo.client.Utils;
+import com.codenjoy.dojo.utils.TestUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -32,20 +32,19 @@ public class GameSettingsTest {
 
     @Test
     public void shouldGetAllKeys() {
-        assertEquals("[LEVEL_MAP, \n" +
-                        "GAME_OVER_IF_WRONG_MOVE, \n" +
-                        "WAIT_UNTIL_MAKE_A_MOVE, \n" +
-                        "LAST_PLAYER_STAYS, \n" +
-                        "WIN_SCORE, \n" +
-                        "WRONG_MOVE_PENALTY, \n" +
-                        "GAME_OVER_PENALTY, \n" +
-                        "KING_WORTH, \n" +
-                        "QUEEN_WORTH, \n" +
-                        "BISHOP_WORTH, \n" +
-                        "ROOK_WORTH, \n" +
-                        "KNIGHT_WORTH, \n" +
-                        "PAWN_WORTH]",
-                Utils.split(new GameSettings().allKeys(), ", \n"));
+        assertEquals("LEVEL_MAP               =[Level] Level map\n" +
+                    "GAME_OVER_IF_WRONG_MOVE =[Game] Game over if tried to make wrong move\n" +
+                    "WAIT_UNTIL_MAKE_A_MOVE  =[Game] Wait a player's move if not responds in time\n" +
+                    "LAST_PLAYER_STAYS       =[Game] Last alive player continues to play\n" +
+                    "WIN_SCORE               =[Score] Victory reward\n" +
+                    "WRONG_MOVE_PENALTY      =[Score] Wrong move penalty\n" +
+                    "GAME_OVER_PENALTY       =[Score] Game over penalty\n" +
+                    "KING_WORTH              =[Score] King piece worth\n" +
+                    "QUEEN_WORTH             =[Score] Queen piece worth\n" +
+                    "BISHOP_WORTH            =[Score] Bishop piece worth\n" +
+                    "ROOK_WORTH              =[Score] Rook piece worth\n" +
+                    "KNIGHT_WORTH            =[Score] Knight piece worth\n" +
+                    "PAWN_WORTH              =[Score] Pawn piece worth",
+                TestUtils.toString(new GameSettings().allKeys()));
     }
-
 }
