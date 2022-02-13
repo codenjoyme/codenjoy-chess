@@ -3,8 +3,8 @@
 ## Symbol breakdown
 | Sprite | Code | Description |
 | -------- | -------- | -------- |
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/square.png" style="width:40px;" /> | `SQUARE('.')` | . | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/barrier.png" style="width:40px;" /> | `BARRIER(' ')` | . | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/square.png" style="width:40px;" /> | `SQUARE('.')` | Поле. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/barrier.png" style="width:40px;" /> | `BARRIER(' ')` | Препятствие для фигур. | 
 |<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/white_king.png" style="width:40px;" /> | `WHITE_KING('W')` | Король белых. | 
 |<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/white_queen.png" style="width:40px;" /> | `WHITE_QUEEN('Q')` | Ферзь белых. | 
 |<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/white_rook.png" style="width:40px;" /> | `WHITE_ROOK('R')` | Ладья белых. | 
@@ -29,4 +29,4 @@
 |<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/blue_bishop.png" style="width:40px;" /> | `BLUE_BISHOP('g')` | Слон синих. | 
 |<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/blue_knight.png" style="width:40px;" /> | `BLUE_KNIGHT('l')` | Конь синих. | 
 |<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/blue_pawn.png" style="width:40px;" /> | `BLUE_PAWN('z')` | Пешка синих. | 
-|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/background.png" style="width:40px;" /> | `BACKGROUND('-')` | Системный спрайт - изображение шахматной доски. | 
+|<img src="https://github.com/codenjoyme/codenjoy-chess/raw/master/src/main/webapp/resources/chess/sprite/background.png" style="width:40px;" /> | `BACKGROUND('-')` | Изображение шахматной доски (фон). | 

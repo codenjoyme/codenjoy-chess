@@ -30,6 +30,7 @@ import com.codenjoy.dojo.chess.model.item.Square;
 import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import com.codenjoy.dojo.client.ElementsMap;
 import com.codenjoy.dojo.games.chess.Element;
+import com.codenjoy.dojo.games.chess.ElementUtils;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.field.AbstractLevel;
 import com.google.common.collect.Lists;
@@ -58,7 +59,7 @@ public class Level extends AbstractLevel {
         List<HeroColor> result = new LinkedList<>();
         for (int i = 0; i < map.length(); i++) {
             Optional.ofNullable(elements.get(map.map().charAt(i)))
-                    .filter(e -> Lists.newArrayList(Element.pieces()).contains(e))
+                    .filter(e -> Lists.newArrayList(ElementUtils.pieces()).contains(e))
                     .map(ElementMapper::mapToColor)
                     .filter(e -> !result.contains(e))
                     .ifPresent(result::add);
@@ -69,7 +70,7 @@ public class Level extends AbstractLevel {
     public List<Square> squares() {
         return new LinkedList<>(){{
             addAll(find(Square::new, SQUARE));
-            addAll(find(Square::new, Element.pieces()));
+            addAll(find(Square::new, ElementUtils.pieces()));
         }};
     }
 

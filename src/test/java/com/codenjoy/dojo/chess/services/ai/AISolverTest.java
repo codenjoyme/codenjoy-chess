@@ -28,6 +28,7 @@ import com.codenjoy.dojo.client.Solver;
 import com.codenjoy.dojo.games.chess.Board;
 import com.codenjoy.dojo.games.chess.Color;
 import com.codenjoy.dojo.games.chess.Element;
+import com.codenjoy.dojo.games.chess.ElementUtils;
 import com.codenjoy.dojo.services.dice.MockDice;
 import com.codenjoy.dojo.utils.LevelUtils;
 import org.junit.Before;
@@ -50,7 +51,7 @@ public class AISolverTest {
 
     private String getAnswerFor(Color color) {
         solver.get(board);
-        Element piece = Element.elements(color).get(0);
+        Element piece = ElementUtils.elements(color).get(0);
         return solver.get((Board) new Board().forString(piece.toString()));
     }
 
