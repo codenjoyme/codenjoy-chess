@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-import static com.codenjoy.dojo.chess.service.GameSettings.Option.WAIT_UNTIL_MAKE_A_MOVE;
+import static com.codenjoy.dojo.chess.service.GameSettings.Keys.WAIT_UNTIL_MAKE_A_MOVE;
 import static java.util.stream.Collectors.toList;
 
 public class Chess implements Field {

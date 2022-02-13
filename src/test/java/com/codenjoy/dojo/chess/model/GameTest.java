@@ -27,10 +27,10 @@ import com.codenjoy.dojo.chess.service.GameSettings;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.HeroColor.BLACK;
-import static com.codenjoy.dojo.chess.model.Move.from;
 import static com.codenjoy.dojo.chess.model.HeroColor.WHITE;
+import static com.codenjoy.dojo.chess.model.Move.from;
 import static com.codenjoy.dojo.chess.service.Event.*;
-import static com.codenjoy.dojo.chess.service.GameSettings.Option.LAST_PLAYER_STAYS;
+import static com.codenjoy.dojo.chess.service.GameSettings.Keys.LAST_PLAYER_STAYS;
 import static org.junit.Assert.assertEquals;
 
 public class GameTest extends AbstractGameTest {
@@ -568,7 +568,7 @@ public class GameTest extends AbstractGameTest {
     public void shouldWaitUntilPlayerMakeAMove_ifSuchOptionSetTrue() {
 
         givenFl(classicBoard());
-        settings.bool(GameSettings.Option.WAIT_UNTIL_MAKE_A_MOVE, true);
+        settings.bool(GameSettings.Keys.WAIT_UNTIL_MAKE_A_MOVE, true);
 
         // when
         game.tick();
@@ -581,7 +581,7 @@ public class GameTest extends AbstractGameTest {
     public void shouldNotWaitUntilPlayerMakeAMove_ifSuchOptionSetFalse() {
 
         givenFl(classicBoard());
-        settings.bool(GameSettings.Option.WAIT_UNTIL_MAKE_A_MOVE, false);
+        settings.bool(GameSettings.Keys.WAIT_UNTIL_MAKE_A_MOVE, false);
 
         // when
         game.tick();

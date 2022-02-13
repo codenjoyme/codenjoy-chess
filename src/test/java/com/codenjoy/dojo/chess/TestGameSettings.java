@@ -25,7 +25,7 @@ package com.codenjoy.dojo.chess;
 import com.codenjoy.dojo.chess.model.level.Levels;
 import com.codenjoy.dojo.chess.service.GameSettings;
 
-import static com.codenjoy.dojo.chess.service.GameSettings.Option.*;
+import static com.codenjoy.dojo.chess.service.GameSettings.Keys.*;
 
 public class TestGameSettings extends GameSettings {
 

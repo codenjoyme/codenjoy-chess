@@ -27,43 +27,43 @@ import com.codenjoy.dojo.chess.model.item.piece.Piece;
 import com.codenjoy.dojo.chess.model.level.Level;
 import com.codenjoy.dojo.chess.model.level.Levels;
 import com.codenjoy.dojo.services.event.Calculator;
+import com.codenjoy.dojo.services.settings.PropertiesKey;
 import com.codenjoy.dojo.services.settings.SettingsImpl;
 import com.codenjoy.dojo.services.settings.SettingsReader;
 import com.google.common.collect.Lists;
 
 import java.util.List;
 
-import static com.codenjoy.dojo.chess.service.GameSettings.Option.*;
+import static com.codenjoy.dojo.chess.service.GameRunner.GAME_NAME;
+import static com.codenjoy.dojo.chess.service.GameSettings.Keys.*;
 
 public class GameSettings extends SettingsImpl implements SettingsReader<GameSettings> {
 
     @Override
     public List<Key> allKeys() {
-        return Lists.newArrayList(Option.values());
+        return Lists.newArrayList(Keys.values());
     }
 
-    public enum Option implements Key {
+    public enum Keys implements PropertiesKey {
 
-        LEVEL_MAP("[Level] Level map"),
-        GAME_OVER_IF_WRONG_MOVE("[Game] Game over if tried to make wrong move"),
-        WAIT_UNTIL_MAKE_A_MOVE("[Game] Wait a player's move if not responds in time"),
-        LAST_PLAYER_STAYS("[Game] Last alive player continues to play"),
-
-        WIN_SCORE("[Score] Victory reward"),
-        WRONG_MOVE_PENALTY("[Score] Wrong move penalty"),
-        GAME_OVER_PENALTY("[Score] Game over penalty"),
-
-        KING_WORTH("[Score] King piece worth"),
-        QUEEN_WORTH("[Score] Queen piece worth"),
-        BISHOP_WORTH("[Score] Bishop piece worth"),
-        ROOK_WORTH("[Score] Rook piece worth"),
-        KNIGHT_WORTH("[Score] Knight piece worth"),
-        PAWN_WORTH("[Score] Pawn piece worth");
+        LEVEL_MAP,
+        GAME_OVER_IF_WRONG_MOVE,
+        WAIT_UNTIL_MAKE_A_MOVE,
+        LAST_PLAYER_STAYS,
+        WIN_SCORE,
+        WRONG_MOVE_PENALTY,
+        GAME_OVER_PENALTY,
+        KING_WORTH,
+        QUEEN_WORTH,
+        BISHOP_WORTH,
+        ROOK_WORTH,
+        KNIGHT_WORTH,
+        PAWN_WORTH;
 
         private final String key;
 
-        Option(String key) {
-            this.key = key;
+        Keys() {
+            this.key = key(GAME_NAME);
         }
 
         @Override

@@ -34,7 +34,7 @@ import org.junit.Test;
 
 import static com.codenjoy.dojo.chess.model.item.piece.Piece.Type.*;
 import static com.codenjoy.dojo.chess.service.Event.*;
-import static com.codenjoy.dojo.chess.service.GameSettings.Option.*;
+import static com.codenjoy.dojo.chess.service.GameSettings.Keys.*;
 import static org.junit.Assert.assertEquals;
 
 public class ScoresTest {

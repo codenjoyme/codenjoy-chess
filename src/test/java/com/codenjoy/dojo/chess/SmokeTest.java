@@ -36,7 +36,7 @@ import org.junit.Test;
 
 import java.util.function.Supplier;
 
-import static com.codenjoy.dojo.chess.service.GameSettings.Option.*;
+import static com.codenjoy.dojo.chess.service.GameSettings.Keys.*;
 
 public class SmokeTest {
 

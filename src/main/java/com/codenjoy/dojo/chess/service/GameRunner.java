@@ -43,7 +43,8 @@ import com.codenjoy.dojo.services.settings.Parameter;
 import static com.codenjoy.dojo.services.settings.SimpleParameter.v;
 
 public class GameRunner extends AbstractGameType<GameSettings> {
-    private static final String GAME_NAME = "chess";
+
+    public static final String GAME_NAME = "chess";
 
     @Override
     public GameSettings getSettings() {

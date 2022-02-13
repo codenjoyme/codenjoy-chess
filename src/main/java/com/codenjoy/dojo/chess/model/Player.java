@@ -29,7 +29,7 @@ import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 
-import static com.codenjoy.dojo.chess.service.GameSettings.Option.LAST_PLAYER_STAYS;
+import static com.codenjoy.dojo.chess.service.GameSettings.Keys.LAST_PLAYER_STAYS;
 
 public class Player extends GamePlayer<Hero, Field> {
 

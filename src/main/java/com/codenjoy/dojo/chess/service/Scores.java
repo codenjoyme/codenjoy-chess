@@ -26,7 +26,7 @@ package com.codenjoy.dojo.chess.service;
 import com.codenjoy.dojo.services.event.ScoresMap;
 import com.codenjoy.dojo.services.settings.SettingsReader;
 
-import static com.codenjoy.dojo.chess.service.GameSettings.Option.*;
+import static com.codenjoy.dojo.chess.service.GameSettings.Keys.*;
 
 public class Scores extends ScoresMap<Void> {
 
