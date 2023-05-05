@@ -22,7 +22,6 @@ package com.codenjoy.dojo.chess;
  * #L%
  */
 
-import com.codenjoy.dojo.chess.model.level.Levels;
 import com.codenjoy.dojo.chess.service.GameSettings;
 
 import static com.codenjoy.dojo.chess.service.GameSettings.Keys.*;
@@ -37,17 +36,6 @@ public class TestGameSettings extends GameSettings {
         bool(WAIT_UNTIL_MAKE_A_MOVE, true);
         bool(LAST_PLAYER_STAYS, false);
 
-        integer(WIN_SCORE, 100);
         integer(WRONG_MOVE_PENALTY, 0);
-        integer(GAME_OVER_PENALTY, -10);
-
-        integer(KING_WORTH, 20);
-        integer(QUEEN_WORTH, 9);
-        integer(BISHOP_WORTH, 5);
-        integer(ROOK_WORTH, 5);
-        integer(KNIGHT_WORTH, 3);
-        integer(PAWN_WORTH, 1);
-
-        multiline(LEVEL_MAP, Levels.classicFourPlayerChessBoard());
     }
 }

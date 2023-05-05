@@ -24,222 +24,161 @@ package com.codenjoy.dojo.chess.services;
 
 
 import com.codenjoy.dojo.chess.TestGameSettings;
+import com.codenjoy.dojo.chess.service.Event;
 import com.codenjoy.dojo.chess.service.GameSettings;
 import com.codenjoy.dojo.chess.service.Scores;
-import com.codenjoy.dojo.services.PlayerScores;
-import com.codenjoy.dojo.services.event.Calculator;
-import com.codenjoy.dojo.services.event.ScoresImpl;
-import org.junit.Before;
+import com.codenjoy.dojo.services.event.ScoresMap;
+import com.codenjoy.dojo.services.settings.SettingsReader;
+import com.codenjoy.dojo.utils.scorestest.AbstractScoresTest;
 import org.junit.Test;
 
-import static com.codenjoy.dojo.chess.model.item.piece.Piece.Type.*;
-import static com.codenjoy.dojo.chess.service.Event.*;
+import java.util.function.Function;
+
 import static com.codenjoy.dojo.chess.service.GameSettings.Keys.*;
-import static org.junit.Assert.assertEquals;
 
-public class ScoresTest {
+public class ScoresTest extends AbstractScoresTest {
 
-    private PlayerScores scores;
-    private GameSettings settings;
+    @Override
+    public GameSettings settings() {
+        return new TestGameSettings();
+    }
 
-    @Before
-    public void setup() {
-        settings = new TestGameSettings();
+    @Override
+    public Function<SettingsReader, ? extends ScoresMap<?>> scores() {
+        return Scores::new;
+    }
+
+    @Override
+    protected Class<? extends Enum> eventTypes() {
+        return Event.class;
     }
 
     @Test
     public void shouldCollectScores() {
-        // given
-        givenScores(0);
-
-        // when
-        scores.event(QUEEN_TAKEN);
-        scores.event(KING_TAKEN);
-        scores.event(WIN);
-
-        // then
-        assertEquals(settings.worthOf(QUEEN)
-                + settings.worthOf(KING)
-                + settings.victoryScore(),
-                scores.getScore());
+        assertEvents("0:\n" +
+                "QUEEN_TAKEN > +9 = 9\n" +
+                "KING_TAKEN > +20 = 29\n" +
+                "WIN > +100 = 129");
     }
 
     @Test
-    public void shouldClearScore() {
-        // given
-        givenScores(0);
-        scores.event(WIN);
-        assertEquals(100, scores.getScore());
-
-        // when
-        scores.clear();
-
-        // then
-        assertEquals(0, scores.getScore());
+    public void shouldCleanScore() {
+        assertEvents("0:\n" +
+                "WIN > +100 = 100\n" +
+                "(CLEAN) > -100 = 0\n" +
+                "WIN > +100 = 100");
     }
 
     @Test
     public void shouldNotBeLessThanZero() {
         // given
-        settings.integer(WRONG_MOVE_PENALTY, -100);
-        givenScores(100);
+        settings.integer(WRONG_MOVE_PENALTY, -50);
 
-        // when
-        scores.event(WRONG_MOVE);
-        scores.event(WRONG_MOVE);
-        scores.event(WRONG_MOVE);
-        scores.event(WRONG_MOVE);
-        scores.event(WRONG_MOVE);
-
-        // then
-        assertEquals(0, scores.getScore());
+        // when then
+        assertEvents("100:\n" +
+                "WRONG_MOVE > -50 = 50\n" +
+                "WRONG_MOVE > -50 = 0\n" +
+                "WRONG_MOVE > +0 = 0\n" +
+                "WRONG_MOVE > +0 = 0\n" +
+                "WRONG_MOVE > +0 = 0");
     }
 
     @Test
     public void shouldVictoryScore() {
         // given
         settings.integer(WIN_SCORE, 100);
-        givenScores(100);
 
-        // when
-        scores.event(WIN);
-        scores.event(WIN);
-
-        // then
-        assertEquals(100
-                    + 2 * settings.victoryScore(),
-                scores.getScore());
+        // when then
+        assertEvents("100:\n" +
+                "WIN > +100 = 200\n" +
+                "WIN > +100 = 300");
     }
 
     @Test
     public void shouldWrongMove() {
         // given
         settings.integer(WRONG_MOVE_PENALTY, -10);
-        givenScores(100);
 
-        // when
-        scores.event(WRONG_MOVE);
-        scores.event(WRONG_MOVE);
-
-        // then
-        assertEquals(100
-                    + 2 * settings.wrongMovePenalty(),
-                scores.getScore());
-    }
-
-    private void givenScores(int score) {
-        scores = new ScoresImpl<>(score, new Calculator<>(new Scores(settings)));
+        // when then
+        assertEvents("100:\n" +
+                "WRONG_MOVE > -10 = 90\n" +
+                "WRONG_MOVE > -10 = 80");
     }
 
     @Test
     public void shouldGameOver() {
         // given
         settings.integer(GAME_OVER_PENALTY, -10);
-        givenScores(100);
 
-        // when
-        scores.event(GAME_OVER);
-        scores.event(GAME_OVER);
-
-        // then
-        assertEquals(100
-                    + 2 * settings.gameOverPenalty(),
-                scores.getScore());
+        // when then
+        assertEvents("100:\n" +
+                "GAME_OVER > -10 = 90\n" +
+                "GAME_OVER > -10 = 80");
     }
 
     @Test
     public void shouldKingTaken() {
         // given
         settings.integer(KING_WORTH, 10);
-        givenScores(100);
 
-        // when
-        scores.event(KING_TAKEN);
-        scores.event(KING_TAKEN);
-
-        // then
-        assertEquals(100
-                    + 2 * settings.worthOf(KING),
-                scores.getScore());
+        // when then
+        assertEvents("100:\n" +
+                "KING_TAKEN > +10 = 110\n" +
+                "KING_TAKEN > +10 = 120");
     }
 
     @Test
     public void shouldQueenTaken() {
         // given
         settings.integer(QUEEN_WORTH, 10);
-        givenScores(100);
 
-        // when
-        scores.event(QUEEN_TAKEN);
-        scores.event(QUEEN_TAKEN);
-
-        // then
-        assertEquals(100
-                    + 2 * settings.worthOf(QUEEN),
-                scores.getScore());
+        // when then
+        assertEvents("100:\n" +
+                "QUEEN_TAKEN > +10 = 110\n" +
+                "QUEEN_TAKEN > +10 = 120");
     }
 
     @Test
     public void shouldBishopTaken() {
         // given
         settings.integer(BISHOP_WORTH, 10);
-        givenScores(100);
 
-        // when
-        scores.event(BISHOP_TAKEN);
-        scores.event(BISHOP_TAKEN);
-
-        // then
-        assertEquals(100
-                    + 2 * settings.worthOf(BISHOP),
-                scores.getScore());
+        // when then
+        assertEvents("100:\n" +
+                "BISHOP_TAKEN > +10 = 110\n" +
+                "BISHOP_TAKEN > +10 = 120");
     }
 
     @Test
     public void shouldRookTaken() {
         // given
         settings.integer(ROOK_WORTH, 10);
-        givenScores(100);
 
-        // when
-        scores.event(ROOK_TAKEN);
-        scores.event(ROOK_TAKEN);
-
-        // then
-        assertEquals(100
-                    + 2 * settings.worthOf(ROOK),
-                scores.getScore());
+        // when then
+        assertEvents("100:\n" +
+                "ROOK_TAKEN > +10 = 110\n" +
+                "ROOK_TAKEN > +10 = 120");
     }
 
     @Test
     public void shouldKnightTaken() {
         // given
         settings.integer(KNIGHT_WORTH, 10);
-        givenScores(100);
 
-        // when
-        scores.event(KNIGHT_TAKEN);
-        scores.event(KNIGHT_TAKEN);
-
-        // then
-        assertEquals(100
-                    + 2 * settings.worthOf(KNIGHT),
-                scores.getScore());
+        // when then
+        assertEvents("100:\n" +
+                "KNIGHT_TAKEN > +10 = 110\n" +
+                "KNIGHT_TAKEN > +10 = 120");
     }
 
     @Test
     public void shouldPawnTaken() {
         // given
         settings.integer(PAWN_WORTH, 10);
-        givenScores(100);
 
-        // when
-        scores.event(PAWN_TAKEN);
-        scores.event(PAWN_TAKEN);
-
-        // then
-        assertEquals(100
-                    + 2 * settings.worthOf(PAWN),
-                scores.getScore());
+        // when then
+        assertEvents("100:\n" +
+                "PAWN_TAKEN > +10 = 110\n" +
+                "PAWN_TAKEN > +10 = 120");
     }
 }
