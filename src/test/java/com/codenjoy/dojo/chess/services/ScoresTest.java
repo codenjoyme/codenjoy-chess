@@ -52,10 +52,10 @@ public class ScoresTest extends AbstractScoresTest {
 
     @Test
     public void shouldCollectScores() {
-        assertEvents("0:\n" +
-                "QUEEN_TAKEN > +9 = 9\n" +
-                "KING_TAKEN > +20 = 29\n" +
-                "WIN > +100 = 129");
+        assertEvents("100:\n" +
+                "QUEEN_TAKEN > +9 = 109\n" +
+                "KING_TAKEN > +20 = 129\n" +
+                "WIN > +100 = 229");
     }
 
     @Test
